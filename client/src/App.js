@@ -16,12 +16,12 @@ function App() {
       <div>
         <Routes>
           <Route exact path="/" element={<Main />} />
-          {/* <Route path="/mypage" element={<MyPage />} />
+          <Route exact path="/signup" element={<SignUp />} />
+          <Route path="/mypage" element={<MyPage />} />
           <Route path="/delete" element={<Delete />} />
-          <Route path="/signup" element={<SignUp />} />
           <Route path="/write" element={<Write />} />
           <Route path="change" element={<ChangePassword />} />
-          <Route path="article" element={<Article />} /> */}
+          <Route path="article" element={<Article />} />
         </Routes>
       </div>
     </BrowserRouter>
