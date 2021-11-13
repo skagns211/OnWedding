@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
@@ -8,7 +8,7 @@ module.exports = {
       references: {
         table: "Users",
         field: "id",
-      }
+      },
     });
     await queryInterface.addConstraint("Comments", {
       fields: ["article_id"],
@@ -16,7 +16,7 @@ module.exports = {
       references: {
         table: "Articles",
         field: "id",
-      }
+      },
     });
     await queryInterface.addConstraint("Articles", {
       fields: ["user_id"],
@@ -24,7 +24,7 @@ module.exports = {
       references: {
         table: "Users",
         field: "id",
-      }
+      },
     });
     await queryInterface.addConstraint("Article_Hashtags", {
       fields: ["article_id"],
@@ -32,7 +32,7 @@ module.exports = {
       references: {
         table: "Articles",
         field: "id",
-      }
+      },
     });
     await queryInterface.addConstraint("Article_Hashtags", {
       fields: ["hashtag_id"],
@@ -40,7 +40,7 @@ module.exports = {
       references: {
         table: "Hashtags",
         field: "id",
-      }
+      },
     });
     /**
      * Add altering commands here.
@@ -57,5 +57,5 @@ module.exports = {
      * Example:
      * await queryInterface.dropTable('users');
      */
-  }
+  },
 };
