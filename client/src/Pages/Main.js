@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 import ArticleList from "../Components/ArticleList";
 
@@ -53,20 +54,34 @@ const Styledbutton2 = styled.button`
 `;
 
 const Main = () => {
+  const [comments, setComments] = useState(dummy);
+
+  const commentsOrder = () => {
+    const arr = dummy.slice();
+    const result = arr.sort((a, b) => b.totalcomments - a.totalcomments);
+    setComments(result);
+  };
+
+  const createdOrder = () => {
+    const arr = dummy.slice();
+    const result = arr.sort((a, b) => a.id - b.id);
+    setComments(result);
+  };
+
   return (
     <StyledMain>
       <StyledBody>
         <StyledImg />
         <StyledMiddle>
-          <Styledbutton1>댓글순</Styledbutton1>
-          <Styledbutton1>조회순</Styledbutton1>
+          <Styledbutton1 onClick={commentsOrder}>댓글순</Styledbutton1>
+          <Styledbutton1 onClick={createdOrder}>조회순</Styledbutton1>
           <Styledbutton2>
             <Link to="/write">글쓰기</Link>
           </Styledbutton2>
         </StyledMiddle>
         <StlyedArticle>
-          {dummy.map(dummy => {
-            return <ArticleList dummy={dummy} key={dummy.id} />;
+          {comments.map(comment => {
+            return <ArticleList comment={comment} key={comment.id} />;
           })}
         </StlyedArticle>
       </StyledBody>

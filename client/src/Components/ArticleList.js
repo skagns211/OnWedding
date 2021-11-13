@@ -20,12 +20,14 @@ const StyledImg = styled.img`
 
 const StyledName = styled.div``;
 
-const ArticleList = ({ dummy }) => {
+const ArticleList = ({ comment }) => {
   return (
     <StyledList>
       <Link to="/article">
-        <StyledImg src={dummy.img} />
-        <StyledName>{dummy.title}</StyledName>
+        <StyledImg src={comment.img} />
+        <StyledName>{comment.title}</StyledName>
+        <i className="far fa-comment"></i>
+        {comment.totalcomments}
       </Link>
     </StyledList>
   );
