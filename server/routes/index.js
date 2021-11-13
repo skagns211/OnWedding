@@ -1,9 +1,13 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
+const authsRouter = require("./auths");
+const usersRouter = require("./users");
+const articlesRouter = require("./articles");
+const commentsRouter = require("./comments");
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
+router.use("/auth", authsRouter);
+router.use("/user", usersRouter);
+router.use("/article", articlesRouter);
+router.use("/comment", commentsRouter);
 
 module.exports = router;

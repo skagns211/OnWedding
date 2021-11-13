@@ -1,9 +1,12 @@
-var express = require('express');
+var express = require("express");
+const controllers = require("../controllers/users");
 var router = express.Router();
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
-});
+router.post("/pwd", controllers.password.post);
+router.patch("/pwd", controllers.password.patch);
+router.get("/", controllers.userInfo.get);
+router.delete("/", controllers.userInfo.delete);
+router.patch("/profile", controllers.profile.patch);
 
 module.exports = router;
