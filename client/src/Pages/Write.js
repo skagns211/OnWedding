@@ -1,22 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 
-const StyledMain = styled.div`
-  display: flex;
-  background-color: #f4eae0;
-  align-items: center;
-`;
-
-const StyledBody = styled.div`
-  background-color: #f4eae0;
-  display: table-cell;
-  width: 100%;
-`;
-
 const StyledImg = styled.div`
   background-image: url("https://i.ibb.co/x5HNV5z/bride-g8bfa369fe-1920.jpg");
   background-position: center;
-  background-size: cover;
+  background-size: contain auto;
+  background-repeat: no-repeat;
   padding: 20rem;
   opacity: 0.8;
 `;
@@ -31,49 +20,55 @@ const StyledContent = styled.div`
   padding: 2rem 5rem;
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
+  & button {
+    border: 0px;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 1rem;
+  }
+  & div {
+    display: flex;
+    flex-direction: column;
+    margin-top: 4rem;
+  }
 `;
 
-const StyledTitle = styled.input`
+const StyledArea1 = styled.input`
   margin: 2rem;
-  padding: 0.5rem 20rem;
+  font-size: 20px;
+  width: 1000px;
 `;
 
-const StyledText = styled.input`
+const StyledArea2 = styled.input`
   margin: 2rem;
-  padding: 0rem 20rem 20rem 20rem;
+  font-size: 20px;
+  width: 1000px;
+  height: 500px;
 `;
 
-const StyledButton = styled.button`
-  border: 0px;
-  padding: 10px;
-  border-radius: 5px;
-  font-size: 1rem;
+const StyledTitle = styled.div`
+  font-size: 2rem;
 `;
 
 const Write = () => {
   return (
-    <StyledMain>
-      <StyledBody>
-        <StyledImg />
-        <StyledMiddle></StyledMiddle>
-        <StyledContent>
-          <div>글쓰기</div>
-          <div>
-            제목
-            <StyledTitle type="text" />
-          </div>
-          <div>
-            내용
-            <StyledText type="text" />
-          </div>
-          <div>
-            해시태그
-            <StyledTitle type="text" />
-          </div>
-          <StyledButton>글올리기</StyledButton>
-        </StyledContent>
-      </StyledBody>
-    </StyledMain>
+    <div>
+      <StyledImg />
+      <StyledMiddle></StyledMiddle>
+      <StyledContent>
+        <StyledTitle>글쓰기</StyledTitle>
+        <div>
+          제목
+          <StyledArea1 type="text" />
+          내용
+          <StyledArea2 type="text" />
+          해시태그
+          <StyledArea1 type="text" />
+        </div>
+        <button>글올리기</button>
+      </StyledContent>
+    </div>
   );
 };
 

@@ -1,6 +1,5 @@
-import "./App.css";
-
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import styled from "styled-components";
 
 import Article from "./Pages/Article";
 import ChangePassword from "./Pages/ChangePassword";
@@ -13,10 +12,17 @@ import Write from "./Pages/Write";
 import Nav from "./Components/Nav";
 import Footer from "./Components/Footer";
 
+const StyledBody = styled.body`
+  margin: 0;
+  padding: 0;
+  background-color: #f4eae0;
+  box-sizing: border-box;
+`;
+
 function App() {
   return (
     <BrowserRouter>
-      <div>
+      <StyledBody>
         <Nav />
         <Routes>
           <Route exact path="/" element={<Main />} />
@@ -28,7 +34,7 @@ function App() {
           <Route path="change" element={<ChangePassword />} />*/}
         </Routes>
         <Footer />
-      </div>
+      </StyledBody>
     </BrowserRouter>
   );
 }

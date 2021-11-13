@@ -2,51 +2,59 @@ import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import Nav from "../Components/Nav";
 
 import ArticleList from "../Components/ArticleList";
 
 import dummy from "../dummy/dummy";
 
-const StyledMain = styled.div``;
-
-const StyledBody = styled.div`
-  background-color: #f4eae0;
-  display: table-cell;
-  width: 100%;
-`;
-
 const StlyedArticle = styled.div`
-  padding-bottom: 2rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
 `;
 
 const StyledImg = styled.div`
   background-image: url("https://i.ibb.co/x5HNV5z/bride-g8bfa369fe-1920.jpg");
   background-position: center;
-  background-size: cover;
+  background-size: contain auto;
+  background-repeat: no-repeat;
   padding: 20rem;
   opacity: 0.8;
 `;
 
 const StyledMiddle = styled.div`
   background-color: #f4eae0;
-  padding: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;
 
-const Styledbutton1 = styled.button`
-  padding: 10px;
+const Styledbutton1 = styled.ul`
+  margin: 2rem 0rem 0rem 2rem;
+  padding-left: 0;
+  display: flex;
   border-radius: 5px;
   background-color: transparent;
-  font-size: 1rem;
-  margin: 0rem 0.5rem;
+  font-size: 1.5rem;
+  & li {
+    list-style: none;
+    padding: 1rem 1.5rem;
+  }
+  & li:hover {
+    background-color: white;
+    cursor: pointer;
+  }
 `;
 
 const Styledbutton2 = styled.button`
-  padding: 10px;
+  margin: 2rem 2rem 0rem 0rem;
+  padding: 1rem 1.5rem;
   border-radius: 5px;
   background-color: lightgray;
   border: 1px solid lightgray;
-  float: right;
-  font-size: 1rem;
+  font-size: 1.5rem;
   & a {
     text-decoration: none;
     color: black;
@@ -69,23 +77,23 @@ const Main = () => {
   };
 
   return (
-    <StyledMain>
-      <StyledBody>
-        <StyledImg />
-        <StyledMiddle>
-          <Styledbutton1 onClick={commentsOrder}>댓글순</Styledbutton1>
-          <Styledbutton1 onClick={createdOrder}>조회순</Styledbutton1>
-          <Styledbutton2>
-            <Link to="/write">글쓰기</Link>
-          </Styledbutton2>
-        </StyledMiddle>
-        <StlyedArticle>
-          {comments.map(comment => {
-            return <ArticleList comment={comment} key={comment.id} />;
-          })}
-        </StlyedArticle>
-      </StyledBody>
-    </StyledMain>
+    <div>
+      <StyledImg />
+      <StyledMiddle>
+        <Styledbutton1>
+          <li onClick={commentsOrder}>최신순</li>
+          <li onClick={createdOrder}>댓글순</li>
+        </Styledbutton1>
+        <Styledbutton2>
+          <Link to="/write">글쓰기</Link>
+        </Styledbutton2>
+      </StyledMiddle>
+      <StlyedArticle>
+        {comments.map(comment => {
+          return <ArticleList comment={comment} key={comment.id} />;
+        })}
+      </StlyedArticle>
+    </div>
   );
 };
 
