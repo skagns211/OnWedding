@@ -28,12 +28,21 @@ module.exports = {
                 res.status(400).send({ message: 'email overlap' })
             } else {
                 res.send({ message: 'ok' })
-            }
+            };
         },
     },
     nickname: {
-        post: (req, res) => {
+        post: async (req, res) => {
+            const { nickname } = req.body;
+            const getNickname = await User.findOne({
+                where: { nickname }
+            });
 
+            if (getNickname) {
+                res.status(400).send({ message: 'nickname overlap' })
+            } else {
+                res.send({ message: 'ok' })
+            };
         },
     }
 };
