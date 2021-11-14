@@ -13,9 +13,27 @@ module.exports = {
     },
     signup: {
         post: (req, res) => {
-            // signup 요청이 왔을때
-            // User에 
-        },
+            const { password, email, name, nickname, birth, mobile } = req.body;
+            if (!password || !email || !name || !nickname || !birth || !mobile) {
+                res.status(422).send({ message: 'require All Info' })
+            } else {
+                User.create({
+                    password,
+                    email,
+                    name,
+                    nickname,
+                    birth,
+                    mobile
+                })
+                    .then((res) => {
+                        console.log(res)
+                    })
+                    .catch((err) => {
+                        console.log(err)
+                    })
+                res.send({ message: 'ok' })
+            }
+        }
     },
     email: {
         post: async (req, res) => {
