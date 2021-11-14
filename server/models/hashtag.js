@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
   class Hashtag extends Model {
@@ -11,14 +9,20 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      models.Hashtag.hasMany(models.Article_Hashtag, { foreignKey: 'hashtag_id', sourceKey: 'id'});
+      models.Hashtag.hasMany(models.Article_Hashtag, {
+        foreignKey: "hashtag_id",
+        sourceKey: "id",
+      });
     }
-  };
-  Hashtag.init({
-    name: DataTypes.STRING
-  }, {
-    sequelize,
-    modelName: 'Hashtag',
-  });
+  }
+  Hashtag.init(
+    {
+      name: DataTypes.STRING,
+    },
+    {
+      sequelize,
+      modelName: "Hashtag",
+    }
+  );
   return Hashtag;
 };
