@@ -3,7 +3,7 @@ const { User } = require('../../models')
 module.exports = {
     login: {
         post: (req, res) => {
-            console.log(req.body)
+
         },
     },
     logout: {
@@ -13,12 +13,22 @@ module.exports = {
     },
     signup: {
         post: (req, res) => {
-
+            // signup 요청이 왔을때
+            // User에 
         },
     },
     email: {
-        post: (req, res) => {
+        post: async (req, res) => {
+            const { email } = req.body;
+            const getEmail = await User.findOne({
+                where: { email }
+            });
 
+            if (getEmail) {
+                res.status(400).send({ message: 'email overlap' })
+            } else {
+                res.send({ message: 'ok' })
+            }
         },
     },
     nickname: {
