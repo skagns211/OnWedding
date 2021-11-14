@@ -1,9 +1,36 @@
 const { User } = require('../../models')
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 module.exports = {
     login: {
-        post: (req, res) => {
+        post: async (req, res) => {
+            const { email, password } = req.body;
+            const userInfo = await User.findOne({
+                where: { email, password }
+            })
 
+            if (!userInfo) {
+                res.status(403).send({ message: 'invalid data' })
+            } else {
+                const { id, email, name, nickname, birth, mobile, createdAt, updatedAt } = userInfo;
+                const accessToken = jwt.sign({
+                    id,
+                    email,
+                    name,
+                    nickname,
+                    birth,
+                    mobile,
+                    createdAt,
+                    updatedAt
+                },
+                    process.env.ACCESS_SECRET, {
+                    expiresIn: '30m'
+                });
+                delete userInfo.dataValues.password;
+                const loginInfo = userInfo.dataValues;
+                res.send({ data: { accessToken, loginInfo }, message: 'login success!' })
+            }
         },
     },
     logout: {
