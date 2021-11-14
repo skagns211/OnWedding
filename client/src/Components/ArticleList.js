@@ -1,12 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 const StyledList = styled.div`
-  display: inline-block;
-  width: 200px;
-  height: 200px;
-  margin: 2rem 5rem;
+  padding: 1rem;
+  margin: 1rem;
   & a {
     text-decoration: none;
     color: black;
@@ -14,18 +12,22 @@ const StyledList = styled.div`
 `;
 
 const StyledImg = styled.img`
-  width: 100%;
-  height: 100%;
+  width: 20rem;
+  height: 20rem;
 `;
 
-const StyledName = styled.div``;
+const StyledName = styled.div`
+  font-size: 1.5rem;
+`;
 
-const ArticleList = ({ dummy }) => {
+const ArticleList = ({ comment }) => {
   return (
     <StyledList>
-      <Link to="/article">
-        <StyledImg src={dummy.img} />
-        <StyledName>{dummy.title}</StyledName>
+      <Link to={`/article/${comment.id}`}>
+        <StyledImg src={comment.img} />
+        <StyledName>{comment.title}</StyledName>
+        <i className="far fa-comment"></i>
+        {comment.totalcomments}
       </Link>
     </StyledList>
   );

@@ -33,10 +33,10 @@ const Footer = () => {
           <i className="fab fa-google"></i>
         </li>
         <li>
-          <i class="fab fa-youtube"></i>
+          <i className="fab fa-youtube"></i>
         </li>
         <li>
-          <i class="fab fa-facebook-square"></i>
+          <i className="fab fa-facebook-square"></i>
         </li>
       </Styledicon>
     </StyledFoot>
