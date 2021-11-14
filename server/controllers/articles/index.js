@@ -19,20 +19,19 @@ module.exports = {
           {
             model: Article_Hashtag,
             include: [
-                {
-                    model: Article
-                }
-            ]
-          }
+              {
+                model: Article,
+              },
+            ],
+          },
         ],
-        where: { name }
+        where: { name },
       });
 
       if (!articles) {
-        res.status(500).send()
-      } 
-      res.json( { data: { articles } } )
+        res.status(500).send();
+      }
+      res.json({ data: { articles } });
     },
   },
 };
-
