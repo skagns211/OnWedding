@@ -10,7 +10,8 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      models.Article_Hashtag.belongsTo(models.Article, { foreignKey: 'article_id', sourceKey: 'id'});
+      models.Article_Hashtag.belongsTo(models.Hashtag, { foreignKey: 'hashtag_id', sourceKey: 'id'});
     }
   };
   Article_Hashtag.init({
