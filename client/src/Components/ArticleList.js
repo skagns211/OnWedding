@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
@@ -23,7 +23,7 @@ const StyledName = styled.div`
 const ArticleList = ({ comment }) => {
   return (
     <StyledList>
-      <Link to="/article">
+      <Link to={`/article/${comment.id}`}>
         <StyledImg src={comment.img} />
         <StyledName>{comment.title}</StyledName>
         <i className="far fa-comment"></i>

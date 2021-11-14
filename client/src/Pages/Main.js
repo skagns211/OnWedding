@@ -81,8 +81,8 @@ const Main = () => {
       <StyledImg />
       <StyledMiddle>
         <Styledbutton1>
-          <li onClick={commentsOrder}>최신순</li>
-          <li onClick={createdOrder}>댓글순</li>
+          <li onClick={createdOrder}>최신순</li>
+          <li onClick={commentsOrder}>댓글순</li>
         </Styledbutton1>
         <Styledbutton2>
           <Link to="/write">글쓰기</Link>

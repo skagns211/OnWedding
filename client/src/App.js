@@ -28,7 +28,7 @@ function App() {
           <Route exact path="/" element={<Main />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/write" element={<Write />} />
-          <Route path="article" element={<Article />} />
+          <Route path="/article/:id" element={<Article />} />
           {/* <Route path="/mypage" element={<MyPage />} />
           <Route path="/delete" element={<Delete />} />
           <Route path="change" element={<ChangePassword />} />*/}

@@ -20,7 +20,7 @@ const StyledContent = styled.div`
   padding: 2rem 5rem;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   & button {
     border: 0px;
     padding: 10px;
