@@ -1,7 +1,14 @@
+// '../../models' -> onWedding DB의 Tables들
+const { Article, Article_Hashtag } = require('../../models')
+
 module.exports = {
     articles: {
-        get: (req, res) => {
-
+        get: async (req, res) => {
+            const test = await Article.findOne({
+                where: { id: 1 }
+            })
+            console.log(test.title)
+            // 종서 ❤️ 태형
         },
     },
     article: {

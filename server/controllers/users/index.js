@@ -1,3 +1,5 @@
+const { User } = require('../../models')
+
 module.exports = {
     password: {
         post: (req, res) => {
