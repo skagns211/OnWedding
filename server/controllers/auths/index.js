@@ -1,7 +1,9 @@
+const { User } = require('../../models')
+
 module.exports = {
     login: {
         post: (req, res) => {
-
+            console.log(req.body)
         },
     },
     logout: {
@@ -9,7 +11,7 @@ module.exports = {
 
         },
     },
-    singup: {
+    signup: {
         post: (req, res) => {
 
         },
