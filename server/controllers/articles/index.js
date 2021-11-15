@@ -1,35 +1,36 @@
-// '../../models' -> onWedding DB의 Tables들
-const { Article, Article_Hashtag } = require("../../models");
+const { Article, Article_Hashtag, Hashtag } = require("../../models");
 
 module.exports = {
   articles: {
-    get: async (req, res) => {
-      const articles = await Article.findAll();
-
-      if (!articles) {
-        res.status(500);
-      }
-      res.json({ data: { articles } });
-    },
+    get: (req, res) => {},
   },
   article: {
     post: (req, res) => {},
-    get: async (req, res) => {
-      const articleId = req.params.id;
-
-      const article = await Article.findOne({
-        where: { id: articleId },
-      });
-
-      if (!article) {
-        res.status(500);
-      }
-      res.json({ data: { article } });
-    },
+    get: (req, res) => {},
     patch: (req, res) => {},
     delete: (req, res) => {},
   },
   hashtag: {
-    get: (req, res) => {},
+    get: async (req, res) => {
+      const name = req.params.name;
+      const articles = await Hashtag.findAll({
+        include: [
+          {
+            model: Article_Hashtag,
+            include: [
+              {
+                model: Article,
+              },
+            ],
+          },
+        ],
+        where: { name },
+      });
+
+      if (!articles) {
+        res.status(500).send();
+      }
+      res.json({ data: { articles } });
+    },
   },
 };
