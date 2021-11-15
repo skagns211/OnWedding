@@ -4,7 +4,7 @@ var router = express.Router();
 
 /* GET users listing. */
 router.get("/", controllers.articles.get);
-router.post("/", controllers.article.post);
+router.post("/:id", controllers.article.post);
 router.get("/:id", controllers.article.get);
 router.patch("/:id", controllers.article.patch);
 router.delete("/:id", controllers.article.delete);

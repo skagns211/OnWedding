@@ -5,7 +5,28 @@ module.exports = {
     get: (req, res) => {},
   },
   article: {
-    post: (req, res) => {},
+    post: (req, res) => {
+      const { title, message, image, hashtag } = req.body;
+      const user_id = req.params.id;
+      if (!user_id || !title || !message || !image || !hashtag) {
+        res.status(400).send("bad request");
+      }
+
+      Article.create({
+        user_id,
+        title,
+        message,
+        image,
+        hashtag,
+      })
+        .then(() => {
+          console.log("ok");
+        })
+        .catch(() => {
+          console.log("error");
+        });
+      res.send("create");
+    },
     get: (req, res) => {},
     patch: (req, res) => {},
     delete: (req, res) => {},
