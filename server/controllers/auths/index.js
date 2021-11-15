@@ -27,24 +27,32 @@ module.exports = {
                     process.env.ACCESS_SECRET, {
                     expiresIn: '30m'
                 });
+                const verifyAccessToken = jwt.verify(accessToken, process.env.ACCESS_SECRET)
                 delete userInfo.dataValues.password;
                 const loginInfo = userInfo.dataValues;
-                res.send({ data: { accessToken, loginInfo }, message: 'login success!' })
+
+                try {
+                    res.cookie('accessToken', accessToken, { httpOnly: true })
+                    res.cookie('tokenExpirse', verifyAccessToken.exp, { httpOnly: true })
+                    res.send({ data: { loginInfo }, message: 'login success!' })
+                } catch (err) {
+                    console.log(err)
+                }
             }
         },
     },
     logout: {
         post: (req, res) => {
-
+            res.clearCookie('accessToken').send({ message: 'logout success!' })
         },
     },
     signup: {
-        post: (req, res) => {
+        post: async (req, res) => {
             const { password, email, name, nickname, birth, mobile } = req.body;
             if (!password || !email || !name || !nickname || !birth || !mobile) {
                 res.status(422).send({ message: 'require All Info' })
             } else {
-                User.create({
+                await User.create({
                     password,
                     email,
                     name,
@@ -52,13 +60,12 @@ module.exports = {
                     birth,
                     mobile
                 })
-                    .then((res) => {
-                        console.log(res)
-                    })
-                    .catch((err) => {
-                        console.log(err)
-                    })
-                res.send({ message: 'ok' })
+
+                try {
+                    res.send({ message: 'ok' })
+                } catch (err) {
+                    console.log(err);
+                }
             }
         }
     },
@@ -72,7 +79,11 @@ module.exports = {
             if (getEmail) {
                 res.status(400).send({ message: 'email overlap' })
             } else {
-                res.send({ message: 'ok' })
+                try {
+                    res.send({ message: 'ok' })
+                } catch (err) {
+                    console.log(err)
+                }
             };
         },
     },
@@ -86,7 +97,11 @@ module.exports = {
             if (getNickname) {
                 res.status(400).send({ message: 'nickname overlap' })
             } else {
-                res.send({ message: 'ok' })
+                try {
+                    res.send({ message: 'ok' })
+                } catch (err) {
+                    console.log(err)
+                }
             };
         },
     }
