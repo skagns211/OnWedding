@@ -3,11 +3,16 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 const StyledList = styled.div`
+  display: flex;
+  flex-wrap: wrap;
   padding: 1rem;
-  margin: 1rem;
   & a {
     text-decoration: none;
     color: black;
+  }
+  &:hover {
+    background-color: white;
+    border-radius: 4%;
   }
 `;
 
