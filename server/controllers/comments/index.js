@@ -1,15 +1,9 @@
-const { Comment } = require('../../models')
+const { Comment } = require("../../models");
 
 module.exports = {
-    comment: {
-        post: (req, res) => {
-
-        },
-        patch: (req, res) => {
-
-        },
-        delete: (req, res) => {
-
-        },
-    }
+  comment: {
+    post: (req, res) => {},
+    patch: (req, res) => {},
+    delete: (req, res) => {},
+  },
 };
