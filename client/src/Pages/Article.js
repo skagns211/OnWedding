@@ -4,11 +4,11 @@ import { useParams } from "react-router";
 
 import dummy from "../dummy/dummy";
 
+
 const StyledImg = styled.div`
   background-image: url("https://i.ibb.co/x5HNV5z/bride-g8bfa369fe-1920.jpg");
   background-position: center;
   background-size: cover;
-
   padding: 20rem;
   opacity: 0.8;
 `;
@@ -57,7 +57,10 @@ const StyledPhoto = styled.div`
 const Article = () => {
   const id = useParams();
 
+  console.log(id);
+
   const pick = dummy.filter(dummy => dummy.id === Number(id.id));
+
   console.log(pick);
   return (
     <div>
