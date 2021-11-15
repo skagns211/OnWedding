@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+
+import LoginModal from "./LoginModal";
 
 const StyledNav = styled.div`
   display: flex;
@@ -33,16 +35,25 @@ const StyledLink2 = styled.ul`
 `;
 
 const Nav = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const openModalHandler = () => {
+    setIsOpen(!isOpen);
+  };
+
   return (
-    <StyledNav>
-      <StyledLink1>
-        <Link to="/">Onwedding</Link>
-      </StyledLink1>
-      <StyledLink2>
-        <Link to="/signup">login</Link>
-        <Link to="/signup">signup</Link>
-      </StyledLink2>
-    </StyledNav>
+    <>
+      {isOpen ? <LoginModal openModalHandler={openModalHandler} /> : null}
+      <StyledNav>
+        <StyledLink1>
+          <Link to="/">Onwedding</Link>
+        </StyledLink1>
+        <StyledLink2>
+          <Link to="/change">ChangePassword</Link>
+          <a onClick={openModalHandler}>login</a>
+          <Link to="/signup">signup</Link>
+        </StyledLink2>
+      </StyledNav>
+    </>
   );
 };
 

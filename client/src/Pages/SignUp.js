@@ -283,7 +283,7 @@ const SignUp = () => {
             )}
           </div>
           <button
-            className="btnEmailCheck"
+            className="btnNicknameCheck"
             type="submit"
             disabled={userinfo.nickname.length !== 0 ? false : "disabled"}
             onClick={() => {
