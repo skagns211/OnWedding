@@ -4,6 +4,8 @@ const dummy = [
     title: "저희 사진 후기요",
     name: "킹왕짱",
     content: "저희 사진 이쁘죠???",
+    nickname: "아이유",
+    email: "abc@abc.com",
     img: "https://i.ibb.co/Xp8wYXL/Tiyaaa-on-Twitter.jpg",
     totalcomments: 3,
     createdAt: "2021.11.10",

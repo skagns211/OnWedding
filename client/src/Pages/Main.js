@@ -7,20 +7,28 @@ import ArticleList from "../Components/ArticleList";
 
 import dummy from "../dummy/dummy";
 
+const StyledBody = styled.main`
+  max-width: 75%;
+  margin: 0 auto;
+`;
+
 const StlyedArticle = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
   flex-wrap: wrap;
+  max-width: 100%;
+  margin: 0 auto;
 `;
 
-const StyledImg = styled.div`
+const StyledImg = styled.section`
   background-image: url("https://i.ibb.co/x5HNV5z/bride-g8bfa369fe-1920.jpg");
-  background-position: center;
+  background-position: 50% 50%;
   background-size: contain auto;
   background-repeat: no-repeat;
   padding: 20rem;
   opacity: 0.8;
+  position: relative;
 `;
 
 const StyledMiddle = styled.div`
@@ -28,6 +36,7 @@ const StyledMiddle = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 1rem;
 `;
 
 const Styledbutton1 = styled.ul`
@@ -40,6 +49,7 @@ const Styledbutton1 = styled.ul`
   & li {
     list-style: none;
     padding: 1rem 1.5rem;
+    border-radius: 10%;
   }
   & li:hover {
     background-color: white;
@@ -76,7 +86,7 @@ const Main = () => {
   };
 
   return (
-    <div>
+    <StyledBody>
       <StyledImg />
       <StyledMiddle>
         <Styledbutton1>
@@ -92,7 +102,7 @@ const Main = () => {
           return <ArticleList comment={comment} key={comment.id} />;
         })}
       </StlyedArticle>
-    </div>
+    </StyledBody>
   );
 };
 

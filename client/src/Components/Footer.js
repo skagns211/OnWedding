@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-const StyledFoot = styled.ul`
+const StyledFoot = styled.footer`
   margin: 0;
   padding: 1.5rem;
   display: flex;

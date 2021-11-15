@@ -71,6 +71,9 @@ const StyledSize = styled.div`
 const StyleTest = styled.div`
   display: flex;
   justify-content: space-between;
+  > img {
+    max-width: 20rem;
+  }
 `;
 
 const TagsInput = styled.div`
@@ -119,15 +122,42 @@ const StyledClose = styled.span`
 `;
 
 const Write = () => {
-  // const [img, setImg] = useState(null);
+  const AWS = require("aws-sdk");
 
-  const handleImg = e => {
-    const imgFile = e.taret.files[0];
+  AWS.config.update({
+    region: "ap-northeast-2", // 버킷이 존재하는 리전을 문자열로 입력하기. (Ex. "ap-northeast-2")
+    credentials: new AWS.CognitoIdentityCredentials({
+      IdentityPoolId: "ap-northeast-2:553da489-28ff-4eb6-b0ba-1187a7a08c29", // cognito 인증 풀에서 받아온 키를 문자열로 입력하기. (Ex. "ap-northeast-2...")
+    }),
+  });
+
+  const [img, setImg] = useState(null);
+
+  const handleImg = event => {
+    const imgFile = event.target.files[0];
+    if (!imgFile) {
+      return setImg(null);
+    }
+    const upload = new AWS.S3.ManagedUpload({
+      params: {
+        Bucket: "onwedding-img", // 업로드할 대상 버킷명 문자열로 작성.
+        Key: imgFile.name, //업로드할 파일명
+        Body: imgFile, // 업로드할 파일 객체
+      },
+    });
+    const promise = upload.promise();
+
+    promise.then(
+      function (data) {
+        setImg(data.Location);
+      },
+      function (err) {
+        console.log(err);
+      }
+    );
   };
 
   const [tags, setTags] = useState([]);
-
-  console.log(tags);
 
   const removeTags = e => {
     setTags(tags.filter((_, index) => index !== e));
@@ -152,11 +182,8 @@ const Write = () => {
           <StyledArea1 type="text" placeholder="제목을 입력해주세요" />
           <StyleTest>
             내용
-            <input
-              type="file"
-              accept="image/jpg,impge/png,image/jpeg,image/gif"
-              onChange={handleImg}
-            />
+            {img ? <img src={img}></img> : null}
+            <input type="file" onChange={handleImg} />
           </StyleTest>
           <StyledArea2 placeholder="내용을 입력해주세요" />
           <div>해시태그</div>
