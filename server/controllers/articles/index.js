@@ -8,7 +8,7 @@ module.exports = {
       if (!articles) {
         res.status(500).send();
       }
-      res.json({ data: articles })
+      res.json({ data: articles });
     },
   },
   article: {
@@ -34,7 +34,17 @@ module.exports = {
         });
       res.send("createed");
     },
-    get: (req, res) => {},
+    get: async (req, res) => {
+      const id = req.params.id;
+      const article = await Article.findOne({
+        where: { id },
+      });
+
+      if (!article) {
+        res.status(500).send();
+      }
+      res.json({ data: article });
+    },
     patch: (req, res) => {},
     delete: (req, res) => {},
   },
