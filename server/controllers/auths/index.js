@@ -27,10 +27,17 @@ module.exports = {
                     process.env.ACCESS_SECRET, {
                     expiresIn: '30m'
                 });
+                const verifyAccessToken = jwt.verify(accessToken, process.env.ACCESS_SECRET)
                 delete userInfo.dataValues.password;
                 const loginInfo = userInfo.dataValues;
-                res.cookie('accessToken', accessToken, { httpOnly: true })
-                res.send({ data: { loginInfo }, message: 'login success!' })
+
+                try {
+                    res.cookie('accessToken', accessToken, { httpOnly: true })
+                    res.cookie('tokenExpirse', verifyAccessToken.exp, { httpOnly: true })
+                    res.send({ data: { loginInfo }, message: 'login success!' })
+                } catch (err) {
+                    console.log(err)
+                }
             }
         },
     },
@@ -72,7 +79,11 @@ module.exports = {
             if (getEmail) {
                 res.status(400).send({ message: 'email overlap' })
             } else {
-                res.send({ message: 'ok' })
+                try {
+                    res.send({ message: 'ok' })
+                } catch (err) {
+                    console.log(err)
+                }
             };
         },
     },
@@ -86,7 +97,11 @@ module.exports = {
             if (getNickname) {
                 res.status(400).send({ message: 'nickname overlap' })
             } else {
-                res.send({ message: 'ok' })
+                try {
+                    res.send({ message: 'ok' })
+                } catch (err) {
+                    console.log(err)
+                }
             };
         },
     }
