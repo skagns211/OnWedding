@@ -2,7 +2,14 @@ const { Article, Article_Hashtag, Hashtag } = require("../../models");
 
 module.exports = {
   articles: {
-    get: (req, res) => {},
+    get: async (req, res) => {
+      const articles = await Article.findAll();
+
+      if (!articles) {
+        res.status(500).send();
+      }
+      res.json({ data: articles })
+    },
   },
   article: {
     post: (req, res) => {
@@ -25,7 +32,7 @@ module.exports = {
         .catch(() => {
           console.log("error");
         });
-      res.send("create");
+      res.send("createed");
     },
     get: (req, res) => {},
     patch: (req, res) => {},
@@ -51,7 +58,7 @@ module.exports = {
       if (!articles) {
         res.status(500).send();
       }
-      res.json({ data: { articles } });
+      res.json({ data: articles });
     },
   },
 };
