@@ -12,7 +12,7 @@ import Write from "./Pages/Write";
 import Nav from "./Components/Nav";
 import Footer from "./Components/Footer";
 
-const StyledBody = styled.body`
+const StyledBody = styled.div`
   margin: 0;
   padding: 0;
   background-color: #f4eae0;
@@ -29,8 +29,8 @@ function App() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/write" element={<Write />} />
           <Route path="/article/:id" element={<Article />} />
-          {/* <Route path="/mypage" element={<MyPage />} />
-          <Route path="/delete" element={<Delete />} />
+          <Route path="/mypage" element={<MyPage />} />
+          {/* <Route path="/delete" element={<Delete />} />
           <Route path="change" element={<ChangePassword />} />*/}
         </Routes>
         <Footer />

@@ -4,11 +4,15 @@ import { useParams } from "react-router";
 
 import dummy from "../dummy/dummy";
 
+const StyledBody = styled.div`
+  width: 75%;
+  margin: 0 auto;
+`;
 
 const StyledImg = styled.div`
   background-image: url("https://i.ibb.co/x5HNV5z/bride-g8bfa369fe-1920.jpg");
   background-position: center;
-  background-size: cover;
+  background-size: contain auto;
   padding: 20rem;
   opacity: 0.8;
 `;
@@ -63,7 +67,7 @@ const Article = () => {
 
   console.log(pick);
   return (
-    <div>
+    <StyledBody>
       <StyledImg />
       <StyledMiddle></StyledMiddle>
       <StyledContent>
@@ -77,7 +81,7 @@ const Article = () => {
         </StyledPhoto>
         <StyledText>{pick[0].content}</StyledText>
       </StyledContent>
-    </div>
+    </StyledBody>
   );
 };
 
