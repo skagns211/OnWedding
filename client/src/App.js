@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 import Article from "./Pages/Article";
@@ -29,9 +30,10 @@ function App() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/write" element={<Write />} />
           <Route path="/article/:id" element={<Article />} />
+          <Route path="change" element={<ChangePassword />} />
           <Route path="/mypage" element={<MyPage />} />
-          {/* <Route path="/delete" element={<Delete />} />
-          <Route path="change" element={<ChangePassword />} />*/}
+         {/* <Route path="/delete" element={<Delete />} /> */}
+
         </Routes>
         <Footer />
       </StyledBody>

@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-
+import LoginModal from "./LoginModal";
 import dummy from "../dummy/dummy";
 
 const StyledNav = styled.header`
@@ -70,7 +70,15 @@ const StyledLink2 = styled.ul`
 `;
 
 const Nav = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const openModalHandler = () => {
+    setIsOpen(!isOpen);
+  };
+
   return (
+
+    <>
+      {isOpen ? <LoginModal openModalHandler={openModalHandler} /> : null}
     <StyledNav>
       <StyledLink1>
         <Link to="/">Onwedding</Link>
@@ -93,6 +101,8 @@ const Nav = () => {
         </li>
       </StyledLink2>
     </StyledNav>
+    </>
+
   );
 };
 
