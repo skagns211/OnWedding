@@ -9,7 +9,7 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       password: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
       },
       email: {
         type: Sequelize.STRING,
@@ -21,13 +21,13 @@ module.exports = {
         type: Sequelize.STRING,
       },
       birth: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
       },
       mobile: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
       },
       image: {
-        type: Sequelize.BLOB,
+        type: Sequelize.STRING,
       },
       createdAt: {
         allowNull: false,
