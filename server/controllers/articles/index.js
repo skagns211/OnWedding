@@ -1,4 +1,3 @@
-// '../../models' -> onWedding DB의 Tables들
 const { Article, Article_Hashtag, Hashtag } = require("../../models");
 
 module.exports = {
