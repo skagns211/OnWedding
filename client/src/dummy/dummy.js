@@ -1,6 +1,7 @@
 const dummy = [
   {
     id: 1,
+    hash: ["안녕하세요", "럽스타그램", "와우"],
     title: "저희 사진 후기요",
     name: "킹왕짱",
     content: "저희 사진 이쁘죠???",
@@ -9,6 +10,36 @@ const dummy = [
     img: "https://i.ibb.co/Xp8wYXL/Tiyaaa-on-Twitter.jpg",
     totalcomments: 3,
     createdAt: "2021.11.10",
+    comments: [
+      {
+        id: 1,
+        name: "청주인",
+        img: "https://i.ibb.co/Xp8wYXL/Tiyaaa-on-Twitter.jpg",
+        comment: "와우 멋져멋져",
+        createdAt: "2021.11.10",
+      },
+      {
+        id: 2,
+        name: "천안인",
+        img: "https://i.ibb.co/WVKM8Cx/IMG-2308.jpg",
+        comment: "굳굳",
+        createdAt: "2021.11.11",
+      },
+      {
+        id: 3,
+        name: "안산인",
+        img: "https://i.ibb.co/N1mhbXD/ROISTUDIO-La-Brise-KOREA-PRE-WEDDING-PHOTOSHOOT-by-LOVINGYOU.jpg",
+        comment: "오잉",
+        createdAt: "2021.11.12",
+      },
+      {
+        id: 4,
+        name: "섬사람",
+        img: "https://i.ibb.co/kyQs5qD/image.jpg",
+        comment: "후루끼",
+        createdAt: "2021.11.13",
+      },
+    ],
   },
   {
     id: 2,

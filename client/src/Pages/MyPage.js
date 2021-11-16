@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 import dummy from "../dummy/dummy";
 
 const StyledBody = styled.div`
@@ -14,6 +15,9 @@ const StyledBody = styled.div`
     border-radius: 50%;
     width: 25rem;
     height: 25rem;
+  }
+  > span {
+    margin: 2rem;
   }
 `;
 
@@ -48,7 +52,9 @@ const MyPage = () => {
         <span>{dummy[0].name}</span>
       </div>
 
-      <button>비밀번호 변경</button>
+      <button>
+        <Link to="/change">비밀번호 변경</Link>
+      </button>
       <button>회원 탈퇴</button>
     </StyledBody>
   );

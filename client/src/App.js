@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import Article from "./Pages/Article";
@@ -21,6 +21,12 @@ const StyledBody = styled.div`
 `;
 
 function App() {
+  const [edit, setEdit] = useState("");
+
+  useEffect(() => {
+    setEdit("");
+  }, [edit]);
+
   return (
     <BrowserRouter>
       <StyledBody>
@@ -28,12 +34,11 @@ function App() {
         <Routes>
           <Route exact path="/" element={<Main />} />
           <Route path="/signup" element={<SignUp />} />
-          <Route path="/write" element={<Write />} />
-          <Route path="/article/:id" element={<Article />} />
+          <Route path="/write" element={<Write edit={edit} />} />
+          <Route path="/article/:id" element={<Article setEdit={setEdit} />} />
           <Route path="change" element={<ChangePassword />} />
           <Route path="/mypage" element={<MyPage />} />
-         {/* <Route path="/delete" element={<Delete />} /> */}
-
+          {/* <Route path="/delete" element={<Delete />} /> */}
         </Routes>
         <Footer />
       </StyledBody>

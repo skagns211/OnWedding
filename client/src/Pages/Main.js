@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import axios from "axios";
 
 import ArticleList from "../Components/ArticleList";
 
@@ -73,6 +74,12 @@ const Styledbutton2 = styled.button`
 const Main = () => {
   const [comments, setComments] = useState(dummy);
 
+  useEffect(() => {
+    axios.get("http://localhost:4000/article").then(res => {
+      setComments(res.data.data.articles);
+    });
+  }, []);
+
   const commentsOrder = () => {
     const arr = dummy.slice();
     const result = arr.sort((a, b) => b.totalcomments - a.totalcomments);
@@ -98,9 +105,13 @@ const Main = () => {
         </Styledbutton2>
       </StyledMiddle>
       <StlyedArticle>
-        {comments.map(comment => {
-          return <ArticleList comment={comment} key={comment.id} />;
-        })}
+        {comments ? (
+          comments.map(comment => {
+            return <ArticleList comment={comment} key={comment.id} />;
+          })
+        ) : (
+          <div>없어요</div>
+        )}
       </StlyedArticle>
     </StyledBody>
   );

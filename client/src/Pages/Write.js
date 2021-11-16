@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 const StyledBody = styled.div`
@@ -121,7 +121,7 @@ const StyledClose = styled.span`
   font-size: 1.5rem;
 `;
 
-const Write = () => {
+const Write = ({ edit }) => {
   const AWS = require("aws-sdk");
 
   AWS.config.update({
@@ -135,6 +135,8 @@ const Write = () => {
 
   const handleImg = event => {
     const imgFile = event.target.files[0];
+
+    console.log(imgFile);
     if (!imgFile) {
       return setImg(null);
     }
@@ -145,19 +147,29 @@ const Write = () => {
         Body: imgFile, // 업로드할 파일 객체
       },
     });
+
     const promise = upload.promise();
 
     promise.then(
-      function (data) {
+      data => {
         setImg(data.Location);
+        console.log(data.Location);
       },
-      function (err) {
+      err => {
         console.log(err);
       }
     );
   };
 
   const [tags, setTags] = useState([]);
+
+  console.log(tags);
+
+  useEffect(() => {
+    if (edit) {
+      setTags(edit.hash);
+    }
+  });
 
   const removeTags = e => {
     setTags(tags.filter((_, index) => index !== e));
@@ -179,13 +191,20 @@ const Write = () => {
         <StyledTitle>글쓰기</StyledTitle>
         <StyledSize>
           <div>제목</div>
-          <StyledArea1 type="text" placeholder="제목을 입력해주세요" />
+          <StyledArea1
+            type="text"
+            placeholder="제목을 입력해주세요"
+            value={edit ? edit.title : null}
+          />
           <StyleTest>
             내용
             {img ? <img src={img}></img> : null}
             <input type="file" onChange={handleImg} />
           </StyleTest>
-          <StyledArea2 placeholder="내용을 입력해주세요" />
+          <StyledArea2
+            placeholder="내용을 입력해주세요"
+            value={edit ? edit.content : null}
+          />
           <div>해시태그</div>
           <TagsInput>
             <ul>

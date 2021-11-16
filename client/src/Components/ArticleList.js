@@ -29,7 +29,7 @@ const ArticleList = ({ comment }) => {
   return (
     <StyledList>
       <Link to={`/article/${comment.id}`}>
-        <StyledImg src={comment.img} />
+        {/* <StyledImg src={comment.img.data} /> */}
         <StyledName>{comment.title}</StyledName>
         <i className="far fa-comment"></i>
         {comment.totalcomments}
