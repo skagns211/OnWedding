@@ -28,6 +28,7 @@ function App() {
   }, [edit]);
 
   const [userInfo, setUserInfo] = useState({
+    id: "",
     email: "",
     name: "",
     nickname: "",
