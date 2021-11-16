@@ -31,8 +31,8 @@ function App() {
     <BrowserRouter>
       <StyledBody>
         <Nav
-          isAccessTokenHandler={isAccessTokenHandler}
-          setIsAccessToken={setIsAccessToken}
+          // isAccessTokenHandler={isAccessTokenHandler}
+          // setIsAccessToken={setIsAccessToken}
         />
         <Routes>
           <Route exact path="/" element={<Main />} />
