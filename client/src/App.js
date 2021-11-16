@@ -21,10 +21,18 @@ const StyledBody = styled.div`
 `;
 
 function App() {
+  const [isAccessToken, setIsAccessToken] = useState("");
+  const isAccessTokenHandler = (accessToken) => {
+    setIsAccessToken(accessToken);
+  };
+
   return (
     <BrowserRouter>
       <StyledBody>
-        <Nav />
+        <Nav
+          isAccessTokenHandler={isAccessTokenHandler}
+          setIsAccessToken={setIsAccessToken}
+        />
         <Routes>
           <Route exact path="/" element={<Main />} />
           <Route path="/signup" element={<SignUp />} />
@@ -32,8 +40,7 @@ function App() {
           <Route path="/article/:id" element={<Article />} />
           <Route path="change" element={<ChangePassword />} />
           <Route path="/mypage" element={<MyPage />} />
-         {/* <Route path="/delete" element={<Delete />} /> */}
-
+          <Route path="/delete" element={<Delete />} />
         </Routes>
         <Footer />
       </StyledBody>

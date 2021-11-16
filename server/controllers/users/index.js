@@ -33,8 +33,39 @@ module.exports = {
         res.send({ message: "invalid password" });
       }
     },
-    patch: (req, res) => {},
-  },
+    patch: async (req, res) => {
+      const { accessToken } = req.cookies;
+      const { tokenExpirse } = req.cookies;
+
+      if (tokenExpirse <= Date.now() / 1000) {
+        res
+          .clearCookie("accessToken")
+          .status(401)
+          .send({ message: "accessToken Expiration. plz Loing" });
+      } else if (accessToken) {
+        const newPassword = req.body.password;
+        const { accessToken } = req.cookies;
+        const userInfo = jwt.verify(accessToken, process.env.ACCESS_SECRET);
+        const loginInfo = await User.findOne({
+          where: { id: userInfo.id },
+        });
+        const curPassword = loginInfo.password;
+
+        await User.update(
+          { password: newPassword },
+          {
+            where: { password: curPassword },
+          }
+        );
+
+        try {
+          res.send({ message: "success change password" });
+        } catch (err) {
+          console.log(err);
+        }
+      } else {
+        res.status(200).send({ message: "not logged in" });
+      }
   userInfo: {
     get: async (req, res) => {
       const { accessToken } = req.cookies;

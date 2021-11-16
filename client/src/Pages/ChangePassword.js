@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const ChangePassword = () => {
@@ -8,6 +8,18 @@ const ChangePassword = () => {
     newPassword: "",
     checkNewPassword: "",
   });
+  //! 비밀번호 변경 상태 state
+  const [isComplete, setIsComplete] = useState(false);
+  const history = useNavigate();
+
+  const handleComplete = () => {
+    //! 홈으로 리다이렉트해주기 위한 함수
+    setIsComplete(true);
+    setTimeout(() => {
+      history("/");
+    }, 2000);
+  };
+
   //! 입력상태 state
   // const [isPassword, setIsPassword] = useState(false);
   const [isNewPassword, setIsNewPassword] = useState(false);
@@ -63,15 +75,38 @@ const ChangePassword = () => {
       newPassword: [passwordInfo.newPassword, isNewPassword],
       checkState: isCheckNewpassword,
     };
-    if (isNewPassword && isCheckNewpassword === true) {
-      console.log("로그인 요청이 성공적으로 전달되었습니다.");
-    } else {
-      console.log("로그 요청이 실패하였습니다.");
-    }
-    console.log(stateInfo);
+
+    axios
+      .patch(
+        "http://localhost:4000/user/pwd",
+        {
+          password: passwordInfo.newPassword,
+        },
+        { withCredentials: true }
+      )
+      .then((res) => {
+        console.log(res.data.message);
+        const resMsg = res.data.message;
+        if (resMsg === "success change password") {
+          handleComplete();
+          console.log("비밀번호가 성공적으로 변경되었습니다.");
+        } else {
+          console.log("비밀번호 변경이 실패하였습니다.");
+        }
+      })
+      .catch((err) => {
+        throw err;
+      });
+    // console.log(stateInfo);
   };
 
-  return (
+  return isComplete ? (
+    <div>
+      <center>
+        <div>비밀번호가 성공적으로 변경되었습니다.</div>
+      </center>
+    </div>
+  ) : (
     <div>
       <center>
         <div>비밀번호 변경</div>

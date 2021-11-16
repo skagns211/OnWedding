@@ -11,7 +11,7 @@ module.exports = {
       });
 
       if (!userInfo) {
-        res.status(403).send({ message: "invalid data" });
+        res.send({ message: "invalid data" });
       } else {
         const {
           id,
@@ -92,7 +92,7 @@ module.exports = {
       });
 
       if (getEmail) {
-        res.status(400).send({ message: "email overlap" });
+        res.send({ message: "email overlap" });
       } else {
         try {
           res.send({ message: "ok" });
@@ -110,7 +110,7 @@ module.exports = {
       });
 
       if (getNickname) {
-        res.status(400).send({ message: "nickname overlap" });
+        res.send({ message: "nickname overlap" });
       } else {
         try {
           res.send({ message: "ok" });

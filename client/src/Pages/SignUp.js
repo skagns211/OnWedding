@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import users from "../dummy/Users";
 
@@ -34,6 +34,44 @@ const SignUp = () => {
   const [isBirth, setIsBirth] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   // const [isBtn, setIsBtn] = useState(false);
+
+  //! 회원가입 상태 state
+  const [isComplete, setIsComplete] = useState(false);
+  const history = useNavigate();
+
+  const handleComplete = () => {
+    axios
+      .post(
+        "http://localhost:4000/auth/signup",
+        {
+          email: userinfo.email,
+          password: userinfo.password,
+          name: userinfo.username,
+          nickname: userinfo.nickname,
+          birth: userinfo.birth,
+          mobile: userinfo.mobile,
+        },
+        { httpOnly: true, withCredentials: true }
+      )
+      .then((res) => {
+        const successMsg = res.data.message;
+        if (successMsg) {
+          setIsComplete(true);
+          setTimeout(() => {
+            history("/");
+          }, 2000);
+        }
+      })
+      .catch((err) => {
+        throw err;
+      });
+
+    // //! 홈으로 리다이렉트해주기 위한 함수
+    // setIsComplete(true);
+    // setTimeout(() => {
+    //   history("/");
+    // }, 2000);
+  };
 
   const handleInputValue = (key) => (e) => {
     setUserinfo({ ...userinfo, [key]: e.target.value });
@@ -114,30 +152,47 @@ const SignUp = () => {
 
   //! email 중복 체크
   const dupEmail = (email) => {
-    const check = users.filter((user) => {
-      return user.email === email;
-    });
-    if (check.length !== 0) {
-      setIsDupEmail(false);
-      setEmailMessage("이미 회원가입된 이메일입니다.");
-    } else {
-      setIsDupEmail(true);
-      setEmailMessage("사용가능한 이메일입니다:)");
-    }
+    axios
+      .post(
+        "http://localhost:4000/auth/email",
+        { email: userinfo.email },
+        { httpOnly: true, withCredentials: true }
+      )
+      .then((res) => {
+        console.log(res.data.message);
+        const resMsg = res.data.message;
+        if (resMsg === "email overlap") {
+          setIsDupEmail(false);
+          setEmailMessage("이미 회원가입된 이메일입니다.");
+        } else if (resMsg === "ok") {
+          setIsDupEmail(true);
+          setEmailMessage("사용가능한 이메일입니다:)");
+        }
+      })
+      .catch((err) => {
+        throw err;
+      });
   };
 
   //! nickName 중복 체크
   const dupNickname = (nickname) => {
-    const check = users.filter((user) => {
-      return user.nickname === nickname;
-    });
-    if (check.length !== 0) {
-      setIsDupNickname(false);
-      setNicknameMessage("이미 사용중인 닉네임입니다.");
-    } else {
-      setIsDupNickname(true);
-      setNicknameMessage("사용가능한 닉네임입니다:)");
-    }
+    axios
+      .post(
+        "http://localhost:4000/auth/nickname",
+        { nickname: userinfo.nickname },
+        { httpOnly: true, withCredentials: true }
+      )
+      .then((res) => {
+        console.log(res.data.message);
+        const resMsg = res.data.message;
+        if (resMsg === "nickname overlap") {
+          setIsDupNickname(false);
+          setNicknameMessage("이미 사용중인 닉네임입니다.");
+        } else if (resMsg === "ok") {
+          setIsDupNickname(true);
+          setNicknameMessage("사용가능한 닉네임입니다:)");
+        }
+      });
   };
 
   //! 이름 상태변경
@@ -217,6 +272,7 @@ const SignUp = () => {
       isBirth &&
       isMobile === true
     ) {
+      handleComplete();
       console.log("회원가입 요청이 성공적으로 전달되었습니다.");
     } else {
       console.log("회원가입 요청이 실패하였습니다.");
@@ -224,7 +280,13 @@ const SignUp = () => {
     console.log(stateInfo);
   };
 
-  return (
+  return isComplete ? (
+    <div>
+      <center>
+        <div>회원가입이 완료되었습니다.</div>
+      </center>
+    </div>
+  ) : (
     <div>
       <center>
         <div></div>
