@@ -30,7 +30,10 @@ function App() {
   return (
     <BrowserRouter>
       <StyledBody>
-        <Nav />
+        <Nav
+          isAccessTokenHandler={isAccessTokenHandler}
+          setIsAccessToken={setIsAccessToken}
+        />
         <Routes>
           <Route exact path="/" element={<Main />} />
           <Route path="/signup" element={<SignUp />} />
@@ -38,7 +41,7 @@ function App() {
           <Route path="/article/:id" element={<Article setEdit={setEdit} />} />
           <Route path="change" element={<ChangePassword />} />
           <Route path="/mypage" element={<MyPage />} />
-          {/* <Route path="/delete" element={<Delete />} /> */}
+          <Route path="/delete" element={<Delete />} />
         </Routes>
         <Footer />
       </StyledBody>

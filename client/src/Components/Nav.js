@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import LoginModal from "./LoginModal";
 import dummy from "../dummy/dummy";
+import axios from "axios";
 
 const StyledNav = styled.header`
   z-index: 1;
@@ -69,40 +70,63 @@ const StyledLink2 = styled.ul`
   }
 `;
 
-const Nav = () => {
+const Nav = ({ isAccessTokenHandler, setIsAccessToken }) => {
   const [isOpen, setIsOpen] = useState(false);
   const openModalHandler = () => {
     setIsOpen(!isOpen);
   };
 
+  const logoutHandler = () => {
+    axios
+      .post("http://localhost:4000/auth/logout", null, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        console.log(res.data.message);
+        const resMsg = res.data.message;
+
+        if (resMsg === "logout success!") {
+          console.log("잘가~!");
+        }
+      });
+  };
+
   return (
-
     <>
-      {isOpen ? <LoginModal openModalHandler={openModalHandler} /> : null}
-    <StyledNav>
-      <StyledLink1>
-        <Link to="/">Onwedding</Link>
-      </StyledLink1>
-      <StyledLink2>
-        {/* <Link to="/signup">login</Link>
+      {isOpen ? (
+        <LoginModal
+          openModalHandler={openModalHandler}
+          isAccessTokenHandler={isAccessTokenHandler}
+          setIsAccessToken={setIsAccessToken}
+        />
+      ) : null}
+      <StyledNav>
+        <StyledLink1>
+          <Link to="/">Onwedding</Link>
+        </StyledLink1>
+        <a onClick={openModalHandler}>login</a>
+        <Link to="/signup">SignUp</Link>
+        <StyledLink2>
+          {/* <Link to="/signup">login</Link>
         <Link to="/signup">signup</Link> */}
-        <li>
-          <div>
-            <img src={dummy[0].img} />
-            <ul>
-              <li>
-                <Link to="/mypage">마이페이지</Link>
-              </li>
-              <li>
-                <Link to="/mypage">로그아웃</Link>
-              </li>
-            </ul>
-          </div>
-        </li>
-      </StyledLink2>
-    </StyledNav>
+          <li>
+            <div>
+              <img src={dummy[0].img} />
+              <ul>
+                <li>
+                  <Link to="/mypage">마이페이지</Link>
+                </li>
+                <li>
+                  <Link to="/" onClick={logoutHandler}>
+                    로그아웃
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          </li>
+        </StyledLink2>
+      </StyledNav>
     </>
-
   );
 };
 

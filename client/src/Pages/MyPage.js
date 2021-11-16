@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import dummy from "../dummy/dummy";
@@ -51,11 +52,8 @@ const MyPage = () => {
         <span>Name</span>
         <span>{dummy[0].name}</span>
       </div>
-
-      <button>
-        <Link to="/change">비밀번호 변경</Link>
-      </button>
-      <button>회원 탈퇴</button>
+      <Link to="/change">비밀번호 변경</Link>
+      <Link to="/delete">회원 탈퇴</Link>
     </StyledBody>
   );
 };

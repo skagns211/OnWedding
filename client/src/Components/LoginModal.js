@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const ModalContainer = styled.div`
   //!Modal 구현 css
@@ -70,12 +71,38 @@ const LoginModal = ({ openModalHandler }) => {
       email: [loginUserInfo.email, isLogEmail],
       password: [loginUserInfo.password, isLogPassword],
     };
-    if (isLogEmail && isLogPassword === true) {
-      console.log("로그인 요청이 성공적으로 전달되었습니다.");
-    } else {
-      console.log("로그 요청이 실패하였습니다.");
-    }
-    console.log(stateInfo);
+
+    axios
+      .post(
+        "http://localhost:4000/auth/login",
+        {
+          email: loginUserInfo.email,
+          password: loginUserInfo.password,
+        },
+        {
+          // headers: {
+          //   "Content-Type": "application/json",
+          // },
+          // withCredentials: true,
+          withCredentials: true,
+        }
+      )
+      .then((res) => {
+        console.log(res);
+        if (res.data.message === "invalid data") {
+          console.log("로그인 요청이 실패하였습니다.");
+        } else {
+          console.log("로그인 요청이 성공적으로 전달되었습니다.");
+        }
+        // console.log(stateInfo);
+      });
+
+    // if (isLogEmail && isLogPassword === true) {
+    //   console.log("로그인 요청이 성공적으로 전달되었습니다.");
+    // } else {
+    //   console.log("로그 요청이 실패하였습니다.");
+    // }
+    // console.log(stateInfo);
   };
 
   return (
