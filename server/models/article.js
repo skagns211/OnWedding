@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
       user_id: DataTypes.INTEGER,
       title: DataTypes.STRING,
       message: DataTypes.TEXT,
-      image: DataTypes.BLOB,
+      image: DataTypes.STRING,
       total_comment: DataTypes.INTEGER,
     },
     {

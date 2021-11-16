@@ -70,6 +70,7 @@ const StyledLink2 = styled.ul`
   }
 `;
 
+
 const Nav = ({ isLogin, userInfoHandler, setIsLogin, check }) => {
   const [isOpen, setIsOpen] = useState(false);
   const openModalHandler = () => {
