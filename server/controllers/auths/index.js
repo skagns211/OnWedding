@@ -57,8 +57,13 @@ module.exports = {
     },
   },
   logout: {
-    post: (req, res) => {
-      res.clearCookie("accessToken").send({ message: "logout success!" });
+    post: async (req, res) => {
+      try {
+        res.clearCookie("tokenExpirse");
+        res.clearCookie("accessToken").send({ message: "logout success!" });
+      } catch (err) {
+        console.log(err);
+      }
     },
   },
   signup: {

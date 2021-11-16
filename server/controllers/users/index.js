@@ -5,37 +5,8 @@ require("dotenv").config();
 
 module.exports = {
   password: {
-    post: async (req, res) => {
-      const { accessToken } = req.cookies;
-      const { tokenExpirse } = req.cookies;
-      if (tokenExpirse <= Date.now() / 1000) {
-        res
-          .clearCookie("accessToken")
-          .status(401)
-          .send({ message: "accessToken Expiration. plz Loing" });
-      } else if (!accessToken) {
-        res.status(403).send({ message: "not logged in" });
-      }
-      const { password } = req.body;
-      const loginUser = jwt.verify(accessToken, process.env.ACCESS_SECRET);
-      const { id } = loginUser;
-      const userInfo = await User.findOne({
-        where: { id },
-      });
-      console.log(userInfo);
-      if (userInfo.password === password) {
-        try {
-          res.send({ message: "valid password" });
-        } catch (err) {
-          console.log(err);
-        }
-      } else {
-        res.send({ message: "invalid password" });
-      }
-    },
     patch: async (req, res) => {
-      const { accessToken } = req.cookies;
-      const { tokenExpirse } = req.cookies;
+      const { accessToken, tokenExpirse } = req.cookies;
 
       if (tokenExpirse <= Date.now() / 1000) {
         res
@@ -44,80 +15,119 @@ module.exports = {
           .send({ message: "accessToken Expiration. plz Loing" });
       } else if (accessToken) {
         const newPassword = req.body.password;
-        const { accessToken } = req.cookies;
         const userInfo = jwt.verify(accessToken, process.env.ACCESS_SECRET);
         const loginInfo = await User.findOne({
           where: { id: userInfo.id },
         });
         const curPassword = loginInfo.password;
 
-        await User.update(
-          { password: newPassword },
-          {
-            where: { password: curPassword },
-          }
-        );
+        if (newPassword) {
+          await User.update(
+            { password: newPassword },
+            {
+              where: { password: curPassword },
+            }
+          );
 
+          try {
+            res.send({ message: "success change password" });
+          } catch (err) {
+            console.log(err);
+          }
+        } else {
+          res.send({ message: "need new password" });
+        }
+      } else {
+        res.send({ message: "not logged in" });
+      }
+    },
+  },
+  userInfo: {
+    get: async (req, res) => {
+      const { accessToken, tokenExpirse } = req.cookies;
+      // accessToken 만료 여부 체크
+      if (tokenExpirse <= Date.now() / 1000) {
+        res
+          .clearCookie("accessToken")
+          .status(401)
+          .send({ message: "accessToken Expiration. plz Loing" });
+      } else if (accessToken) {
+        const userInfo = await jwt.verify(
+          accessToken,
+          process.env.ACCESS_SECRET
+        );
         try {
-          res.send({ message: "success change password" });
+          res.send({ data: { userInfo }, message: "present Userinfo" });
         } catch (err) {
           console.log(err);
         }
       } else {
-        res.status(200).send({ message: "not logged in" });
+        res.send({ message: "not logged in" });
       }
-      userInfo: {
-        get: async (req, res) => {
-          const { accessToken } = req.cookies;
-          const { tokenExpirse } = req.cookies;
-          // accessToken 만료 여부 체크
-          if (tokenExpirse <= Date.now() / 1000) {
-            res
-              .clearCookie("accessToken")
-              .status(401)
-              .send({ message: "accessToken Expiration. plz Loing" });
-          } else if (accessToken) {
-            const userInfo = await jwt.verify(
-              accessToken,
-              process.env.ACCESS_SECRET
-            );
-            try {
-              res.send({ data: { userInfo }, message: "present Userinfo" });
-            } catch (err) {
-              console.log(err);
+    },
+    delete: async (req, res) => {
+      const { accessToken, tokenExpirse } = req.cookies;
+
+      if (tokenExpirse <= Date.now() / 1000) {
+        res
+          .clearCookie("accessToken")
+          .status(401)
+          .send({ message: "accessToken Expiration. plz Loing" });
+      } else if (accessToken) {
+        const userInfo = jwt.verify(accessToken, process.env.ACCESS_SECRET);
+        const { id, email } = userInfo;
+
+        await User.destroy({
+          where: { id, email },
+        });
+        try {
+          res.clearCookie("tokenExpirse");
+          res.clearCookie("accessToken");
+          res.send({ message: "success delete userInfo" });
+        } catch (err) {
+          console.log(err);
+        }
+      } else {
+        res.send({ mesasge: "not logged in" });
+      }
+    },
+  },
+  profile: {
+    patch: async (req, res) => {
+      const { accessToken, tokenExpirse } = req.cookies;
+
+      if (tokenExpirse <= Date.now() / 1000) {
+        res
+          .clearCookie("accessToken")
+          .status(401)
+          .send({ message: "accessToken Expiration. plz Loing" });
+      } else if (accessToken) {
+        const newImage = req.body.image;
+        const userInfo = jwt.verify(accessToken, process.env.ACCESS_SECRET);
+        const loginInfo = await User.findOne({
+          where: { id: userInfo.id },
+        });
+        const curImage = loginInfo.image;
+
+        if (newImage) {
+          await User.update(
+            { image: newImage },
+            {
+              where: { image: curImage, id: userInfo.id },
             }
-          } else {
-            res.status(403).send({ message: "not logged in" });
+          );
+
+          try {
+            res.send({ message: "success change image" });
+          } catch (err) {
+            console.log(err);
           }
-        },
-          delete: async (req, res) => {
-            const { accessToken } = req.cookies;
-            const { tokenExpirse } = req.cookies;
-            if (tokenExpirse <= Date.now() / 1000) {
-              res
-                .clearCookie("accessToken")
-                .status(401)
-                .send({ message: "accessToken Expiration. plz Loing" });
-            } else if (accessToken) {
-              const userInfo = jwt.verify(accessToken, process.env.ACCESS_SECRET);
-              const { id, email } = userInfo;
-              const loginInfo = await User.findOne({
-                where: { id, email },
-              });
-              console.log(loginInfo);
-              await User.destroy({
-                where: { id, email },
-              });
-              try {
-                res.clearCookie("accessToken");
-                res.send({ message: "success delete userInfo" });
-              } catch (err) {
-                console.log(err);
-              }
-            }
-          },
+        } else {
+          res.send({ message: "need image url" });
+        }
+      } else {
+        res.send({ message: "not logged in" });
+      }
+    },
   },
-      profile: {
-        patch: (req, res) => { },
-  },
-    };
+};

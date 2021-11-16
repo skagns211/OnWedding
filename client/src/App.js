@@ -30,10 +30,7 @@ function App() {
   return (
     <BrowserRouter>
       <StyledBody>
-        <Nav
-          isAccessTokenHandler={isAccessTokenHandler}
-          setIsAccessToken={setIsAccessToken}
-        />
+        <Nav />
         <Routes>
           <Route exact path="/" element={<Main />} />
           <Route path="/signup" element={<SignUp />} />

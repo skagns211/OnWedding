@@ -70,7 +70,7 @@ const StyledLink2 = styled.ul`
   }
 `;
 
-const Nav = ({ isAccessTokenHandler, setIsAccessToken }) => {
+const Nav = () => {
   const [isOpen, setIsOpen] = useState(false);
   const openModalHandler = () => {
     setIsOpen(!isOpen);
@@ -93,13 +93,7 @@ const Nav = ({ isAccessTokenHandler, setIsAccessToken }) => {
 
   return (
     <>
-      {isOpen ? (
-        <LoginModal
-          openModalHandler={openModalHandler}
-          isAccessTokenHandler={isAccessTokenHandler}
-          setIsAccessToken={setIsAccessToken}
-        />
-      ) : null}
+      {isOpen ? <LoginModal openModalHandler={openModalHandler} /> : null}
       <StyledNav>
         <StyledLink1>
           <Link to="/">Onwedding</Link>

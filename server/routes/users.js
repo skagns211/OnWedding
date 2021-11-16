@@ -3,7 +3,6 @@ const controllers = require("../controllers/users");
 var router = express.Router();
 
 /* GET users listing. */
-router.post("/pwd", controllers.password.post);
 router.patch("/pwd", controllers.password.patch);
 router.get("/", controllers.userInfo.get);
 router.delete("/", controllers.userInfo.delete);
