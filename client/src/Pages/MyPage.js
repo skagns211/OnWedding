@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import dummy from "../dummy/dummy";
@@ -21,16 +20,6 @@ const StyledBody = styled.div`
     margin: 2rem;
   }
 `;
-
-// const StyledImg = styled.section`
-//   background-image: url("https://i.ibb.co/x5HNV5z/bride-g8bfa369fe-1920.jpg");
-//   background-position: 50% 50%;
-//   background-size: contain auto;
-//   background-repeat: no-repeat;
-//   padding: 20rem;
-//   opacity: 0.8;
-//   position: relative;
-// `;
 
 const MyPage = () => {
   return (

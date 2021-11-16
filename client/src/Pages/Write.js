@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
@@ -122,6 +123,7 @@ const StyledClose = styled.span`
 `;
 
 const Write = ({ edit }) => {
+  //! s3 구현
   const AWS = require("aws-sdk");
 
   AWS.config.update({
@@ -131,14 +133,12 @@ const Write = ({ edit }) => {
     }),
   });
 
-  const [img, setImg] = useState(null);
+  const [image, setImage] = useState(null);
 
   const handleImg = event => {
     const imgFile = event.target.files[0];
-
-    console.log(imgFile);
     if (!imgFile) {
-      return setImg(null);
+      return setImage(null);
     }
     const upload = new AWS.S3.ManagedUpload({
       params: {
@@ -152,7 +152,7 @@ const Write = ({ edit }) => {
 
     promise.then(
       data => {
-        setImg(data.Location);
+        setImage(data.Location);
         console.log(data.Location);
       },
       err => {
@@ -161,27 +161,62 @@ const Write = ({ edit }) => {
     );
   };
 
-  const [tags, setTags] = useState([]);
+  //! s3 구현
 
-  console.log(tags);
+  const [hashtag, setHashtag] = useState(
+    edit.hash ? edit.hash.map(hash => hash.name) : []
+  );
+  const [title, setTitle] = useState("");
+  const [message, setMessage] = useState("");
+  const [click, setClick] = useState("");
 
-  useEffect(() => {
-    if (edit) {
-      setTags(edit.hash);
-    }
-  });
+  // useEffect(() => {
+  //   if (edit) {
+  //     setHashtag(edit.hash);
+  //   }
+  // }, []);
 
   const removeTags = e => {
-    setTags(tags.filter((_, index) => index !== e));
+    setHashtag(hashtag.filter((_, index) => index !== e));
   };
 
   const addTags = e => {
-    const filtered = tags.filter(el => el === e.target.value);
+    const filtered = hashtag.filter(el => el === e.target.value);
     if (e.target.value !== "" && filtered.length === 0) {
-      setTags([...tags, e.target.value]);
+      setHashtag([...hashtag, e.target.value]);
       e.target.value = "";
     }
   };
+
+  const handleHash = () => {
+    const filtered = hashtag.filter(el => el === click);
+    if (click !== "" && filtered.length === 0) {
+      setHashtag([...hashtag, click]);
+    }
+  };
+
+  const handletitle = e => {
+    setTitle(e.target.value);
+  };
+
+  const handleMessage = e => {
+    setMessage(e.target.value);
+  };
+
+  const handleClick = () => {
+    // axios.post(`http://localhost:4000/article/${유저아이디}`, {
+    //   message: {
+    //     title,
+    //     message,
+    //     image,
+    //     hashtag,
+    //   },
+    // });
+  };
+
+  console.log(hashtag);
+  console.log(edit);
+  console.log(click);
 
   return (
     <StyledBody>
@@ -194,21 +229,23 @@ const Write = ({ edit }) => {
           <StyledArea1
             type="text"
             placeholder="제목을 입력해주세요"
-            value={edit ? edit.title : null}
+            value={edit ? edit.article.title : null}
+            onChange={handletitle}
           />
           <StyleTest>
             내용
-            {img ? <img src={img}></img> : null}
+            {image ? <img src={image}></img> : null}
             <input type="file" onChange={handleImg} />
           </StyleTest>
           <StyledArea2
             placeholder="내용을 입력해주세요"
-            value={edit ? edit.content : null}
+            value={edit.article ? edit.article.message : null}
+            onChange={handleMessage}
           />
           <div>해시태그</div>
           <TagsInput>
             <ul>
-              {tags.map((tag, index) => (
+              {hashtag.map((tag, index) => (
                 <li key={index}>
                   <span>#{tag}</span>
                   <StyledClose onClick={() => removeTags(index)}>x</StyledClose>
@@ -218,12 +255,14 @@ const Write = ({ edit }) => {
             <StyledArea3
               type="text"
               onKeyUp={e => (window.event.keyCode === 13 ? addTags(e) : null)}
+              onChange={e => setClick(e.target.value)}
               placeholder="해시태그를 입력해주세요"
             />
+            <button onClick={handleHash}>추가</button>
           </TagsInput>
         </StyledSize>
         <StyleTest>
-          <button>글올리기</button>
+          <button onClick={handleClick}>글올리기</button>
         </StyleTest>
       </StyledContent>
     </StyledBody>

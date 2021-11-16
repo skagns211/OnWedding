@@ -27,65 +27,68 @@ module.exports = {
           .send({ message: "accessToken Expiration. plz Loing" });
       } else if (!accessToken) {
         res.status(403).send({ message: "not logged in" });
-      }
+      } else {
+        const { title, message, image, hashtag } = req.body;
+        const user_id = req.params.id;
+        const HASHTAG = hashtag.split(" ");
 
-      const { title, message, image, hashtag } = req.body;
-      const user_id = req.params.id;
+        if (!user_id || !title || !message) {
+          res.status(400).send("bad request");
+        }
 
-      if (!user_id || !title || !message) {
-        res.status(400).send("bad request");
-      }
-
-      const articleId = await Article.create({
-        user_id,
-        title,
-        message,
-        image,
-      });
-
-      for (const tag of hashtag) {
-        const [tags, created] = await Hashtag.findOrCreate({
-          where: { name: tag },
+        const article = await Article.create({
+          user_id,
+          title,
+          message,
+          image,
         });
 
-        await Article_Hashtag.create({
-          hashtag_id: tags.dataValues.id,
-          article_id: articleId.dataValues.id,
-        });
+        for (const tag of HASHTAG) {
+          const [tags, created] = await Hashtag.findOrCreate({
+            where: { name: tag },
+          });
 
-        if (!created) {
           await Article_Hashtag.create({
             hashtag_id: tags.dataValues.id,
-            article_id: articleId.dataValues.id,
+            article_id: article.dataValues.id,
           });
         }
-      }
-
-      try {
-        res.send("created");
-      } catch (err) {
-        res.status(500).send();
+        try {
+          res.send("created");
+        } catch (err) {
+          res.status(500).send();
+        }
       }
     },
     get: async (req, res) => {
       const id = req.params.id;
       const article = await Article.findOne({
-        include: [
-          {
-            model: User,
-            attributes: ["name"],
-          },
-        ],
         where: { id },
+      });
+      const username = await User.findOne({
+        attributes: ["name"],
+        where: { id: article.user_id },
       });
       const comments = await Comment.findAll({
         where: { article_id: id },
+      });
+      const hashtag = await Hashtag.findAll({
+        attributes: ["name"],
+        include: [
+          {
+            model: Article_Hashtag,
+            attributes: [],
+            where: {
+              article_id: id,
+            },
+          },
+        ],
       });
 
       if (!article) {
         res.status(500).send();
       }
-      res.json({ data: { article, comments } });
+      res.json({ data: { article, comments, username, hashtag } });
     },
     patch: async (req, res) => {
       const { accessToken, tokenExpirse } = req.cookies;
@@ -96,49 +99,43 @@ module.exports = {
           .send({ message: "accessToken Expiration. plz Loing" });
       } else if (!accessToken) {
         res.status(403).send({ message: "not logged in" });
-      }
+      } else {
+        const id = req.params.id;
+        const { title, message, image, hashtag } = req.body;
+        const HASHTAG = hashtag.split(" ");
 
-      const id = req.params.id;
-      const { title, message, image, hashtag } = req.body;
-
-      if (!title || !message) {
-        res.status(400).send("bad request");
-      }
-      await Article.update(
-        {
-          title,
-          message,
-          image,
-        },
-        {
-          where: { id },
+        if (!title || !message) {
+          res.status(400).send("bad request");
         }
-      );
+        await Article.update(
+          {
+            title,
+            message,
+            image,
+          },
+          {
+            where: { id },
+          }
+        );
 
-      await Article_Hashtag.destroy({
-        where: { article_id: id },
-      });
+        await Article_Hashtag.destroy({
+          where: { article_id: id },
+        });
 
-      for (const tag of hashtag) {
-        const [tags, created] = await Hashtag.findOrCreate({
-          where: { name: tag },
-        });
-        await Article_Hashtag.create({
-          hashtag_id: tags.dataValues.id,
-          article_id: id,
-        });
-        if (!created) {
+        for (const tag of HASHTAG) {
+          const [tags, created] = await Hashtag.findOrCreate({
+            where: { name: tag },
+          });
           await Article_Hashtag.create({
             hashtag_id: tags.dataValues.id,
             article_id: id,
           });
         }
-      }
-
-      try {
-        res.status(201).send("updated");
-      } catch (err) {
-        res.status(500);
+        try {
+          res.status(201).send("updated");
+        } catch (err) {
+          res.status(500);
+        }
       }
     },
     delete: async (req, res) => {
@@ -150,18 +147,17 @@ module.exports = {
           .send({ message: "accessToken Expiration. plz Loing" });
       } else if (!accessToken) {
         res.status(403).send({ message: "not logged in" });
+      } else {
+        const id = req.params.id;
+
+        await Article_Hashtag.destroy({
+          where: { article_id: id },
+        });
+
+        await Article.destroy({
+          where: { id },
+        });
       }
-
-      const id = req.params.id;
-
-      await Article_Hashtag.destroy({
-        where: { article_id: id },
-      });
-
-      await Article.destroy({
-        where: { id },
-      });
-
       try {
         res.status(204).send("ok");
       } catch (err) {
@@ -172,18 +168,19 @@ module.exports = {
   hashtag: {
     get: async (req, res) => {
       const name = req.params.name;
-      const articles = await Hashtag.findAll({
+      const articles = await Article.findAll({
         include: [
           {
             model: Article_Hashtag,
+            attributes: [],
             include: [
               {
-                model: Article,
+                model: Hashtag,
+                where: { name },
               },
             ],
           },
         ],
-        where: { name },
       });
 
       if (!articles) {

@@ -4,7 +4,6 @@ import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 
 import Comments from "../Components/Comments";
-import dummy from "../dummy/dummy";
 import axios from "axios";
 
 const StyledBody = styled.div`
@@ -98,29 +97,25 @@ const StyledTest4 = styled.div``;
 
 const Article = ({ setEdit }) => {
   const id = useParams();
-  //const pick = data.article.filter(data => data.id === Number(id.id));
 
-  const [change, setChange] = useState("");
   const [comments, setComment] = useState();
   const [article, setArticle] = useState("");
   const [text, setText] = useState("");
+  const [name, setName] = useState("");
+  const [hash, setHash] = useState("");
 
-  const handleDelete = e => {
-    const del = change.filter(change => change.id !== e.id);
+  const clickDelete = e => {
+    const del = comments.filter(change => change.id !== e.id);
     if (window.confirm("댓글을 삭제하시겠습니까?")) {
-      setChange(del);
+      setComment(del);
     }
   };
 
   const handleClick = () => {
-    // const wow = {
-    //   id: change.length + 1,
-    //   name: pick[0].name,
-    //   comment: text,
-    //   img: pick[0].img,
-    // };
+    // axios.post(`http://localhost:4000/comment/${유저아이디}/${article.id}`, {
+    //   message: text,
+    // });
     setText("");
-    //setChange([...change, wow]);
   };
 
   const handletext = e => {
@@ -128,31 +123,21 @@ const Article = ({ setEdit }) => {
   };
 
   const handleEdit = () => {
-    //setEdit(pick[0]);
+    setEdit({ article, hash });
   };
 
-  // state로 관리
-  //get 최초에만 한번
   useEffect(() => {
     axios
       .get(`http://localhost:4000/article/${Number(id.id)}`, {
         withCredentials: true,
       })
-      .then(res => {
-        setComment(res.data.data.comments);
-        setArticle(res.data.data.article);
+      .then(response => {
+        setComment(response.data.data.comments);
+        setArticle(response.data.data.article);
+        setName(response.data.data.username);
+        setHash(response.data.data.hashtag);
       });
   }, []);
-  console.log(comments);
-  // 댓글 추가 post
-  // comment =>
-  // res.data로 오는 articleid를 post에 params로 같이 보낸다
-  // 댓글쓰기 버튼 클릭을 하면 axios post 로 보낸다
-  // 바디에 message 로 해서 보내!!
-
-  // axios.post(`http://localhost:4000/article/${id}/${data.articleid}`, {
-  //   message: `${text}`,
-  // });
 
   return (
     <StyledBody>
@@ -160,9 +145,17 @@ const Article = ({ setEdit }) => {
       <StyledMiddle></StyledMiddle>
       <StyledContent>
         <StyledTitle>{article.title}</StyledTitle>
-        <StyledName>{article.title}</StyledName>
+        <StyledName>{name.name}</StyledName>
         <StyledPhoto>{/* <img src={article.image.data} /> */}</StyledPhoto>
         <StyledText>{article.message}</StyledText>
+        <div>
+          해시태그
+          {hash
+            ? hash.map(hash => {
+                return <div>{hash.name}</div>;
+              })
+            : null}
+        </div>
         <Link to="/write" onClick={handleEdit}>
           <button>수정</button>
         </Link>
@@ -173,7 +166,7 @@ const Article = ({ setEdit }) => {
           comments.map(comment => {
             return (
               <Comments
-                handleDelete={() => handleDelete(comment)}
+                clickDelete={() => clickDelete(comment)}
                 comment={comment}
                 key={comment.id}
               />
