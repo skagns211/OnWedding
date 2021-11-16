@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 import dummy from "../dummy/dummy";
 
 const StyledBody = styled.div`
@@ -15,6 +16,9 @@ const StyledBody = styled.div`
     border-radius: 50%;
     width: 25rem;
     height: 25rem;
+  }
+  > span {
+    margin: 2rem;
   }
 `;
 
