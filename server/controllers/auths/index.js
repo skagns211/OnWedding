@@ -11,7 +11,7 @@ module.exports = {
       });
 
       if (!userInfo) {
-        res.status(200).send({ message: "invalid data" });
+        res.send({ message: "invalid data" });
       } else {
         const {
           id,
@@ -47,13 +47,8 @@ module.exports = {
         const loginInfo = userInfo.dataValues;
 
         try {
-          res.cookie("accessToken", accessToken, {
-            httpOnly: true,
-            credentials: true,
-            sameOrigin: "none",
-          });
+          res.cookie("accessToken", accessToken, { httpOnly: true });
           res.cookie("tokenExpirse", verifyAccessToken.exp, { httpOnly: true });
-          console.log(req.cookies);
           res.send({ data: { loginInfo }, message: "login success!" });
         } catch (err) {
           console.log(err);
@@ -97,7 +92,7 @@ module.exports = {
       });
 
       if (getEmail) {
-        res.status(200).send({ message: "email overlap" });
+        res.send({ message: "email overlap" });
       } else {
         try {
           res.send({ message: "ok" });
@@ -115,7 +110,7 @@ module.exports = {
       });
 
       if (getNickname) {
-        res.status(200).send({ message: "nickname overlap" });
+        res.send({ message: "nickname overlap" });
       } else {
         try {
           res.send({ message: "ok" });

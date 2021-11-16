@@ -66,8 +66,6 @@ module.exports = {
       } else {
         res.status(200).send({ message: "not logged in" });
       }
-    },
-  },
   userInfo: {
     get: async (req, res) => {
       const { accessToken } = req.cookies;
