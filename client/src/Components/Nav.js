@@ -70,7 +70,8 @@ const StyledLink2 = styled.ul`
   }
 `;
 
-const Nav = () => {
+
+const Nav = ({ isLogin, userInfoHandler, setIsLogin, check }) => {
   const [isOpen, setIsOpen] = useState(false);
   const openModalHandler = () => {
     setIsOpen(!isOpen);
@@ -84,26 +85,77 @@ const Nav = () => {
       .then((res) => {
         console.log(res.data.message);
         const resMsg = res.data.message;
-
         if (resMsg === "logout success!") {
+          const userInfo = {
+            email: "",
+            name: "",
+            nickname: "",
+            mobile: "",
+            image: "",
+          };
           console.log("잘가~!");
+          userInfoHandler(userInfo);
+          setIsLogin(false);
         }
+      })
+      .catch((err) => {
+        throw err;
       });
   };
 
   return (
     <>
-      {isOpen ? <LoginModal openModalHandler={openModalHandler} /> : null}
+      {isOpen ? (
+        <LoginModal
+          openModalHandler={openModalHandler}
+          userInfoHandler={userInfoHandler}
+          setIsLogin={setIsLogin}
+          check={check}
+        />
+      ) : null}
       <StyledNav>
         <StyledLink1>
           <Link to="/">Onwedding</Link>
         </StyledLink1>
+
+        {/* <a onClick={check}> 로그인상태체크 </a>
         <a onClick={openModalHandler}>login</a>
-        <Link to="/signup">SignUp</Link>
+        <Link to="/signup">SignUp</Link> */}
+
         <StyledLink2>
           {/* <Link to="/signup">login</Link>
         <Link to="/signup">signup</Link> */}
-          <li>
+
+          {!isLogin ? (
+            <>
+              <a onClick={check}> 로그인상태체크 </a>
+              <a onClick={openModalHandler}>login</a>
+              <Link to="/signup">SignUp</Link>
+            </>
+          ) : (
+            <li>
+              <div>
+                <img src={dummy[0].img} />
+                <ul>
+                  <li>
+                    <Link to="/mypage">마이페이지</Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/"
+                      onClick={() => {
+                        logoutHandler();
+                      }}
+                    >
+                      로그아웃
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+            </li>
+          )}
+
+          {/* <li>
             <div>
               <img src={dummy[0].img} />
               <ul>
@@ -111,13 +163,18 @@ const Nav = () => {
                   <Link to="/mypage">마이페이지</Link>
                 </li>
                 <li>
-                  <Link to="/" onClick={logoutHandler}>
+                  <Link
+                    to="/"
+                    onClick={() => {
+                      logoutHandler();
+                    }}
+                  >
                     로그아웃
                   </Link>
                 </li>
               </ul>
             </div>
-          </li>
+          </li> */}
         </StyledLink2>
       </StyledNav>
     </>

@@ -1,4 +1,4 @@
-const { Comment } = require("../../models");
+const { Comment, Article } = require("../../models");
 
 module.exports = {
   comment: {
@@ -11,26 +11,41 @@ module.exports = {
           .send({ message: "accessToken Expiration. plz Loing" });
       } else if (!accessToken) {
         res.status(403).send({ message: "not logged in" });
-      }
+      } else {
+        const user_id = req.params.userId;
+        const article_id = req.params.articleId;
+        const message = req.body.message;
 
-      const user_id = req.params.userId;
-      const article_id = req.params.articleId;
-      const message = req.body.message;
+        const commentNum = await Comment.create({
+          user_id,
+          article_id,
+          message,
+        });
 
-      const comment = await Comment.create({
-        user_id,
-        article_id,
-        message,
-      });
+        const comment = await Comment.findOne({
+          where: { id: commentNum.id },
+        });
 
-      const id = await Comment.findOne({
-        where: { id },
-      });
+        const commentCnt = await Comment.count({
+          where: { article_id },
+        });
 
-      try {
-        res.status(201).send({ data: { comment } });
-      } catch (err) {
-        res.status(500).send();
+        await Article.update(
+          {
+            total_comment: commentCnt,
+          },
+          {
+            where: {
+              id: article_id,
+            },
+          }
+        );
+
+        try {
+          res.status(201).send({ data: { comment } });
+        } catch (err) {
+          res.status(500).send();
+        }
       }
     },
     patch: async (req, res) => {
@@ -42,28 +57,28 @@ module.exports = {
           .send({ message: "accessToken Expiration. plz Loing" });
       } else if (!accessToken) {
         res.status(403).send({ message: "not logged in" });
-      }
+      } else {
+        const id = req.params.id;
+        const message = req.body.message;
+        const commentNum = await Comment.update(
+          {
+            message,
+          },
+          {
+            where: { id },
+          }
+        );
 
-      const id = req.params.id;
-      const message = req.body.message;
-      const commentNum = await Comment.update(
-        {
-          message,
-        },
-        {
-          where: { id },
+        const comment_id = commentNum[0];
+        const comment = await Comment.findOne({
+          where: { id: comment_id },
+        });
+
+        try {
+          res.send({ data: { comment } });
+        } catch (err) {
+          res.status(500).send();
         }
-      );
-
-      const comment_id = commentNum[0];
-      const comment = await Comment.findOne({
-        where: { id: comment_id },
-      });
-
-      try {
-        res.send({ data: { comment } });
-      } catch (err) {
-        res.status(500).send();
       }
     },
     delete: async (req, res) => {
@@ -75,18 +90,33 @@ module.exports = {
           .send({ message: "accessToken Expiration. plz Loing" });
       } else if (!accessToken) {
         res.status(403).send({ message: "not logged in" });
-      }
+      } else {
+        const id = req.params.id;
 
-      const id = req.params.id;
+        await Comment.destroy({
+          where: { id },
+        });
 
-      await Comment.destroy({
-        where: { id },
-      });
+        const commentCnt = await Comment.count({
+          where: { article_id },
+        });
 
-      try {
-        res.status(204).send("deleted");
-      } catch (err) {
-        res.status(500).send();
+        await Article.update(
+          {
+            total_comment: commentCnt,
+          },
+          {
+            where: {
+              id: article_id,
+            },
+          }
+        );
+
+        try {
+          res.status(204).send("deleted");
+        } catch (err) {
+          res.status(500).send();
+        }
       }
     },
   },
