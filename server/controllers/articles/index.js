@@ -49,8 +49,8 @@ module.exports = {
           });
 
           await Article_Hashtag.create({
-            hashtag_id: tags.dataValues.id,
-            article_id: article.dataValues.id,
+            hashtag_id: tags.id,
+            article_id: article.id,
           });
         }
         try {
@@ -127,7 +127,7 @@ module.exports = {
             where: { name: tag },
           });
           await Article_Hashtag.create({
-            hashtag_id: tags.dataValues.id,
+            hashtag_id: tags.id,
             article_id: id,
           });
         }

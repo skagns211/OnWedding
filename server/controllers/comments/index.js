@@ -4,49 +4,50 @@ module.exports = {
   comment: {
     post: async (req, res) => {
       const { accessToken, tokenExpirse } = req.cookies;
-      // if (tokenExpirse <= Date.now() / 1000) {
-      //   res
-      //     .clearCookie("accessToken")
-      //     .status(401)
-      //     .send({ message: "accessToken Expiration. plz Loing" });
-      // } else if (!accessToken) {
-      //   res.status(403).send({ message: "not logged in" });
-      // } else {
-      const user_id = req.params.userId;
-      const article_id = req.params.articleId;
-      const message = req.body.message;
 
-      const commentNum = await Comment.create({
-        user_id,
-        article_id,
-        message,
-      });
+      if (tokenExpirse <= Date.now() / 1000) {
+        res
+          .clearCookie("accessToken")
+          .status(401)
+          .send({ message: "accessToken Expiration. plz Loing" });
+      } else if (!accessToken) {
+        res.status(403).send({ message: "not logged in" });
+      } else {
+        const user_id = req.params.userId;
+        const article_id = req.params.articleId;
+        const message = req.body.message;
 
-      const comment = await Comment.findOne({
-        where: { id: commentNum.id },
-      });
+        const commentNum = await Comment.create({
+          user_id,
+          article_id,
+          message,
+        });
 
-      const commentCnt = await Comment.count({
-        where: { article_id },
-      });
+        const comment = await Comment.findOne({
+          where: { id: commentNum.id },
+        });
 
-      await Article.update(
-        {
-          total_comment: commentCnt,
-        },
-        {
-          where: {
-            id: article_id,
+        const commentCnt = await Comment.count({
+          where: { article_id },
+        });
+
+        await Article.update(
+          {
+            total_comment: commentCnt,
           },
-        }
-      );
+          {
+            where: {
+              id: article_id,
+            },
+          }
+        );
 
-      try {
-        res.status(201).send({ data: { comment } });
-      } catch (err) {
-        res.status(500).send();
+        try {
+          res.status(201).send({ data: { comment } });
+        } catch (err) {
+          res.status(500).send();
+        }
       }
-      // }
     },
     patch: async (req, res) => {
       const { accessToken, tokenExpirse } = req.cookies;
@@ -68,7 +69,6 @@ module.exports = {
             where: { id },
           }
         );
-
         const comment_id = commentNum[0];
         const comment = await Comment.findOne({
           where: { id: comment_id },

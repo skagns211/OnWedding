@@ -6,6 +6,7 @@ import axios from "axios";
 const ModalContainer = styled.div`
   //!Modal 구현 css
   background-color: white;
+  border-radius: 5%;
   width: 30%;
   min-width: 300px;
   max-width: 600px;
@@ -31,7 +32,7 @@ const ModalBackdrop = styled.div`
   background-color: rgba(0, 0, 0, 0.65);
 `;
 
-const LoginModal = ({ openModalHandler }) => {
+const LoginModal = ({ openModalHandler, userInfoHandler, setIsLogin }) => {
   const [loginUserInfo, setLoginUserInfo] = useState({
     email: "",
     password: "",
@@ -40,7 +41,7 @@ const LoginModal = ({ openModalHandler }) => {
   const [isLogEmail, setIsLogEmail] = useState(false); //! 이메일 입력 state
   const [isLogPassword, setIsLogPassword] = useState(false); //! 패스워드 입력 state
   const [emailMessage, setEmailMessage] = useState("");
-  const [passwordMessage, setPasswordMessage] = useState("");
+  const [invalidMessage, setInvalidMessage] = useState("");
 
   const handleInputValue = (key) => (e) => {
     setLoginUserInfo({ ...loginUserInfo, [key]: e.target.value });
@@ -80,10 +81,6 @@ const LoginModal = ({ openModalHandler }) => {
           password: loginUserInfo.password,
         },
         {
-          // headers: {
-          //   "Content-Type": "application/json",
-          // },
-          // withCredentials: true,
           withCredentials: true,
         }
       )
@@ -91,23 +88,44 @@ const LoginModal = ({ openModalHandler }) => {
         console.log(res);
         if (res.data.message === "invalid data") {
           console.log("로그인 요청이 실패하였습니다.");
+          setInvalidMessage(
+            "아이디 또는 비밀번호가 잘못 입력 되었습니다.아이디와 비밀번호를 정확히 입력해 주세요"
+          );
         } else {
-          console.log("로그인 요청이 성공적으로 전달되었습니다.");
+          //! isLogin 상태를 변경해줘야함
+          //! axios get 요청을 보내고 받은 응답 유저인포를 전역에서 프롭스로 받아온 핸들러로 스테이트 변경
+
+          axios
+            .get("http://localhost:4000/user", { withCredentials: true })
+            .then((res) => {
+              console.log("로그인 요청이 성공적으로 전달되었습니다.");
+              // console.log(res.data.data.userInfo);
+              const { id, email, name, nickname, mobile, image } =
+                res.data.data.userInfo;
+              const userInfo = { id, email, name, nickname, mobile, image };
+              userInfoHandler(userInfo);
+              setIsLogin(true);
+              openModalHandler();
+              // console.log(userInfo);
+            })
+            .catch((err) => {
+              throw err;
+            });
         }
         // console.log(stateInfo);
+      })
+      .catch((err) => {
+        throw err;
       });
-
-    // if (isLogEmail && isLogPassword === true) {
-    //   console.log("로그인 요청이 성공적으로 전달되었습니다.");
-    // } else {
-    //   console.log("로그 요청이 실패하였습니다.");
-    // }
-    // console.log(stateInfo);
   };
 
   return (
     <>
-      <ModalBackdrop onClick={openModalHandler}></ModalBackdrop>
+      <ModalBackdrop
+        onClick={() => {
+          openModalHandler();
+        }}
+      ></ModalBackdrop>
       <ModalContainer>
         <>
           <center>
@@ -135,8 +153,15 @@ const LoginModal = ({ openModalHandler }) => {
                 onChange={handleInputValue("password")}
                 onBlur={() => passwordState()}
               />
+              {invalidMessage !== "" ? <div>{invalidMessage}</div> : null}
             </div>
-            <button type="submit" className="postLogin" onClick={infoAll}>
+            <button
+              type="submit"
+              className="postLogin"
+              onClick={() => {
+                infoAll();
+              }}
+            >
               로그인
             </button>
             <div>아직 회원이 아니신가요?</div>

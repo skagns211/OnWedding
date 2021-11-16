@@ -18,7 +18,7 @@ module.exports = {
         type: Sequelize.TEXT,
       },
       image: {
-        type: Sequelize.BLOB,
+        type: Sequelize.STRING,
       },
       total_comment: {
         type: Sequelize.INTEGER,

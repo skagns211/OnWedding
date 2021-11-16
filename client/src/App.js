@@ -23,17 +23,48 @@ const StyledBody = styled.div`
 function App() {
   const [edit, setEdit] = useState("");
 
+
+  useEffect(() => {
+    setEdit("");
+  }, [edit]);
+
+  const [userInfo, setUserInfo] = useState({
+    id: "",
+    email: "",
+    name: "",
+    nickname: "",
+    mobile: "",
+    image: "",
+  });
+  const [isLogin, setIsLogin] = useState(false);
+
+  //! 유저인포 변경 핸들러 함수
+  const userInfoHandler = (userData) => {
+    setUserInfo(userData);
+  };
+
+  //! 로그인 상태 확인용 함수
+  const check = () => {
+    console.log(isLogin);
+    console.log(userInfo);
+  };
+
   return (
     <BrowserRouter>
       <StyledBody>
-        <Nav />
+        <Nav
+          isLogin={isLogin}
+          userInfoHandler={userInfoHandler}
+          setIsLogin={setIsLogin}
+          check={check}
+        />
         <Routes>
           <Route exact path="/" element={<Main />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/write" element={<Write edit={edit} />} />
           <Route path="/article/:id" element={<Article setEdit={setEdit} />} />
           <Route path="change" element={<ChangePassword />} />
-          <Route path="/mypage" element={<MyPage />} />
+          <Route path="/mypage" element={<MyPage userInfo={userInfo} />} />
           <Route path="/delete" element={<Delete />} />
         </Routes>
         <Footer />

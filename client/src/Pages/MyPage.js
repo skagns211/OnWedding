@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
 import dummy from "../dummy/dummy";
 
 const StyledBody = styled.div`
@@ -21,28 +20,34 @@ const StyledBody = styled.div`
   }
 `;
 
-const MyPage = () => {
+const MyPage = ({ userInfo }) => {
   return (
     <StyledBody>
       <img src={dummy[0].img} />
-      <div>
-        <span>Name</span>
-        <span>{dummy[0].name}</span>
-      </div>
-      <div>
-        <span>Nick</span>
-        <span>{dummy[0].nickname}</span>
-      </div>
-      <div>
-        <span>Email</span>
-        <span>{dummy[0].email}</span>
-      </div>
-      <div>
-        <span>Name</span>
-        <span>{dummy[0].name}</span>
-      </div>
-      <Link to="/change">비밀번호 변경</Link>
-      <Link to="/delete">회원 탈퇴</Link>
+      <right>
+        <div>
+          <span>Name: </span>
+          <span>{userInfo.name}</span>
+        </div>
+        <div>
+          <span>Nick: </span>
+          <span>{userInfo.nickname}</span>
+        </div>
+        <div>
+          <span>Email: </span>
+          <span>{userInfo.email}</span>
+        </div>
+        <div>
+          <span>Mobile: </span>
+          <span>{userInfo.mobile}</span>
+        </div>
+        <div>
+          <Link to="/change">비밀번호 변경</Link>
+        </div>
+        <div>
+          <Link to="/delete">회원 탈퇴</Link>
+        </div>
+      </right>
     </StyledBody>
   );
 };
