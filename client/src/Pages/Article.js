@@ -128,7 +128,7 @@ const Article = ({ setEdit }) => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:4000/article/${Number(id.id)}`, {
+      .get(`https://localhost:4000/article/${Number(id.id)}`, {
         withCredentials: true,
       })
       .then(response => {

@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import dummy from "../dummy/dummy";
+import { Link } from "react-router-dom";
 
 const StyledBody = styled.div`
   display: flex;

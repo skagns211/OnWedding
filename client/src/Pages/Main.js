@@ -75,7 +75,7 @@ const Main = () => {
   const [comments, setComments] = useState("");
 
   useEffect(() => {
-    axios.get("http://localhost:4000/article").then(response => {
+    axios.get("https://localhost:4000/article").then((response) => {
       setComments(response.data.data.articles);
     });
   }, []);
@@ -106,7 +106,7 @@ const Main = () => {
       </StyledMiddle>
       <StlyedArticle>
         {comments ? (
-          comments.map(comment => {
+          comments.map((comment) => {
             return <ArticleList comment={comment} key={comment.id} />;
           })
         ) : (
