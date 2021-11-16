@@ -26,11 +26,9 @@ const StyledEdit = styled.div`
   }
 `;
 
-const Comments = ({ comment, handleDelete }) => {
-  const [data, setData] = useState(comment);
+const Comments = ({ comment, clickDelete }) => {
   const [edit, setEdit] = useState(false);
-  const [comments, setComments] = useState(comment.comment);
-  const [change, setChange] = useState("");
+  const [comments, setComments] = useState(comment.message);
 
   const handleChange = e => {
     setComments(e.target.value);
@@ -39,21 +37,16 @@ const Comments = ({ comment, handleDelete }) => {
   const handleEdit = e => {
     setEdit(!edit);
     if (e.target.textContent === "확인") {
-      setChange(comments);
+      axios.patch(`http://localhost:4000/comment/${comment.id}`, {
+        message: comments,
+      });
     }
   };
 
-  // 댓글 수정 patch
-  // comment/commentid
-  // axios.patch(`http://localhost:4000/comment/`, {
-  //   message: `${change}`,
-  // });
-
-  // 댓글 삭제 delete
-  // comment/commentid
-  // axios delete도 보내고
-  // state에서도 뺀다
-  // axios.delete(`http://localhost:4000/comment/`);
+  const handleDelete = () => {
+    axios.delete(`http://localhost:4000/comment/${comment.id}`);
+    clickDelete(comment);
+  };
 
   return (
     <StyledTest2>
@@ -61,9 +54,9 @@ const Comments = ({ comment, handleDelete }) => {
       {/* <div>{comment}</div> */}
       <StyledEdit>
         {edit ? (
-          <textarea onChange={handleChange}>{comment}</textarea>
+          <textarea onChange={handleChange}>{comments}</textarea>
         ) : (
-          comment.message
+          comments
         )}
       </StyledEdit>
       <div>{comment.createdAt}</div>

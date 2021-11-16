@@ -32,7 +32,7 @@ const ArticleList = ({ comment }) => {
         {/* <StyledImg src={comment.img.data} /> */}
         <StyledName>{comment.title}</StyledName>
         <i className="far fa-comment"></i>
-        {comment.totalcomments}
+        {comment.total_comment}
       </Link>
     </StyledList>
   );

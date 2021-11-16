@@ -4,6 +4,7 @@ module.exports = {
   comment: {
     post: async (req, res) => {
       const { accessToken, tokenExpirse } = req.cookies;
+
       if (tokenExpirse <= Date.now() / 1000) {
         res
           .clearCookie("accessToken")
@@ -68,7 +69,6 @@ module.exports = {
             where: { id },
           }
         );
-
         const comment_id = commentNum[0];
         const comment = await Comment.findOne({
           where: { id: comment_id },

@@ -72,22 +72,22 @@ const Styledbutton2 = styled.button`
 `;
 
 const Main = () => {
-  const [comments, setComments] = useState(dummy);
+  const [comments, setComments] = useState("");
 
   useEffect(() => {
-    axios.get("http://localhost:4000/article").then(res => {
-      setComments(res.data.data.articles);
+    axios.get("http://localhost:4000/article").then(response => {
+      setComments(response.data.data.articles);
     });
   }, []);
 
   const commentsOrder = () => {
-    const arr = dummy.slice();
+    const arr = comments.slice();
     const result = arr.sort((a, b) => b.totalcomments - a.totalcomments);
     setComments(result);
   };
 
   const createdOrder = () => {
-    const arr = dummy.slice();
+    const arr = comments.slice();
     const result = arr.sort((a, b) => a.id - b.id);
     setComments(result);
   };
