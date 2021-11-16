@@ -100,9 +100,9 @@ const LoginModal = ({ openModalHandler, userInfoHandler, setIsLogin }) => {
             .then((res) => {
               console.log("로그인 요청이 성공적으로 전달되었습니다.");
               // console.log(res.data.data.userInfo);
-              const { email, name, nickname, mobile, image } =
+              const { id, email, name, nickname, mobile, image } =
                 res.data.data.userInfo;
-              const userInfo = { email, name, nickname, mobile, image };
+              const userInfo = { id, email, name, nickname, mobile, image };
               userInfoHandler(userInfo);
               setIsLogin(true);
               openModalHandler();
