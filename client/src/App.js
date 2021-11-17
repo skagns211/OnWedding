@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { createGlobalStyle } from "styled-components";
 
 import Article from "./Pages/Article";
 import ChangePassword from "./Pages/ChangePassword";
@@ -12,6 +13,12 @@ import Write from "./Pages/Write";
 
 import Nav from "./Components/Nav";
 import Footer from "./Components/Footer";
+
+const GlobalStyle = createGlobalStyle`
+  body {
+    font-family: "NanumBarunPen";
+  }
+`;
 
 const StyledBody = styled.div`
   margin: 0;
@@ -68,6 +75,7 @@ function App() {
 
   return (
     <BrowserRouter>
+      <GlobalStyle />
       <StyledBody>
         <Nav
           isLogin={isLogin}

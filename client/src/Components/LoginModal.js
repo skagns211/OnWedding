@@ -36,8 +36,8 @@ const ModalBackdrop = styled.div`
 `;
 
 const LoginHeader = styled.h1`
-  font-size: 2.4rem;
-  margin-top: 2em;
+  font-size: 3rem;
+  margin-top: 1.5em;
 `;
 const Welcome = styled.div`
   font-size: 1.5rem;
@@ -48,6 +48,7 @@ const Element = styled.div`
   font-size: 1.3rem;
   padding-top: 0.625rem;
   margin-top: 0.625rem;
+  /* font-family: "NanumGimYuICe"; */
 `;
 const Inputbox = styled.input`
   width: 18.75rem;
@@ -57,6 +58,7 @@ const Inputbox = styled.input`
   border: none;
   background-color: white;
   font-size: 1.2rem;
+  /* font-family: "NanumGimYuICe"; */
 `;
 const Button = styled.button`
   width: 6.25rem;
@@ -64,11 +66,13 @@ const Button = styled.button`
   margin-top: 1rem;
   font-size: 1.125rem;
   border-radius: 0.5rem;
+  /* font-family: "NanumGimYuICe"; */
 `;
 const Elementmessage = styled.div`
   color: red;
   font-size: 0.875rem;
   margin-top: 0.4rem;
+  /* font-family: "NanumGimYuICe"; */
 `;
 const SignupRedirect = styled.div``;
 
@@ -174,7 +178,8 @@ const LoginModal = ({ openModalHandler, userInfoHandler, setIsLogin }) => {
         }}
       ></ModalBackdrop>
       <ModalContainer welcome>
-        <LoginHeader> 로그인 </LoginHeader>
+        {/* <GlobalStyleLogin /> */}
+        <LoginHeader> Login </LoginHeader>
         <Welcome>OnWedding 커뮤니티에 로그인하세요!</Welcome>
         <div>
           <Element> 이메일 </Element>
