@@ -42,7 +42,7 @@ const SignUp = () => {
   const handleComplete = () => {
     axios
       .post(
-        "http://localhost:4000/auth/signup",
+        "https://localhost:4000/auth/signup",
         {
           email: userinfo.email,
           password: userinfo.password,
@@ -154,7 +154,7 @@ const SignUp = () => {
   const dupEmail = (email) => {
     axios
       .post(
-        "http://localhost:4000/auth/email",
+        "https://localhost:4000/auth/email",
         { email: userinfo.email },
         { httpOnly: true, withCredentials: true }
       )
@@ -178,7 +178,7 @@ const SignUp = () => {
   const dupNickname = (nickname) => {
     axios
       .post(
-        "http://localhost:4000/auth/nickname",
+        "https://localhost:4000/auth/nickname",
         { nickname: userinfo.nickname },
         { httpOnly: true, withCredentials: true }
       )

@@ -138,6 +138,19 @@ const Article = ({ setEdit, isLogin, userInfo, setIsModify }) => {
     setIsModify(true);
   };
 
+  useEffect(() => {
+    axios
+      .get(`https://localhost:4000/article/${Number(id.id)}`, {
+        withCredentials: true,
+      })
+      .then(response => {
+        setComment(response.data.data.comments);
+        setArticle(response.data.data.article);
+        setName(response.data.data.username);
+        setHash(response.data.data.hashtag);
+      });
+  }, []);
+
   const clickDelete = e => {
     const del = articleComments.filter(change => change.id !== e.id);
     if (window.confirm("댓글을 삭제하시겠습니까?")) {

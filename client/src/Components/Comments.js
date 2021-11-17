@@ -30,21 +30,21 @@ const Comments = ({ comment, clickDelete, userInfo }) => {
   const [edit, setEdit] = useState(false);
   const [comments, setComments] = useState(comment.message);
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     setComments(e.target.value);
   };
 
-  const handleEdit = e => {
+  const handleEdit = (e) => {
     setEdit(!edit);
     if (e.target.textContent === "확인") {
-      axios.patch(`http://localhost:4000/comment/${comment.id}`, {
+      axios.patch(`https://localhost:4000/comment/${comment.id}`, {
         message: comments,
       });
     }
   };
 
   const handleDelete = () => {
-    axios.delete(`http://localhost:4000/comment/${comment.id}`);
+    axios.delete(`https://localhost:4000/comment/${comment.id}`);
     clickDelete(comment);
   };
 

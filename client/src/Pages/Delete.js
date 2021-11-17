@@ -12,7 +12,7 @@ const Delete = () => {
     // setIsComplete(true);
 
     axios
-      .delete("http://localhost:4000/user", { withCredentials: true })
+      .delete("https://localhost:4000/user", { withCredentials: true })
       .then((res) => {
         console.log(res.data.message);
         const resMsg = res.data.message;

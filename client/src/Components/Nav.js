@@ -70,7 +70,6 @@ const StyledLink2 = styled.ul`
   }
 `;
 
-
 const Nav = ({ isLogin, userInfoHandler, setIsLogin, check }) => {
   const [isOpen, setIsOpen] = useState(false);
   const openModalHandler = () => {
@@ -79,7 +78,7 @@ const Nav = ({ isLogin, userInfoHandler, setIsLogin, check }) => {
 
   const logoutHandler = () => {
     axios
-      .post("http://localhost:4000/auth/logout", null, {
+      .post("https://localhost:4000/auth/logout", null, {
         withCredentials: true,
       })
       .then((res) => {

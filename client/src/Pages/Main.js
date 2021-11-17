@@ -73,7 +73,7 @@ const Main = ({ isLogin }) => {
   const [articles, setArticles] = useState("");
 
   useEffect(() => {
-    axios.get("http://localhost:4000/article").then(res => {
+    axios.get("https://localhost:4000/article").then(res => {
       setArticles(res.data.data.articles);
     });
   }, []);
