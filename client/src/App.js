@@ -17,7 +17,7 @@ import Footer from "./Components/Footer";
 
 const GlobalStyle = createGlobalStyle`
   body {
-    font-family: "NanumBarunPen";
+    font-family: "NanumGimYuICe";
   }
 `;
 
