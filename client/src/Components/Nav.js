@@ -5,72 +5,67 @@ import LoginModal from "./LoginModal";
 import dummy from "../dummy/dummy";
 import axios from "axios";
 
-const StyledNav = styled.header`
+const NavBody = styled.header`
   z-index: 1;
   position: sticky;
   top: 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   background-color: #f4eae0;
-  max-width: 75%;
+  width: 75%;
   margin: 0 auto;
   overflow: visible;
 `;
 
-const StyledLink1 = styled.div`
-  padding-left: 0rem;
-  & a {
+const StyledLink2 = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  margin: 0;
+  a {
     text-decoration: none;
     color: black;
   }
+  span {
+    margin: 0.5rem;
+  }
 `;
 
-const StyledLink2 = styled.ul`
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  > li:hover ul {
+const UserInfo = styled.div`
+  margin-right: 1rem;
+  :hover ul {
     opacity: 1;
     visibility: visible;
   }
-  > li {
-    > div {
-      padding: 1rem;
-      > img {
-        width: 3rem;
-        height: 3rem;
-        border-radius: 50%;
-      }
-      > ul {
-        border-radius: 10%;
-        width: 6rem;
-        margin: 0;
-        padding: 1rem 1rem;
-        list-style: none;
-        opacity: 0;
-        visibility: hidden;
-        background-color: white;
-        float: left;
-        position: absolute;
-        z-index: 999;
-        > li {
-          padding: 0.5rem 0rem;
-          > a {
-            padding: 0.5rem;
-            text-decoration: none;
-            color: black;
-          }
-          > a:hover {
-            background-color: #f4eae0;
-          }
-        }
-      }
-    }
+  img {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+  }
+  li {
+    padding: 0.5rem 0;
+  }
+  ul {
+    border-radius: 10%;
+    width: 6rem;
+    margin: 0;
+    padding: 1rem 1rem;
+    list-style: none;
+    position: absolute;
+    z-index: 999;
+    background-color: white;
+    opacity: 0;
+    visibility: hidden;
+  }
+  a {
+    padding: 0.5rem;
+  }
+  a:hover {
+    background-color: #f4eae0;
   }
 `;
 
-const Nav = ({ isLogin, userInfoHandler, setIsLogin, check }) => {
+const Nav = ({ isLogin, userInfoHandler, setIsLogin }) => {
   const [isOpen, setIsOpen] = useState(false);
   const openModalHandler = () => {
     setIsOpen(!isOpen);
@@ -81,8 +76,7 @@ const Nav = ({ isLogin, userInfoHandler, setIsLogin, check }) => {
       .post("http://ec2-3-21-167-88.us-east-2.compute.amazonaws.com/auth/logout", null, {
         withCredentials: true,
       })
-      .then((res) => {
-        console.log(res.data.message);
+      .then(res => {
         const resMsg = res.data.message;
         if (resMsg === "logout success!") {
           const userInfo = {
@@ -92,70 +86,41 @@ const Nav = ({ isLogin, userInfoHandler, setIsLogin, check }) => {
             mobile: "",
             image: "",
           };
-          console.log("잘가~!");
           userInfoHandler(userInfo);
           setIsLogin(false);
         }
       })
-      .catch((err) => {
+      .catch(err => {
         throw err;
       });
   };
 
   return (
-    <>
+    <NavBody>
       {isOpen ? (
         <LoginModal
           openModalHandler={openModalHandler}
           userInfoHandler={userInfoHandler}
           setIsLogin={setIsLogin}
-          check={check}
         />
       ) : null}
-      <StyledNav>
-        <StyledLink1>
+
+      <StyledLink2>
+        <div>
           <Link to="/">Onwedding</Link>
-        </StyledLink1>
-
-        {/* <a onClick={check}> 로그인상태체크 </a>
-        <a onClick={openModalHandler}>login</a>
-        <Link to="/signup">SignUp</Link> */}
-
-        <StyledLink2>
-          {/* <Link to="/signup">login</Link>
-        <Link to="/signup">signup</Link> */}
-
+        </div>
+        <div>
           {!isLogin ? (
             <>
-              <a onClick={check}> 로그인상태체크 </a>
-              <a onClick={openModalHandler}>login</a>
-              <Link to="/signup">SignUp</Link>
+              <span>
+                <a onClick={openModalHandler}>login</a>
+              </span>
+              <span>
+                <Link to="/signup">SignUp</Link>
+              </span>
             </>
           ) : (
-            <li>
-              <div>
-                <img src={dummy[0].img} />
-                <ul>
-                  <li>
-                    <Link to="/mypage">마이페이지</Link>
-                  </li>
-                  <li>
-                    <Link
-                      to="/"
-                      onClick={() => {
-                        logoutHandler();
-                      }}
-                    >
-                      로그아웃
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-            </li>
-          )}
-
-          {/* <li>
-            <div>
+            <UserInfo>
               <img src={dummy[0].img} />
               <ul>
                 <li>
@@ -172,11 +137,11 @@ const Nav = ({ isLogin, userInfoHandler, setIsLogin, check }) => {
                   </Link>
                 </li>
               </ul>
-            </div>
-          </li> */}
-        </StyledLink2>
-      </StyledNav>
-    </>
+            </UserInfo>
+          )}
+        </div>
+      </StyledLink2>
+    </NavBody>
   );
 };
 

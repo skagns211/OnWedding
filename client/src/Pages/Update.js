@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const StyledBody = styled.div`
   max-width: 75%;
@@ -123,7 +123,7 @@ const StyledClose = styled.span`
   font-size: 1.5rem;
 `;
 
-const Write = ({ userInfo }) => {
+const Write = ({ edit, userInfo, articleId }) => {
   //! s3 구현
   const AWS = require("aws-sdk");
 
@@ -134,9 +134,9 @@ const Write = ({ userInfo }) => {
     }),
   });
 
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState(edit.article ? edit.article.image : null);
 
-  const handleImg = (event) => {
+  const handleImg = event => {
     const imgFile = event.target.files[0];
     if (!imgFile) {
       return setImage(null);
@@ -152,10 +152,11 @@ const Write = ({ userInfo }) => {
     const promise = upload.promise();
 
     promise.then(
-      (data) => {
+      data => {
         setImage(data.Location);
+        console.log(data.Location);
       },
-      (err) => {
+      err => {
         console.log(err);
       }
     );
@@ -163,18 +164,22 @@ const Write = ({ userInfo }) => {
 
   //! s3 구현
 
-  const [hashtag, setHashtag] = useState([]);
-  const [title, setTitle] = useState("");
-  const [message, setMessage] = useState("");
+  const [hashtag, setHashtag] = useState(
+    edit.hashtags ? edit.hashtags.map(hashtag => hashtag.name) : []
+  );
+  const [title, setTitle] = useState(edit.article ? edit.article.title : "");
+  const [message, setMessage] = useState(
+    edit.article ? edit.article.message : ""
+  );
   const [click, setClick] = useState("");
   const navigate = useNavigate();
 
-  const removeTags = (e) => {
+  const removeTags = e => {
     setHashtag(hashtag.filter((_, index) => index !== e));
   };
 
-  const addTags = (e) => {
-    const filtered = hashtag.filter((el) => el === e.target.value);
+  const addTags = e => {
+    const filtered = hashtag.filter(el => el === e.target.value);
     if (e.target.value !== "" && filtered.length === 0) {
       setHashtag([...hashtag, e.target.value]);
       e.target.value = "";
@@ -185,45 +190,46 @@ const Write = ({ userInfo }) => {
     setTitle(e.target.value);
   };
 
-  const handleMessage = (e) => {
+  const handleMessage = e => {
     setMessage(e.target.value);
   };
 
+  console.log(edit);
   const handleClick = () => {
-    axios.post(`http://ec2-3-21-167-88.us-east-2.compute.amazonaws.com/article/${userInfo.id}`, {
-      title,
-      message,
-      image,
-      hashtag,
-    })
-    .then(() => {
-      navigate("/");
-    });
+    axios
+      .patch(`https://localhost:4000/article/${articleId}`, {
+        title,
+        message,
+        image,
+        hashtag,
+      })
+      .then(() => {
+        navigate(`/article/${articleId}`);
+      });
   };
-
-  console.log(image);
 
   return (
     <StyledBody>
       <StyledImg />
       <StyledMiddle></StyledMiddle>
       <StyledContent>
-        <StyledTitle>글쓰기</StyledTitle>
+        <StyledTitle>수정하기</StyledTitle>
         <StyledSize>
           <div>제목</div>
           <StyledArea1
             type="text"
             placeholder="제목을 입력해주세요"
+            value={edit ? edit.article.title : null}
             onChange={handletitle}
           />
           <StyleTest>
             내용
             {image ? <img src={image} /> : null}
-            <label>사진추가</label>
             <input type="file" onChange={handleImg} />
           </StyleTest>
           <StyledArea2
             placeholder="내용을 입력해주세요"
+            value={edit.article ? edit.article.message : null}
             onChange={handleMessage}
           />
           <div>해시태그</div>
@@ -242,7 +248,6 @@ const Write = ({ userInfo }) => {
             </ul>
             <StyledArea3
               type="text"
-
               onKeyUp={e =>
                 window.event.keyCode === 13 || window.event.keyCode === 32
                   ? addTags(e)
@@ -254,7 +259,7 @@ const Write = ({ userInfo }) => {
           </TagsInput>
         </StyledSize>
         <StyleTest>
-          <button onClick={handleClick}>글올리기</button>
+          <button onClick={handleClick}>수정</button>
         </StyleTest>
       </StyledContent>
     </StyledBody>
