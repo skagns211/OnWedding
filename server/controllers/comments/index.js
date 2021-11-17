@@ -3,16 +3,15 @@ const { Comment, Article } = require("../../models");
 module.exports = {
   comment: {
     post: async (req, res) => {
-      // const { accessToken, tokenExpirse } = req.cookies;
+      const { accessToken, tokenExpirse } = req.cookies;
 
-      // if (tokenExpirse <= Date.now() / 1000) {
-      //   res
-      //     .clearCookie("accessToken")
-      //     .status(401)
-      //     .send({ message: "accessToken Expiration. plz Loing" });
-      // } else if (!accessToken) {
-      //   res.status(403).send({ message: "not logged in" });
-      // } else {
+      if (tokenExpirse <= Date.now() / 1000) {
+        res
+          .clearCookie("accessToken")
+          .send({ message: "accessToken Expiration. plz Loing" });
+      } else if (!accessToken) {
+        res.send({ message: "not logged in" });
+      } else {
         const user_id = req.params.userId;
         const article_id = req.params.articleId;
         const message = req.body.message;
@@ -45,20 +44,19 @@ module.exports = {
         try {
           res.status(201).send({ data: { comment } });
         } catch (err) {
-          res.status(500).send();
+          console.log(err)
         }
-      // }
+      }
     },
     patch: async (req, res) => {
-      // const { accessToken, tokenExpirse } = req.cookies;
-      // if (tokenExpirse <= Date.now() / 1000) {
-      //   res
-      //     .clearCookie("accessToken")
-      //     .status(401)
-      //     .send({ message: "accessToken Expiration. plz Loing" });
-      // } else if (!accessToken) {
-      //   res.status(403).send({ message: "not logged in" });
-      // } else {
+      const { accessToken, tokenExpirse } = req.cookies;
+      if (tokenExpirse <= Date.now() / 1000) {
+        res
+          .clearCookie("accessToken")
+          .send({ message: "accessToken Expiration. plz Loing" });
+      } else if (!accessToken) {
+        res.send({ message: "not logged in" });
+      } else {
         const id = req.params.id;
         const message = req.body.message;
         const commentNum = await Comment.update(
@@ -77,20 +75,19 @@ module.exports = {
         try {
           res.send({ data: { comment } });
         } catch (err) {
-          res.status(500).send();
+          console.log(err)
         }
-      //}
+      }
     },
     delete: async (req, res) => {
-      // const { accessToken, tokenExpirse } = req.cookies;
-      // if (tokenExpirse <= Date.now() / 1000) {
-      //   res
-      //     .clearCookie("accessToken")
-      //     .status(401)
-      //     .send({ message: "accessToken Expiration. plz Loing" });
-      // } else if (!accessToken) {
-      //   res.status(403).send({ message: "not logged in" });
-      // } else {
+      const { accessToken, tokenExpirse } = req.cookies;
+      if (tokenExpirse <= Date.now() / 1000) {
+        res
+          .clearCookie("accessToken")
+          .send({ message: "accessToken Expiration. plz Loing" });
+      } else if (!accessToken) {
+        res.send({ message: "not logged in" });
+      } else {
         const id = req.params.id;
 
         const comment = await Comment.findOne({
@@ -119,9 +116,9 @@ module.exports = {
         try {
           res.status(204).send("deleted");
         } catch (err) {
-          res.status(500).send();
+          console.log(err)
         }
       }
-    // },
+    },
   },
 };

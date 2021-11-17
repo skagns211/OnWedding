@@ -198,7 +198,7 @@ const Write = ({ edit, userInfo, isModify }) => {
   };
 
   const handleClick = () => {
-    axios.post(`https://localhost:4000/article/${userInfo.id}`, {
+    axios.post(`http://ec2-3-21-167-88.us-east-2.compute.amazonaws.com/article/${userInfo.id}`, {
       title,
       message,
       image,
