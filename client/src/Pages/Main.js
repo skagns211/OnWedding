@@ -6,8 +6,6 @@ import axios from "axios";
 
 import ArticleList from "../Components/ArticleList";
 
-import dummy from "../dummy/dummy";
-
 const StyledBody = styled.main`
   max-width: 75%;
   margin: 0 auto;
@@ -71,25 +69,25 @@ const Styledbutton2 = styled.button`
   }
 `;
 
-const Main = () => {
-  const [comments, setComments] = useState("");
+const Main = ({ isLogin }) => {
+  const [articles, setArticles] = useState("");
 
   useEffect(() => {
-    axios.get("http://localhost:4000/article").then(response => {
-      setComments(response.data.data.articles);
+    axios.get("http://localhost:4000/article").then(res => {
+      setArticles(res.data.data.articles);
     });
   }, []);
 
-  const commentsOrder = () => {
-    const arr = comments.slice();
-    const result = arr.sort((a, b) => b.totalcomments - a.totalcomments);
-    setComments(result);
+  const OrderCreated = () => {
+    const arrCopy = articles.slice();
+    const sorted = arrCopy.sort((a, b) => a.id - b.id);
+    setArticles(sorted);
   };
 
-  const createdOrder = () => {
-    const arr = comments.slice();
-    const result = arr.sort((a, b) => a.id - b.id);
-    setComments(result);
+  const OrderTotalComments = () => {
+    const arrCopy = articles.slice();
+    const sorted = arrCopy.sort((a, b) => b.total_comment - a.total_comment);
+    setArticles(sorted);
   };
 
   return (
@@ -97,17 +95,20 @@ const Main = () => {
       <StyledImg />
       <StyledMiddle>
         <Styledbutton1>
-          <li onClick={createdOrder}>최신순</li>
-          <li onClick={commentsOrder}>댓글순</li>
+          <li onClick={OrderCreated}>최신순</li>
+          <li onClick={OrderTotalComments}>댓글순</li>
         </Styledbutton1>
-        <Styledbutton2>
-          <Link to="/write">글쓰기</Link>
-        </Styledbutton2>
+
+        {isLogin ? (
+          <Styledbutton2>
+            <Link to="/write">글쓰기</Link>
+          </Styledbutton2>
+        ) : null}
       </StyledMiddle>
       <StlyedArticle>
-        {comments ? (
-          comments.map(comment => {
-            return <ArticleList comment={comment} key={comment.id} />;
+        {articles ? (
+          articles.map(article => {
+            return <ArticleList article={article} key={article.id} />;
           })
         ) : (
           <div>없어요</div>

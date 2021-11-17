@@ -95,26 +95,37 @@ const StyledTest3 = styled.div`
 
 const StyledTest4 = styled.div``;
 
-const Article = ({ setEdit }) => {
+const Article = ({ setEdit, isLogin, userInfo, setIsModify }) => {
   const id = useParams();
 
-  const [comments, setComment] = useState();
+  const [articleComments, setArticleComments] = useState([]);
   const [article, setArticle] = useState("");
   const [text, setText] = useState("");
-  const [name, setName] = useState("");
-  const [hash, setHash] = useState("");
+  const [username, setUsername] = useState("");
+  const [hashtags, setHashtags] = useState("");
 
-  const clickDelete = e => {
-    const del = comments.filter(change => change.id !== e.id);
-    if (window.confirm("댓글을 삭제하시겠습니까?")) {
-      setComment(del);
-    }
-  };
+  useEffect(() => {
+    axios
+      .get(`http://localhost:4000/article/${Number(id.id)}`, {
+        withCredentials: true,
+      })
+      .then(response => {
+        setArticleComments(response.data.data.comments);
+        setArticle(response.data.data.article);
+        setUsername(response.data.data.username);
+        setHashtags(response.data.data.hashtag);
+      });
+  }, []);
 
   const handleClick = () => {
-    // axios.post(`http://localhost:4000/comment/${유저아이디}/${article.id}`, {
-    //   message: text,
-    // });
+    axios
+      .post(`http://localhost:4000/comment/${userInfo.id}/${article.id}`, {
+        message: text,
+      })
+      .then(res => {
+        const arr = articleComments.slice();
+        setArticleComments([...arr, res.data.data.comment]);
+      });
     setText("");
   };
 
@@ -123,21 +134,16 @@ const Article = ({ setEdit }) => {
   };
 
   const handleEdit = () => {
-    setEdit({ article, hash });
+    setEdit({ article, hashtags });
+    setIsModify(true);
   };
 
-  useEffect(() => {
-    axios
-      .get(`http://localhost:4000/article/${Number(id.id)}`, {
-        withCredentials: true,
-      })
-      .then(response => {
-        setComment(response.data.data.comments);
-        setArticle(response.data.data.article);
-        setName(response.data.data.username);
-        setHash(response.data.data.hashtag);
-      });
-  }, []);
+  const clickDelete = e => {
+    const del = articleComments.filter(change => change.id !== e.id);
+    if (window.confirm("댓글을 삭제하시겠습니까?")) {
+      setArticleComments(del);
+    }
+  };
 
   return (
     <StyledBody>
@@ -145,30 +151,33 @@ const Article = ({ setEdit }) => {
       <StyledMiddle></StyledMiddle>
       <StyledContent>
         <StyledTitle>{article.title}</StyledTitle>
-        <StyledName>{name.name}</StyledName>
+        <StyledName>{username.name}</StyledName>
         <StyledPhoto>{/* <img src={article.image.data} /> */}</StyledPhoto>
         <StyledText>{article.message}</StyledText>
         <div>
           해시태그
-          {hash
-            ? hash.map(hash => {
-                return <div>{hash.name}</div>;
+          {hashtags
+            ? hashtags.map(hashtag => {
+                return <div>{hashtag.name}</div>;
               })
             : null}
         </div>
-        <Link to="/write" onClick={handleEdit}>
-          <button>수정</button>
-        </Link>
+        {userInfo.id === article.user_id ? (
+          <Link to="/write" onClick={handleEdit}>
+            <button>수정</button>
+          </Link>
+        ) : null}
       </StyledContent>
 
       <StyledTest4>
-        {comments &&
-          comments.map(comment => {
+        {articleComments &&
+          articleComments.map(comment => {
             return (
               <Comments
                 clickDelete={() => clickDelete(comment)}
                 comment={comment}
                 key={comment.id}
+                userInfo={userInfo}
               />
             );
           })}
@@ -176,10 +185,10 @@ const Article = ({ setEdit }) => {
 
       <StyledTest2>
         {/* <StyledTest src={article.image.data}></StyledTest> */}
-        <textarea onChange={handletext}>{text}</textarea>
+        <textarea value={text} onChange={handletext} />
       </StyledTest2>
       <StyledTest3>
-        <button onClick={handleClick}>댓글쓰기</button>
+        {isLogin ? <button onClick={handleClick}>댓글쓰기</button> : null}
       </StyledTest3>
     </StyledBody>
   );
