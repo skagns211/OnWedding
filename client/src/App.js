@@ -53,7 +53,7 @@ function App() {
   }, [isLogin]);
 
   //! 유저인포 변경 핸들러 함수
-  const userInfoHandler = userData => {
+  const userInfoHandler = (userData) => {
     setUserInfo(userData);
   };
 

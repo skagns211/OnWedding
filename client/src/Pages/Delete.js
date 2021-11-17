@@ -5,21 +5,21 @@ import axios from "axios";
 const Delete = () => {
   //! 회원탈퇴 상태 state
   const [isComplete, setIsComplete] = useState(false);
-  const history = useNavigate();
+  const navigate = useNavigate();
 
   const handleComplete = () => {
     //! 홈으로 리다이렉트해주기 위한 함수
     // setIsComplete(true);
 
     axios
-      .delete("https://localhost:4000/user", { withCredentials: true })
+      .delete("http://ec2-3-21-167-88.us-east-2.compute.amazonaws.com/user", { withCredentials: true })
       .then((res) => {
         console.log(res.data.message);
         const resMsg = res.data.message;
         if (resMsg === "success delete userInfo") {
           setIsComplete(true);
           setTimeout(() => {
-            history("/");
+            navigate("/");
             setIsComplete(false);
             console.log(isComplete);
           }, 2000);

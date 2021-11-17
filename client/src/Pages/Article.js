@@ -106,10 +106,10 @@ const Article = ({ setEdit, isLogin, userInfo, setArticleId }) => {
 
   useEffect(() => {
     axios
-      .get(`https://localhost:4000/article/${Number(id.id)}`, {
+      .get(`http://ec2-3-21-167-88.us-east-2.compute.amazonaws.com/article/${Number(id.id)}`, {
         withCredentials: true,
       })
-      .then(response => {
+      .then((response) => {
         setArticleComments(response.data.data.comments);
         setArticle(response.data.data.article);
         setUsername(response.data.data.username);
@@ -119,17 +119,17 @@ const Article = ({ setEdit, isLogin, userInfo, setArticleId }) => {
 
   const handleClick = () => {
     axios
-      .post(`https://localhost:4000/comment/${userInfo.id}/${article.id}`, {
+      .post(`http://ec2-3-21-167-88.us-east-2.compute.amazonaws.com/comment/${userInfo.id}/${article.id}`, {
         message: text,
       })
-      .then(res => {
+      .then((res) => {
         const arr = articleComments.slice();
         setArticleComments([...arr, res.data.data.comment]);
       });
     setText("");
   };
 
-  const handletext = e => {
+  const handletext = (e) => {
     setText(e.target.value);
   };
 
@@ -140,11 +140,10 @@ const Article = ({ setEdit, isLogin, userInfo, setArticleId }) => {
 
   useEffect(() => {
     axios
-      .get(`https://localhost:4000/article/${Number(id.id)}`, {
+      .get(`http://ec2-3-21-167-88.us-east-2.compute.amazonaws.com/article/${Number(id.id)}`, {
         withCredentials: true,
       })
-      .then(response => {
-        console.log(response.data.data);
+      .then((response) => {
         setArticleComments(response.data.data.comments);
         setArticle(response.data.data.article);
         setUsername(response.data.data.username);
@@ -152,8 +151,8 @@ const Article = ({ setEdit, isLogin, userInfo, setArticleId }) => {
       });
   }, []);
 
-  const clickDelete = e => {
-    const del = articleComments.filter(change => change.id !== e.id);
+  const clickDelete = (e) => {
+    const del = articleComments.filter((change) => change.id !== e.id);
     if (window.confirm("댓글을 삭제하시겠습니까?")) {
       setArticleComments(del);
     }
@@ -195,7 +194,7 @@ const Article = ({ setEdit, isLogin, userInfo, setArticleId }) => {
 
       <StyledTest4>
         {articleComments &&
-          articleComments.map(comment => {
+          articleComments.map((comment) => {
             return (
               <Comments
                 clickDelete={() => clickDelete(comment)}

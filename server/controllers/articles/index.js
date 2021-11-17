@@ -11,23 +11,23 @@ module.exports = {
     get: async (req, res) => {
       const articles = await Article.findAll();
 
-      if (!articles) {
-        res.status(500).send();
+      try {
+        res.json({ data: { articles } });
+      } catch (err) {
+        console.log(err)
       }
-      res.json({ data: { articles } });
     },
   },
   article: {
     post: async (req, res) => {
-      // const { accessToken, tokenExpirse } = req.cookies;
-      // if (tokenExpirse <= Date.now() / 1000) {
-      //   res
-      //     .clearCookie("accessToken")
-      //     .status(401)
-      //     .send({ message: "accessToken Expiration. plz Loing" });
-      // } else if (!accessToken) {
-      //   res.status(403).send({ message: "not logged in" });
-      // } else {
+      const { accessToken, tokenExpirse } = req.cookies;
+      if (tokenExpirse <= Date.now() / 1000) {
+        res
+          .clearCookie("accessToken")
+          .send({ message: "accessToken Expiration. plz Loing" });
+      } else if (!accessToken) {
+        res.send({ message: "not logged in" });
+      } else {
         const { title, message, image, hashtag } = req.body;
         const user_id = req.params.id;
 
@@ -55,10 +55,11 @@ module.exports = {
         try {
           res.send("created");
         } catch (err) {
-          res.status(500).send();
+          console.log(err)
         }
-      //}
+      }
     },
+    
     get: async (req, res) => {
       const id = req.params.id;
       const article = await Article.findOne({
@@ -94,21 +95,21 @@ module.exports = {
         ],
       });
 
-      if (!article) {
-        res.status(500).send();
+      try {
+        res.json({ data: { article, comments, username, hashtag, commentUser } });
+      } catch (err) {
+        console.log(err)
       }
-      res.json({ data: { article, comments, username, hashtag, commentUser } });
     },
     patch: async (req, res) => {
-      // const { accessToken, tokenExpirse } = req.cookies;
-      // if (tokenExpirse <= Date.now() / 1000) {
-      //   res
-      //     .clearCookie("accessToken")
-      //     .status(401)
-      //     .send({ message: "accessToken Expiration. plz Loing" });
-      // } else if (!accessToken) {
-      //   res.status(403).send({ message: "not logged in" });
-      // } else {
+      const { accessToken, tokenExpirse } = req.cookies;
+      if (tokenExpirse <= Date.now() / 1000) {
+        res
+          .clearCookie("accessToken")
+          .send({ message: "accessToken Expiration. plz Loing" });
+      } else if (!accessToken) {
+        res.send({ message: "not logged in" });
+      } else {
         const id = req.params.id;
         const { title, message, image, hashtag } = req.body;
 
@@ -142,38 +143,37 @@ module.exports = {
         try {
           res.status(201).send("updated");
         } catch (err) {
-          res.status(500);
+          console.log(err)
         }
-      
-    //}
-  },
-  delete: async (req, res) => {
-    // const { accessToken, tokenExpirse } = req.cookies;
-    // if (tokenExpirse <= Date.now() / 1000) {
-    //   res
-    //     .clearCookie("accessToken")
-    //     .status(401)
-    //     .send({ message: "accessToken Expiration. plz Loing" });
-    // } else if (!accessToken) {
-    //   res.status(403).send({ message: "not logged in" });
-    // } else {
-      const id = req.params.id;
+      }
+    },
+    delete: async (req, res) => {
+      const { accessToken, tokenExpirse } = req.cookies;
+      if (tokenExpirse <= Date.now() / 1000) {
+        res
+          .clearCookie("accessToken")
+          .send({ message: "accessToken Expiration. plz Loing" });
+      } else if (!accessToken) {
+        res.send({ message: "not logged in" });
+      } else {
+        const id = req.params.id;
 
-      await Comment.destroy({
-        where: { article_id: id}
-      })
-      await Article_Hashtag.destroy({
-        where: { article_id: id },
-      });
-      await Article.destroy({
-        where: { id },
-      });
-      try {
-        res.status(204).send("ok");
-      } catch (err) {
-        res.status(500).send();
-      }  
-      // }
+        await Comment.destroy({
+          where: { article_id: id}
+        })
+        await Article_Hashtag.destroy({
+          where: { article_id: id },
+        });
+        await Article.destroy({
+          where: { id },
+        });
+          
+        try {
+          res.status(204).send("ok");
+        } catch (err) {
+          console.log(err)
+        }
+      }
     },
   },
   hashtag: {
@@ -194,10 +194,11 @@ module.exports = {
         ],
       });
 
-      if (!articles) {
-        res.status(500).send();
+      try {
+        res.json({ data: { articles } });
+      } catch (err) {
+        console.log(err)
       }
-      res.json({ data: { articles } });
     },
   },
 };

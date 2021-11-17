@@ -73,7 +73,7 @@ const Nav = ({ isLogin, userInfoHandler, setIsLogin }) => {
 
   const logoutHandler = () => {
     axios
-      .post("https://localhost:4000/auth/logout", null, {
+      .post("http://ec2-3-21-167-88.us-east-2.compute.amazonaws.com/auth/logout", null, {
         withCredentials: true,
       })
       .then(res => {

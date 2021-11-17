@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const ChangePassword = () => {
@@ -78,7 +78,7 @@ const ChangePassword = () => {
 
     axios
       .patch(
-        "https://localhost:4000/user/pwd",
+        "http://ec2-3-21-167-88.us-east-2.compute.amazonaws.com/user/pwd",
         {
           password: passwordInfo.newPassword,
         },

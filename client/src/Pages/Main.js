@@ -74,7 +74,7 @@ const Main = ({ isLogin }) => {
   const [articles, setArticles] = useState("");
 
   useEffect(() => {
-    axios.get("https://localhost:4000/article").then(res => {
+    axios.get("http://ec2-3-21-167-88.us-east-2.compute.amazonaws.com/article").then(res => {
       setArticles(res.data.data.articles);
     });
   }, []);

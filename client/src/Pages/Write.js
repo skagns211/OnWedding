@@ -136,7 +136,7 @@ const Write = ({ userInfo }) => {
 
   const [image, setImage] = useState(null);
 
-  const handleImg = event => {
+  const handleImg = (event) => {
     const imgFile = event.target.files[0];
     if (!imgFile) {
       return setImage(null);
@@ -152,10 +152,10 @@ const Write = ({ userInfo }) => {
     const promise = upload.promise();
 
     promise.then(
-      data => {
+      (data) => {
         setImage(data.Location);
       },
-      err => {
+      (err) => {
         console.log(err);
       }
     );
@@ -169,12 +169,12 @@ const Write = ({ userInfo }) => {
   const [click, setClick] = useState("");
   const navigate = useNavigate();
 
-  const removeTags = e => {
+  const removeTags = (e) => {
     setHashtag(hashtag.filter((_, index) => index !== e));
   };
 
-  const addTags = e => {
-    const filtered = hashtag.filter(el => el === e.target.value);
+  const addTags = (e) => {
+    const filtered = hashtag.filter((el) => el === e.target.value);
     if (e.target.value !== "" && filtered.length === 0) {
       setHashtag([...hashtag, e.target.value]);
       e.target.value = "";
@@ -185,21 +185,20 @@ const Write = ({ userInfo }) => {
     setTitle(e.target.value);
   };
 
-  const handleMessage = e => {
+  const handleMessage = (e) => {
     setMessage(e.target.value);
   };
 
   const handleClick = () => {
-    axios
-      .post(`https://localhost:4000/article/${userInfo.id}`, {
-        title,
-        message,
-        image,
-        hashtag,
-      })
-      .then(() => {
-        navigate("/");
-      });
+    axios.post(`http://ec2-3-21-167-88.us-east-2.compute.amazonaws.com/article/${userInfo.id}`, {
+      title,
+      message,
+      image,
+      hashtag,
+    })
+    .then(() => {
+      navigate("/");
+    });
   };
 
   console.log(image);
@@ -243,6 +242,7 @@ const Write = ({ userInfo }) => {
             </ul>
             <StyledArea3
               type="text"
+
               onKeyUp={e =>
                 window.event.keyCode === 13 || window.event.keyCode === 32
                   ? addTags(e)
