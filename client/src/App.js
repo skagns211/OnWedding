@@ -51,9 +51,9 @@ function App() {
     window.localStorage.setItem("isLogin", JSON.stringify(isLogin));
   }, [isLogin]);
 
-  useEffect(() => {
-    setIsModify(false);
-  }, []);
+  // useEffect(() => {
+  //   setIsModify(false);
+  // }, []);
 
 
   //! 유저인포 변경 핸들러 함수
