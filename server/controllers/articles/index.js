@@ -32,7 +32,7 @@ module.exports = {
         const user_id = req.params.id;
 
         if (!user_id || !title || !message) {
-          res.status(400).send("bad request");
+          res.send("bad request");
         }
 
         const article = await Article.create({
@@ -113,7 +113,7 @@ module.exports = {
         const { title, message, image, hashtag } = req.body;
 
         if (!title || !message) {
-          res.status(400).send("bad request");
+          res.send("bad request");
         }
         await Article.update(
           {
@@ -144,33 +144,36 @@ module.exports = {
         } catch (err) {
           res.status(500);
         }
-      //}
-    },
-    delete: async (req, res) => {
-      // const { accessToken, tokenExpirse } = req.cookies;
-      // if (tokenExpirse <= Date.now() / 1000) {
-      //   res
-      //     .clearCookie("accessToken")
-      //     .status(401)
-      //     .send({ message: "accessToken Expiration. plz Loing" });
-      // } else if (!accessToken) {
-      //   res.status(403).send({ message: "not logged in" });
-      // } else {
-        const id = req.params.id;
+      
+    //}
+  },
+  delete: async (req, res) => {
+    // const { accessToken, tokenExpirse } = req.cookies;
+    // if (tokenExpirse <= Date.now() / 1000) {
+    //   res
+    //     .clearCookie("accessToken")
+    //     .status(401)
+    //     .send({ message: "accessToken Expiration. plz Loing" });
+    // } else if (!accessToken) {
+    //   res.status(403).send({ message: "not logged in" });
+    // } else {
+      const id = req.params.id;
 
-        await Article_Hashtag.destroy({
-          where: { article_id: id },
-        });
-
-        await Article.destroy({
-          where: { id },
-        });
-      //}
+      await Comment.destroy({
+        where: { article_id: id}
+      })
+      await Article_Hashtag.destroy({
+        where: { article_id: id },
+      });
+      await Article.destroy({
+        where: { id },
+      });
       try {
         res.status(204).send("ok");
       } catch (err) {
         res.status(500).send();
-      }
+      }  
+      // }
     },
   },
   hashtag: {
