@@ -6,6 +6,9 @@ module.exports = {
   login: {
     post: async (req, res) => {
       const { email, password } = req.body;
+      if (!email || !password) {
+        res.send({ message: 'require All info' })
+      }
       const userInfo = await User.findOne({
         where: { email, password },
       });
@@ -70,7 +73,7 @@ module.exports = {
     post: async (req, res) => {
       const { password, email, name, nickname, birth, mobile } = req.body;
       if (!password || !email || !name || !nickname || !birth || !mobile) {
-        res.status(422).send({ message: "require All Info" });
+        res.send({ message: "require All Info" });
       } else {
         await User.create({
           password,
