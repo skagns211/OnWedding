@@ -37,14 +37,14 @@ const Comments = ({ comment, clickDelete, userInfo }) => {
   const handleEdit = (e) => {
     setEdit(!edit);
     if (e.target.textContent === "확인") {
-      axios.patch(`https://localhost:4000/comment/${comment.id}`, {
+      axios.patch(`http://ec2-3-21-167-88.us-east-2.compute.amazonaws.com/comment/${comment.id}`, {
         message: comments,
       });
     }
   };
 
   const handleDelete = () => {
-    axios.delete(`https://localhost:4000/comment/${comment.id}`);
+    axios.delete(`http://ec2-3-21-167-88.us-east-2.compute.amazonaws.com/comment/${comment.id}`);
     clickDelete(comment);
   };
 

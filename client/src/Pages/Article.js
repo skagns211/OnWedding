@@ -106,7 +106,7 @@ const Article = ({ setEdit, isLogin, userInfo, setIsModify }) => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:4000/article/${Number(id.id)}`, {
+      .get(`http://ec2-3-21-167-88.us-east-2.compute.amazonaws.com/article/${Number(id.id)}`, {
         withCredentials: true,
       })
       .then(response => {
@@ -119,7 +119,7 @@ const Article = ({ setEdit, isLogin, userInfo, setIsModify }) => {
 
   const handleClick = () => {
     axios
-      .post(`http://localhost:4000/comment/${userInfo.id}/${article.id}`, {
+      .post(`http://ec2-3-21-167-88.us-east-2.compute.amazonaws.com/comment/${userInfo.id}/${article.id}`, {
         message: text,
       })
       .then(res => {
@@ -140,14 +140,14 @@ const Article = ({ setEdit, isLogin, userInfo, setIsModify }) => {
 
   useEffect(() => {
     axios
-      .get(`https://localhost:4000/article/${Number(id.id)}`, {
+      .get(`http://ec2-3-21-167-88.us-east-2.compute.amazonaws.com/article/${Number(id.id)}`, {
         withCredentials: true,
       })
       .then(response => {
-        setComment(response.data.data.comments);
+        setArticleComments(response.data.data.comments);
         setArticle(response.data.data.article);
-        setName(response.data.data.username);
-        setHash(response.data.data.hashtag);
+        setUsername(response.data.data.username);
+        setHashtags(response.data.data.hashtag);
       });
   }, []);
 
