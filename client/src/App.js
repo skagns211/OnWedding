@@ -10,6 +10,7 @@ import Main from "./Pages/Main";
 import MyPage from "./Pages/MyPage";
 import SignUp from "./Pages/SignUp";
 import Write from "./Pages/Write";
+import Update from "./Pages/Update";
 
 import Nav from "./Components/Nav";
 import Footer from "./Components/Footer";
@@ -29,7 +30,7 @@ const StyledBody = styled.div`
 
 function App() {
   const [edit, setEdit] = useState("");
-  const [isModify, setIsModify] = useState(false);
+  const [articleId, setArticleId] = useState(false);
 
   useEffect(() => {
     setEdit("");
@@ -67,12 +68,6 @@ function App() {
     setUserInfo(userData);
   };
 
-  //! 로그인 상태 확인용 함수
-  const check = () => {
-    console.log(isLogin);
-    console.log(userInfo);
-  };
-
   return (
     <BrowserRouter>
       <GlobalStyle />
@@ -81,15 +76,15 @@ function App() {
           isLogin={isLogin}
           userInfoHandler={userInfoHandler}
           setIsLogin={setIsLogin}
-          check={check}
         />
         <Routes>
           <Route exact path="/" element={<Main isLogin={isLogin} />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/write" element={<Write userInfo={userInfo} />} />
           <Route
-            path="/write"
+            path="/update"
             element={
-              <Write isModify={isModify} userInfo={userInfo} edit={edit} />
+              <Update articleId={articleId} userInfo={userInfo} edit={edit} />
             }
           />
           <Route
@@ -99,7 +94,7 @@ function App() {
                 userInfo={userInfo}
                 isLogin={isLogin}
                 setEdit={setEdit}
-                setIsModify={setIsModify}
+                setArticleId={setArticleId}
               />
             }
           />

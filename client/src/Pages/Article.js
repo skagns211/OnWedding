@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useParams } from "react-router";
+import { useParams, useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 
 import Comments from "../Components/Comments";
@@ -93,9 +93,11 @@ const StyledTest3 = styled.div`
   }
 `;
 
+// 수정asdasdas
+
 const StyledTest4 = styled.div``;
 
-const Article = ({ setEdit, isLogin, userInfo, setIsModify }) => {
+const Article = ({ setEdit, isLogin, userInfo, setArticleId }) => {
   const id = useParams();
 
   const [articleComments, setArticleComments] = useState([]);
@@ -135,7 +137,7 @@ const Article = ({ setEdit, isLogin, userInfo, setIsModify }) => {
 
   const handleEdit = () => {
     setEdit({ article, hashtags });
-    setIsModify(true);
+    setArticleId(Number(id.id));
   };
 
   useEffect(() => {
@@ -158,6 +160,10 @@ const Article = ({ setEdit, isLogin, userInfo, setIsModify }) => {
     }
   };
 
+  const DeleteArticle = () => {
+    axios.delete(`https://localhost:4000/article/${Number(id.id)}`);
+  };
+
   return (
     <StyledBody>
       <StyledImg />
@@ -165,20 +171,26 @@ const Article = ({ setEdit, isLogin, userInfo, setIsModify }) => {
       <StyledContent>
         <StyledTitle>{article.title}</StyledTitle>
         <StyledName>{username.name}</StyledName>
-        <StyledPhoto>{/* <img src={article.image.data} /> */}</StyledPhoto>
+        <StyledPhoto>
+          <img src={article.image} />
+        </StyledPhoto>
         <StyledText>{article.message}</StyledText>
         <div>
-          해시태그
           {hashtags
-            ? hashtags.map((hashtag) => {
-                return <div>{hashtag.name}</div>;
+            ? hashtags.map(hashtag => {
+                return <span>#{hashtag.name}</span>;
               })
             : null}
         </div>
         {userInfo.id === article.user_id ? (
-          <Link to="/write" onClick={handleEdit}>
-            <button>수정</button>
-          </Link>
+          <div>
+            <Link to="/update" onClick={handleEdit}>
+              <button>수정</button>
+            </Link>
+            <Link to="/" onClick={DeleteArticle}>
+              <button>삭제</button>
+            </Link>
+          </div>
         ) : null}
       </StyledContent>
 
@@ -197,7 +209,7 @@ const Article = ({ setEdit, isLogin, userInfo, setIsModify }) => {
       </StyledTest4>
 
       <StyledTest2>
-        {/* <StyledTest src={article.image.data}></StyledTest> */}
+        {/* <StyledTest src={article.image}></StyledTest> */}
         <textarea value={text} onChange={handletext} />
       </StyledTest2>
       <StyledTest3>
