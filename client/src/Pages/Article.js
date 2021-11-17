@@ -106,10 +106,10 @@ const Article = ({ setEdit, isLogin, userInfo, setIsModify }) => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:4000/article/${Number(id.id)}`, {
+      .get(`https://localhost:4000/article/${Number(id.id)}`, {
         withCredentials: true,
       })
-      .then(response => {
+      .then((response) => {
         setArticleComments(response.data.data.comments);
         setArticle(response.data.data.article);
         setUsername(response.data.data.username);
@@ -119,17 +119,17 @@ const Article = ({ setEdit, isLogin, userInfo, setIsModify }) => {
 
   const handleClick = () => {
     axios
-      .post(`http://localhost:4000/comment/${userInfo.id}/${article.id}`, {
+      .post(`https://localhost:4000/comment/${userInfo.id}/${article.id}`, {
         message: text,
       })
-      .then(res => {
+      .then((res) => {
         const arr = articleComments.slice();
         setArticleComments([...arr, res.data.data.comment]);
       });
     setText("");
   };
 
-  const handletext = e => {
+  const handletext = (e) => {
     setText(e.target.value);
   };
 
@@ -143,16 +143,16 @@ const Article = ({ setEdit, isLogin, userInfo, setIsModify }) => {
       .get(`https://localhost:4000/article/${Number(id.id)}`, {
         withCredentials: true,
       })
-      .then(response => {
-        setComment(response.data.data.comments);
+      .then((response) => {
+        setArticleComments(response.data.data.comments);
         setArticle(response.data.data.article);
-        setName(response.data.data.username);
-        setHash(response.data.data.hashtag);
+        setUsername(response.data.data.username);
+        setHashtags(response.data.data.hashtag);
       });
   }, []);
 
-  const clickDelete = e => {
-    const del = articleComments.filter(change => change.id !== e.id);
+  const clickDelete = (e) => {
+    const del = articleComments.filter((change) => change.id !== e.id);
     if (window.confirm("댓글을 삭제하시겠습니까?")) {
       setArticleComments(del);
     }
@@ -170,7 +170,7 @@ const Article = ({ setEdit, isLogin, userInfo, setIsModify }) => {
         <div>
           해시태그
           {hashtags
-            ? hashtags.map(hashtag => {
+            ? hashtags.map((hashtag) => {
                 return <div>{hashtag.name}</div>;
               })
             : null}
@@ -184,7 +184,7 @@ const Article = ({ setEdit, isLogin, userInfo, setIsModify }) => {
 
       <StyledTest4>
         {articleComments &&
-          articleComments.map(comment => {
+          articleComments.map((comment) => {
             return (
               <Comments
                 clickDelete={() => clickDelete(comment)}
