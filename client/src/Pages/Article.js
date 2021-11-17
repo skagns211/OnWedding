@@ -109,7 +109,7 @@ const Article = ({ setEdit, isLogin, userInfo, setIsModify }) => {
       .get(`http://ec2-3-21-167-88.us-east-2.compute.amazonaws.com/article/${Number(id.id)}`, {
         withCredentials: true,
       })
-      .then(response => {
+      .then((response) => {
         setArticleComments(response.data.data.comments);
         setArticle(response.data.data.article);
         setUsername(response.data.data.username);
@@ -122,14 +122,14 @@ const Article = ({ setEdit, isLogin, userInfo, setIsModify }) => {
       .post(`http://ec2-3-21-167-88.us-east-2.compute.amazonaws.com/comment/${userInfo.id}/${article.id}`, {
         message: text,
       })
-      .then(res => {
+      .then((res) => {
         const arr = articleComments.slice();
         setArticleComments([...arr, res.data.data.comment]);
       });
     setText("");
   };
 
-  const handletext = e => {
+  const handletext = (e) => {
     setText(e.target.value);
   };
 
@@ -143,7 +143,7 @@ const Article = ({ setEdit, isLogin, userInfo, setIsModify }) => {
       .get(`http://ec2-3-21-167-88.us-east-2.compute.amazonaws.com/article/${Number(id.id)}`, {
         withCredentials: true,
       })
-      .then(response => {
+      .then((response) => {
         setArticleComments(response.data.data.comments);
         setArticle(response.data.data.article);
         setUsername(response.data.data.username);
@@ -151,8 +151,8 @@ const Article = ({ setEdit, isLogin, userInfo, setIsModify }) => {
       });
   }, []);
 
-  const clickDelete = e => {
-    const del = articleComments.filter(change => change.id !== e.id);
+  const clickDelete = (e) => {
+    const del = articleComments.filter((change) => change.id !== e.id);
     if (window.confirm("댓글을 삭제하시겠습니까?")) {
       setArticleComments(del);
     }
@@ -170,7 +170,7 @@ const Article = ({ setEdit, isLogin, userInfo, setIsModify }) => {
         <div>
           해시태그
           {hashtags
-            ? hashtags.map(hashtag => {
+            ? hashtags.map((hashtag) => {
                 return <div>{hashtag.name}</div>;
               })
             : null}
@@ -184,7 +184,7 @@ const Article = ({ setEdit, isLogin, userInfo, setIsModify }) => {
 
       <StyledTest4>
         {articleComments &&
-          articleComments.map(comment => {
+          articleComments.map((comment) => {
             return (
               <Comments
                 clickDelete={() => clickDelete(comment)}
