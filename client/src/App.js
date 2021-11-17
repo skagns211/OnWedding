@@ -22,6 +22,8 @@ const StyledBody = styled.div`
 
 function App() {
   const [edit, setEdit] = useState("");
+  const [isModify, setIsModify] = useState(false);
+
   useEffect(() => {
     setEdit("");
   }, [edit]);
@@ -49,8 +51,13 @@ function App() {
     window.localStorage.setItem("isLogin", JSON.stringify(isLogin));
   }, [isLogin]);
 
+  useEffect(() => {
+    setIsModify(false);
+  }, []);
+
+
   //! 유저인포 변경 핸들러 함수
-  const userInfoHandler = (userData) => {
+  const userInfoHandler = userData => {
     setUserInfo(userData);
   };
 
@@ -70,10 +77,25 @@ function App() {
           check={check}
         />
         <Routes>
-          <Route exact path="/" element={<Main />} />
+          <Route exact path="/" element={<Main isLogin={isLogin} />} />
           <Route path="/signup" element={<SignUp />} />
-          <Route path="/write" element={<Write edit={edit} />} />
-          <Route path="/article/:id" element={<Article setEdit={setEdit} />} />
+          <Route
+            path="/write"
+            element={
+              <Write isModify={isModify} userInfo={userInfo} edit={edit} />
+            }
+          />
+          <Route
+            path="/article/:id"
+            element={
+              <Article
+                userInfo={userInfo}
+                isLogin={isLogin}
+                setEdit={setEdit}
+                setIsModify={setIsModify}
+              />
+            }
+          />
           <Route path="change" element={<ChangePassword />} />
           <Route path="/mypage" element={<MyPage userInfo={userInfo} />} />
           <Route path="/delete" element={<Delete />} />

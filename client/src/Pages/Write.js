@@ -122,7 +122,7 @@ const StyledClose = styled.span`
   font-size: 1.5rem;
 `;
 
-const Write = ({ edit }) => {
+const Write = ({ edit, userInfo, isModify }) => {
   //! s3 구현
   const AWS = require("aws-sdk");
 
@@ -164,17 +164,11 @@ const Write = ({ edit }) => {
   //! s3 구현
 
   const [hashtag, setHashtag] = useState(
-    edit.hash ? edit.hash.map(hash => hash.name) : []
+    edit.hashtags ? edit.hashtags.map(hashtag => hashtag.name) : []
   );
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
   const [click, setClick] = useState("");
-
-  // useEffect(() => {
-  //   if (edit) {
-  //     setHashtag(edit.hash);
-  //   }
-  // }, []);
 
   const removeTags = e => {
     setHashtag(hashtag.filter((_, index) => index !== e));
@@ -204,26 +198,20 @@ const Write = ({ edit }) => {
   };
 
   const handleClick = () => {
-    // axios.post(`http://localhost:4000/article/${유저아이디}`, {
-    //   message: {
-    //     title,
-    //     message,
-    //     image,
-    //     hashtag,
-    //   },
-    // });
+    axios.post(`http://localhost:4000/article/${userInfo.id}`, {
+      title,
+      message,
+      image,
+      hashtag,
+    });
   };
-
-  console.log(hashtag);
-  console.log(edit);
-  console.log(click);
 
   return (
     <StyledBody>
       <StyledImg />
       <StyledMiddle></StyledMiddle>
       <StyledContent>
-        <StyledTitle>글쓰기</StyledTitle>
+        <StyledTitle>{isModify ? "수정하기" : "글쓰기"}</StyledTitle>
         <StyledSize>
           <div>제목</div>
           <StyledArea1
@@ -245,12 +233,16 @@ const Write = ({ edit }) => {
           <div>해시태그</div>
           <TagsInput>
             <ul>
-              {hashtag.map((tag, index) => (
-                <li key={index}>
-                  <span>#{tag}</span>
-                  <StyledClose onClick={() => removeTags(index)}>x</StyledClose>
-                </li>
-              ))}
+              {hashtag
+                ? hashtag.map((tag, index) => (
+                    <li key={index}>
+                      <span>#{tag}</span>
+                      <StyledClose onClick={() => removeTags(index)}>
+                        x
+                      </StyledClose>
+                    </li>
+                  ))
+                : null}
             </ul>
             <StyledArea3
               type="text"
@@ -262,7 +254,9 @@ const Write = ({ edit }) => {
           </TagsInput>
         </StyledSize>
         <StyleTest>
-          <button onClick={handleClick}>글올리기</button>
+          <button onClick={handleClick}>
+            {isModify ? "수정" : "글올리기"}
+          </button>
         </StyleTest>
       </StyledContent>
     </StyledBody>

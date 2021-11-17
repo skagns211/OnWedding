@@ -3,16 +3,16 @@ const { Comment, Article } = require("../../models");
 module.exports = {
   comment: {
     post: async (req, res) => {
-      const { accessToken, tokenExpirse } = req.cookies;
+      // const { accessToken, tokenExpirse } = req.cookies;
 
-      if (tokenExpirse <= Date.now() / 1000) {
-        res
-          .clearCookie("accessToken")
-          .status(401)
-          .send({ message: "accessToken Expiration. plz Loing" });
-      } else if (!accessToken) {
-        res.status(403).send({ message: "not logged in" });
-      } else {
+      // if (tokenExpirse <= Date.now() / 1000) {
+      //   res
+      //     .clearCookie("accessToken")
+      //     .status(401)
+      //     .send({ message: "accessToken Expiration. plz Loing" });
+      // } else if (!accessToken) {
+      //   res.status(403).send({ message: "not logged in" });
+      // } else {
         const user_id = req.params.userId;
         const article_id = req.params.articleId;
         const message = req.body.message;
@@ -47,18 +47,18 @@ module.exports = {
         } catch (err) {
           res.status(500).send();
         }
-      }
+      // }
     },
     patch: async (req, res) => {
-      const { accessToken, tokenExpirse } = req.cookies;
-      if (tokenExpirse <= Date.now() / 1000) {
-        res
-          .clearCookie("accessToken")
-          .status(401)
-          .send({ message: "accessToken Expiration. plz Loing" });
-      } else if (!accessToken) {
-        res.status(403).send({ message: "not logged in" });
-      } else {
+      // const { accessToken, tokenExpirse } = req.cookies;
+      // if (tokenExpirse <= Date.now() / 1000) {
+      //   res
+      //     .clearCookie("accessToken")
+      //     .status(401)
+      //     .send({ message: "accessToken Expiration. plz Loing" });
+      // } else if (!accessToken) {
+      //   res.status(403).send({ message: "not logged in" });
+      // } else {
         const id = req.params.id;
         const message = req.body.message;
         const commentNum = await Comment.update(
@@ -79,26 +79,30 @@ module.exports = {
         } catch (err) {
           res.status(500).send();
         }
-      }
+      //}
     },
     delete: async (req, res) => {
-      const { accessToken, tokenExpirse } = req.cookies;
-      if (tokenExpirse <= Date.now() / 1000) {
-        res
-          .clearCookie("accessToken")
-          .status(401)
-          .send({ message: "accessToken Expiration. plz Loing" });
-      } else if (!accessToken) {
-        res.status(403).send({ message: "not logged in" });
-      } else {
+      // const { accessToken, tokenExpirse } = req.cookies;
+      // if (tokenExpirse <= Date.now() / 1000) {
+      //   res
+      //     .clearCookie("accessToken")
+      //     .status(401)
+      //     .send({ message: "accessToken Expiration. plz Loing" });
+      // } else if (!accessToken) {
+      //   res.status(403).send({ message: "not logged in" });
+      // } else {
         const id = req.params.id;
+
+        const comment = await Comment.findOne({
+          where: { id }
+        })
 
         await Comment.destroy({
           where: { id },
         });
 
         const commentCnt = await Comment.count({
-          where: { article_id },
+          where: { article_id: comment.article_id },
         });
 
         await Article.update(
@@ -107,7 +111,7 @@ module.exports = {
           },
           {
             where: {
-              id: article_id,
+              id: comment.article_id,
             },
           }
         );
@@ -118,6 +122,6 @@ module.exports = {
           res.status(500).send();
         }
       }
-    },
+    // },
   },
 };

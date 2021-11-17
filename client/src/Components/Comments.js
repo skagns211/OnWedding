@@ -26,7 +26,7 @@ const StyledEdit = styled.div`
   }
 `;
 
-const Comments = ({ comment, clickDelete }) => {
+const Comments = ({ comment, clickDelete, userInfo }) => {
   const [edit, setEdit] = useState(false);
   const [comments, setComments] = useState(comment.message);
 
@@ -60,8 +60,12 @@ const Comments = ({ comment, clickDelete }) => {
         )}
       </StyledEdit>
       <div>{comment.createdAt}</div>
-      <button onClick={handleEdit}>{edit ? "확인" : "수정"}</button>
-      <button onClick={handleDelete}>삭제</button>
+      {userInfo.id === comment.user_id ? (
+        <div>
+          <button onClick={handleEdit}>{edit ? "확인" : "수정"}</button>
+          <button onClick={handleDelete}>삭제</button>
+        </div>
+      ) : null}
     </StyledTest2>
   );
 };
