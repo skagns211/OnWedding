@@ -28,20 +28,33 @@ function App() {
     setEdit("");
   }, [edit]);
 
+  const [userInfo, setUserInfo] = useState(
+    () =>
+      JSON.parse(window.localStorage.getItem("userInfo")) || {
+        id: "",
+        email: "",
+        name: "",
+        nickname: "",
+        mobile: "",
+        image: "",
+      }
+  );
+  useEffect(() => {
+    window.localStorage.setItem("userInfo", JSON.stringify(userInfo));
+  }, [userInfo]);
+
+  const [isLogin, setIsLogin] = useState(
+    () => JSON.parse(window.localStorage.getItem("isLogin")) || false
+  );
+
+  useEffect(() => {
+    window.localStorage.setItem("isLogin", JSON.stringify(isLogin));
+  }, [isLogin]);
+
   useEffect(() => {
     setIsModify(false);
   }, []);
 
-  const [userInfo, setUserInfo] = useState({
-    id: "",
-    email: "",
-    name: "",
-    nickname: "",
-    mobile: "",
-    image: "",
-  });
-
-  const [isLogin, setIsLogin] = useState(false);
 
   //! 유저인포 변경 핸들러 함수
   const userInfoHandler = userData => {
