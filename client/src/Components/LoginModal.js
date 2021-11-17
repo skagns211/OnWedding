@@ -119,6 +119,13 @@ const LoginModal = ({ openModalHandler, userInfoHandler, setIsLogin }) => {
       });
   };
 
+  //! 엔터키 구현
+  const onCheckEnter = (e) => {
+    if (e.key === "Enter") {
+      infoAll();
+    }
+  };
+
   return (
     <>
       <ModalBackdrop
@@ -137,6 +144,7 @@ const LoginModal = ({ openModalHandler, userInfoHandler, setIsLogin }) => {
                 type="text"
                 placeholder="Email"
                 onChange={handleInputValue("email")}
+                onKeyPress={onCheckEnter}
                 onBlur={() => validEmail(loginUserInfo.email)}
               />
               {isLogEmail ? (
@@ -151,6 +159,7 @@ const LoginModal = ({ openModalHandler, userInfoHandler, setIsLogin }) => {
                 type="password"
                 placeholder="Password"
                 onChange={handleInputValue("password")}
+                onKeyPress={onCheckEnter}
                 onBlur={() => passwordState()}
               />
               {invalidMessage !== "" ? <div>{invalidMessage}</div> : null}
@@ -168,7 +177,11 @@ const LoginModal = ({ openModalHandler, userInfoHandler, setIsLogin }) => {
             {/* <button type="submit" className="linkToSignup">
               OnWedding 회원가입
             </button> */}
-            <Link to="/signup" onClick={openModalHandler}>
+            <Link
+              to="/signup"
+              onClick={openModalHandler}
+              // onKeyPress={openModalHandler}
+            >
               OnWedding 회원가입
             </Link>
           </center>
