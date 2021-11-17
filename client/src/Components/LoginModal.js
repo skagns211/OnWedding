@@ -1,23 +1,26 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-
+//!! 하하하
 const ModalContainer = styled.div`
   //!Modal 구현 css
-  background-color: white;
+  background-color: #f4eae0;
   border-radius: 5%;
   width: 30%;
-  min-width: 300px;
-  max-width: 600px;
+  min-width: 25rem;
+  max-width: 37.5rem;
   height: 70%;
-  overflow-y: auto;
   position: fixed;
   left: 50%;
   top: 50%;
   padding: 5px;
   transform: translate(-50%, -50%);
   z-index: 1011;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
 `;
 
 const ModalBackdrop = styled.div`
@@ -31,6 +34,47 @@ const ModalBackdrop = styled.div`
   z-index: 1010;
   background-color: rgba(0, 0, 0, 0.65);
 `;
+
+const LoginHeader = styled.h1`
+  font-size: 3rem;
+  margin-top: 1.5em;
+`;
+const Welcome = styled.div`
+  font-size: 1.5rem;
+`;
+const Element = styled.div`
+  min-width: 10rem;
+  max-width: 12.5rem;
+  font-size: 1.3rem;
+  padding-top: 0.625rem;
+  margin-top: 0.625rem;
+  /* font-family: "NanumGimYuICe"; */
+`;
+const Inputbox = styled.input`
+  width: 18.75rem;
+  height: 2.5rem;
+  margin-top: 0.2rem;
+  border-radius: 0.4rem;
+  border: none;
+  background-color: white;
+  font-size: 1.2rem;
+  /* font-family: "NanumGimYuICe"; */
+`;
+const Button = styled.button`
+  width: 6.25rem;
+  height: 2.5rem;
+  margin-top: 1rem;
+  font-size: 1.125rem;
+  border-radius: 0.5rem;
+  /* font-family: "NanumGimYuICe"; */
+`;
+const Elementmessage = styled.div`
+  color: red;
+  font-size: 0.875rem;
+  margin-top: 0.4rem;
+  /* font-family: "NanumGimYuICe"; */
+`;
+const SignupRedirect = styled.div``;
 
 const LoginModal = ({ openModalHandler, userInfoHandler, setIsLogin }) => {
   const [loginUserInfo, setLoginUserInfo] = useState({
@@ -46,6 +90,8 @@ const LoginModal = ({ openModalHandler, userInfoHandler, setIsLogin }) => {
   const handleInputValue = (key) => (e) => {
     setLoginUserInfo({ ...loginUserInfo, [key]: e.target.value });
   };
+
+  const navigate = useNavigate();
 
   const validEmail = (email) => {
     const regEmail =
@@ -88,9 +134,7 @@ const LoginModal = ({ openModalHandler, userInfoHandler, setIsLogin }) => {
         console.log(res);
         if (res.data.message === "invalid data") {
           console.log("로그인 요청이 실패하였습니다.");
-          setInvalidMessage(
-            "아이디 또는 비밀번호가 잘못 입력 되었습니다.아이디와 비밀번호를 정확히 입력해 주세요"
-          );
+          setInvalidMessage("아이디와 비밀번호를 정확히 입력해 주세요");
         } else {
           //! isLogin 상태를 변경해줘야함
           //! axios get 요청을 보내고 받은 응답 유저인포를 전역에서 프롭스로 받아온 핸들러로 스테이트 변경
@@ -133,59 +177,62 @@ const LoginModal = ({ openModalHandler, userInfoHandler, setIsLogin }) => {
           openModalHandler();
         }}
       ></ModalBackdrop>
-      <ModalContainer>
-        <>
-          <center>
-            <div> 로그인</div>
-            <div>OnWedding 커뮤니티에 로그인하세요!</div>
-            <div>
-              <div>이메일</div>
-              <input
-                type="text"
-                placeholder="Email"
-                onChange={handleInputValue("email")}
-                onKeyPress={onCheckEnter}
-                onBlur={() => validEmail(loginUserInfo.email)}
-              />
-              {isLogEmail ? (
-                <div>{emailMessage}</div>
-              ) : loginUserInfo.email.length === 0 ? null : (
-                <div>{emailMessage}</div>
-              )}
-            </div>
-            <div>
-              <div>비밀번호</div>
-              <input
-                type="password"
-                placeholder="Password"
-                onChange={handleInputValue("password")}
-                onKeyPress={onCheckEnter}
-                onBlur={() => passwordState()}
-              />
-              {invalidMessage !== "" ? <div>{invalidMessage}</div> : null}
-            </div>
-            <button
-              type="submit"
-              className="postLogin"
-              onClick={() => {
-                infoAll();
-              }}
-            >
-              로그인
-            </button>
-            <div>아직 회원이 아니신가요?</div>
-            {/* <button type="submit" className="linkToSignup">
-              OnWedding 회원가입
-            </button> */}
-            <Link
-              to="/signup"
-              onClick={openModalHandler}
-              // onKeyPress={openModalHandler}
-            >
-              OnWedding 회원가입
-            </Link>
-          </center>
-        </>
+      <ModalContainer welcome>
+        {/* <GlobalStyleLogin /> */}
+        <LoginHeader> Login </LoginHeader>
+        <Welcome>OnWedding 커뮤니티에 로그인하세요!</Welcome>
+        <div>
+          <Element> 이메일 </Element>
+          <Inputbox
+            type="text"
+            placeholder="Email"
+            onChange={handleInputValue("email")}
+            onKeyPress={onCheckEnter}
+            onBlur={() => validEmail(loginUserInfo.email)}
+          />
+          {isLogEmail ? (
+            <Elementmessage>{emailMessage}</Elementmessage>
+          ) : loginUserInfo.email.length === 0 ? null : (
+            <Elementmessage>{emailMessage}</Elementmessage>
+          )}
+        </div>
+        <div>
+          <Element> 비밀번호 </Element>
+          <Inputbox
+            type="password"
+            placeholder="Password"
+            onChange={handleInputValue("password")}
+            onKeyPress={onCheckEnter}
+            onBlur={() => passwordState()}
+          />
+          {invalidMessage !== "" ? (
+            <Elementmessage>{invalidMessage}</Elementmessage>
+          ) : null}
+        </div>
+        <Button
+          type="submit"
+          className="postLogin"
+          onClick={() => {
+            infoAll();
+          }}
+        >
+          로그인
+        </Button>
+        <Button
+          onClick={() => {
+            navigate("/signup");
+            openModalHandler();
+          }}
+        >
+          회원가입
+        </Button>
+        {/* <Link
+          to="/signup"
+          onClick={openModalHandler}
+          // onKeyPress={openModalHandler}
+        >
+          OnWedding 회원가입
+        </Link> */}
       </ModalContainer>
     </>
   );

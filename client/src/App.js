@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { createGlobalStyle } from "styled-components";
 
 import Article from "./Pages/Article";
 import ChangePassword from "./Pages/ChangePassword";
@@ -14,7 +15,13 @@ import Update from "./Pages/Update";
 import Nav from "./Components/Nav";
 import Footer from "./Components/Footer";
 
-const StyledBody = styled.body`
+const GlobalStyle = createGlobalStyle`
+  body {
+    font-family: "NanumBarunPen";
+  }
+`;
+
+const StyledBody = styled.div`
   margin: 0;
   padding: 0;
   background-color: #f4eae0;
@@ -52,13 +59,18 @@ function App() {
     window.localStorage.setItem("isLogin", JSON.stringify(isLogin));
   }, [isLogin]);
 
+  // useEffect(() => {
+  //   setIsModify(false);
+  // }, []);
+
   //! 유저인포 변경 핸들러 함수
-  const userInfoHandler = userData => {
+  const userInfoHandler = (userData) => {
     setUserInfo(userData);
   };
 
   return (
     <BrowserRouter>
+      <GlobalStyle />
       <StyledBody>
         <Nav
           isLogin={isLogin}
