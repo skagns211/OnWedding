@@ -5,7 +5,7 @@ import axios from "axios";
 const Delete = () => {
   //! 회원탈퇴 상태 state
   const [isComplete, setIsComplete] = useState(false);
-  const history = useNavigate();
+  const navigate = useNavigate();
 
   const handleComplete = () => {
     //! 홈으로 리다이렉트해주기 위한 함수
@@ -19,7 +19,7 @@ const Delete = () => {
         if (resMsg === "success delete userInfo") {
           setIsComplete(true);
           setTimeout(() => {
-            history("/");
+            navigate("/");
             setIsComplete(false);
             console.log(isComplete);
           }, 2000);

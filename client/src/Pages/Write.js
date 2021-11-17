@@ -135,7 +135,7 @@ const Write = ({ edit, userInfo, isModify }) => {
 
   const [image, setImage] = useState(null);
 
-  const handleImg = event => {
+  const handleImg = (event) => {
     const imgFile = event.target.files[0];
     if (!imgFile) {
       return setImage(null);
@@ -151,11 +151,11 @@ const Write = ({ edit, userInfo, isModify }) => {
     const promise = upload.promise();
 
     promise.then(
-      data => {
+      (data) => {
         setImage(data.Location);
         console.log(data.Location);
       },
-      err => {
+      (err) => {
         console.log(err);
       }
     );
@@ -164,18 +164,18 @@ const Write = ({ edit, userInfo, isModify }) => {
   //! s3 구현
 
   const [hashtag, setHashtag] = useState(
-    edit.hashtags ? edit.hashtags.map(hashtag => hashtag.name) : []
+    edit.hashtags ? edit.hashtags.map((hashtag) => hashtag.name) : []
   );
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
   const [click, setClick] = useState("");
 
-  const removeTags = e => {
+  const removeTags = (e) => {
     setHashtag(hashtag.filter((_, index) => index !== e));
   };
 
-  const addTags = e => {
-    const filtered = hashtag.filter(el => el === e.target.value);
+  const addTags = (e) => {
+    const filtered = hashtag.filter((el) => el === e.target.value);
     if (e.target.value !== "" && filtered.length === 0) {
       setHashtag([...hashtag, e.target.value]);
       e.target.value = "";
@@ -183,17 +183,17 @@ const Write = ({ edit, userInfo, isModify }) => {
   };
 
   const handleHash = () => {
-    const filtered = hashtag.filter(el => el === click);
+    const filtered = hashtag.filter((el) => el === click);
     if (click !== "" && filtered.length === 0) {
       setHashtag([...hashtag, click]);
     }
   };
 
-  const handletitle = e => {
+  const handletitle = (e) => {
     setTitle(e.target.value);
   };
 
-  const handleMessage = e => {
+  const handleMessage = (e) => {
     setMessage(e.target.value);
   };
 
@@ -246,8 +246,8 @@ const Write = ({ edit, userInfo, isModify }) => {
             </ul>
             <StyledArea3
               type="text"
-              onKeyUp={e => (window.event.keyCode === 13 ? addTags(e) : null)}
-              onChange={e => setClick(e.target.value)}
+              onKeyUp={(e) => (window.event.keyCode === 13 ? addTags(e) : null)}
+              onChange={(e) => setClick(e.target.value)}
               placeholder="해시태그를 입력해주세요"
             />
             <button onClick={handleHash}>추가</button>
