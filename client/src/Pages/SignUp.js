@@ -42,7 +42,7 @@ const SignUp = () => {
   const handleComplete = () => {
     axios
       .post(
-        "https://localhost:4000/auth/signup",
+        "http://ec2-3-21-167-88.us-east-2.compute.amazonaws.com/auth/signup",
         {
           email: userinfo.email,
           password: userinfo.password,
@@ -154,7 +154,7 @@ const SignUp = () => {
   const dupEmail = (email) => {
     axios
       .post(
-        "https://localhost:4000/auth/email",
+        "http://ec2-3-21-167-88.us-east-2.compute.amazonaws.com/auth/email",
         { email: userinfo.email },
         { httpOnly: true, withCredentials: true }
       )
@@ -178,7 +178,7 @@ const SignUp = () => {
   const dupNickname = (nickname) => {
     axios
       .post(
-        "https://localhost:4000/auth/nickname",
+        "http://ec2-3-21-167-88.us-east-2.compute.amazonaws.com/auth/nickname",
         { nickname: userinfo.nickname },
         { httpOnly: true, withCredentials: true }
       )

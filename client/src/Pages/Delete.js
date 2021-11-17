@@ -12,7 +12,7 @@ const Delete = () => {
     // setIsComplete(true);
 
     axios
-      .delete("https://localhost:4000/user", { withCredentials: true })
+      .delete("http://ec2-3-21-167-88.us-east-2.compute.amazonaws.com/user", { withCredentials: true })
       .then((res) => {
         console.log(res.data.message);
         const resMsg = res.data.message;
