@@ -19,18 +19,17 @@ module.exports = {
   },
   article: {
     post: async (req, res) => {
-      const { accessToken, tokenExpirse } = req.cookies;
-      if (tokenExpirse <= Date.now() / 1000) {
-        res
-          .clearCookie("accessToken")
-          .status(401)
-          .send({ message: "accessToken Expiration. plz Loing" });
-      } else if (!accessToken) {
-        res.status(403).send({ message: "not logged in" });
-      } else {
+      // const { accessToken, tokenExpirse } = req.cookies;
+      // if (tokenExpirse <= Date.now() / 1000) {
+      //   res
+      //     .clearCookie("accessToken")
+      //     .status(401)
+      //     .send({ message: "accessToken Expiration. plz Loing" });
+      // } else if (!accessToken) {
+      //   res.status(403).send({ message: "not logged in" });
+      // } else {
         const { title, message, image, hashtag } = req.body;
         const user_id = req.params.id;
-        const HASHTAG = hashtag.split(" ");
 
         if (!user_id || !title || !message) {
           res.status(400).send("bad request");
@@ -43,7 +42,7 @@ module.exports = {
           image,
         });
 
-        for (const tag of HASHTAG) {
+        for (const tag of hashtag) {
           const [tags, created] = await Hashtag.findOrCreate({
             where: { name: tag },
           });
@@ -58,7 +57,7 @@ module.exports = {
         } catch (err) {
           res.status(500).send();
         }
-      }
+      //}
     },
     get: async (req, res) => {
       const id = req.params.id;
@@ -72,6 +71,16 @@ module.exports = {
       const comments = await Comment.findAll({
         where: { article_id: id },
       });
+      const commentUser = await User.findAll({
+        attributes: ["nickname"],
+        include: [{
+          model: Comment,
+          attributes: [],
+          where: {
+            article_id: id
+          }
+        }]
+      })
       const hashtag = await Hashtag.findAll({
         attributes: ["name"],
         include: [
@@ -88,21 +97,20 @@ module.exports = {
       if (!article) {
         res.status(500).send();
       }
-      res.json({ data: { article, comments, username, hashtag } });
+      res.json({ data: { article, comments, username, hashtag, commentUser } });
     },
     patch: async (req, res) => {
-      const { accessToken, tokenExpirse } = req.cookies;
-      if (tokenExpirse <= Date.now() / 1000) {
-        res
-          .clearCookie("accessToken")
-          .status(401)
-          .send({ message: "accessToken Expiration. plz Loing" });
-      } else if (!accessToken) {
-        res.status(403).send({ message: "not logged in" });
-      } else {
+      // const { accessToken, tokenExpirse } = req.cookies;
+      // if (tokenExpirse <= Date.now() / 1000) {
+      //   res
+      //     .clearCookie("accessToken")
+      //     .status(401)
+      //     .send({ message: "accessToken Expiration. plz Loing" });
+      // } else if (!accessToken) {
+      //   res.status(403).send({ message: "not logged in" });
+      // } else {
         const id = req.params.id;
         const { title, message, image, hashtag } = req.body;
-        const HASHTAG = hashtag.split(" ");
 
         if (!title || !message) {
           res.status(400).send("bad request");
@@ -122,7 +130,7 @@ module.exports = {
           where: { article_id: id },
         });
 
-        for (const tag of HASHTAG) {
+        for (const tag of hashtag) {
           const [tags, created] = await Hashtag.findOrCreate({
             where: { name: tag },
           });
@@ -136,18 +144,18 @@ module.exports = {
         } catch (err) {
           res.status(500);
         }
-      }
+      //}
     },
     delete: async (req, res) => {
-      const { accessToken, tokenExpirse } = req.cookies;
-      if (tokenExpirse <= Date.now() / 1000) {
-        res
-          .clearCookie("accessToken")
-          .status(401)
-          .send({ message: "accessToken Expiration. plz Loing" });
-      } else if (!accessToken) {
-        res.status(403).send({ message: "not logged in" });
-      } else {
+      // const { accessToken, tokenExpirse } = req.cookies;
+      // if (tokenExpirse <= Date.now() / 1000) {
+      //   res
+      //     .clearCookie("accessToken")
+      //     .status(401)
+      //     .send({ message: "accessToken Expiration. plz Loing" });
+      // } else if (!accessToken) {
+      //   res.status(403).send({ message: "not logged in" });
+      // } else {
         const id = req.params.id;
 
         await Article_Hashtag.destroy({
@@ -157,7 +165,7 @@ module.exports = {
         await Article.destroy({
           where: { id },
         });
-      }
+      //}
       try {
         res.status(204).send("ok");
       } catch (err) {

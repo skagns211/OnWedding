@@ -25,14 +25,14 @@ const StyledName = styled.div`
   font-size: 1.5rem;
 `;
 
-const ArticleList = ({ comment }) => {
+const ArticleList = ({ article }) => {
   return (
     <StyledList>
-      <Link to={`/article/${comment.id}`}>
+      <Link to={`/article/${article.id}`}>
         {/* <StyledImg src={comment.img.data} /> */}
-        <StyledName>{comment.title}</StyledName>
+        <StyledName>{article.title}</StyledName>
         <i className="far fa-comment"></i>
-        {comment.total_comment}
+        {article.total_comment}
       </Link>
     </StyledList>
   );
