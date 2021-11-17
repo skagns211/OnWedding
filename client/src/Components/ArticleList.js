@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
@@ -29,7 +28,15 @@ const ArticleList = ({ article }) => {
   return (
     <StyledList>
       <Link to={`/article/${article.id}`}>
-        {/* <StyledImg src={comment.img.data} /> */}
+        {article.image ? (
+          <StyledImg src={article.image} />
+        ) : (
+          <StyledImg
+            src={
+              "https://onwedding-img.s3.ap-northeast-2.amazonaws.com/default-placeholder-1024x1024.png"
+            }
+          />
+        )}
         <StyledName>{article.title}</StyledName>
         <i className="far fa-comment"></i>
         {article.total_comment}

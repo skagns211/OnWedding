@@ -22,10 +22,11 @@ const StlyedArticle = styled.div`
 
 const StyledImg = styled.section`
   background-image: url("https://i.ibb.co/x5HNV5z/bride-g8bfa369fe-1920.jpg");
-  background-position: 50% 50%;
+  background-position: center;
   background-size: contain auto;
   background-repeat: no-repeat;
-  padding: 20rem;
+
+  padding: 10rem;
   opacity: 0.8;
   position: relative;
 `;

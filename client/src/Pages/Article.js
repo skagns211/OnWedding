@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useParams } from "react-router";
+import { useParams, useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 
 import Comments from "../Components/Comments";
@@ -95,7 +95,7 @@ const StyledTest3 = styled.div`
 
 const StyledTest4 = styled.div``;
 
-const Article = ({ setEdit, isLogin, userInfo, setIsModify }) => {
+const Article = ({ setEdit, isLogin, userInfo, setArticleId }) => {
   const id = useParams();
 
   const [articleComments, setArticleComments] = useState([]);
@@ -109,7 +109,7 @@ const Article = ({ setEdit, isLogin, userInfo, setIsModify }) => {
       .get(`http://ec2-3-21-167-88.us-east-2.compute.amazonaws.com/article/${Number(id.id)}`, {
         withCredentials: true,
       })
-      .then(response => {
+      .then((response) => {
         setArticleComments(response.data.data.comments);
         setArticle(response.data.data.article);
         setUsername(response.data.data.username);
@@ -122,20 +122,20 @@ const Article = ({ setEdit, isLogin, userInfo, setIsModify }) => {
       .post(`http://ec2-3-21-167-88.us-east-2.compute.amazonaws.com/comment/${userInfo.id}/${article.id}`, {
         message: text,
       })
-      .then(res => {
+      .then((res) => {
         const arr = articleComments.slice();
         setArticleComments([...arr, res.data.data.comment]);
       });
     setText("");
   };
 
-  const handletext = e => {
+  const handletext = (e) => {
     setText(e.target.value);
   };
 
   const handleEdit = () => {
     setEdit({ article, hashtags });
-    setIsModify(true);
+    setArticleId(Number(id.id));
   };
 
   useEffect(() => {
@@ -143,7 +143,7 @@ const Article = ({ setEdit, isLogin, userInfo, setIsModify }) => {
       .get(`http://ec2-3-21-167-88.us-east-2.compute.amazonaws.com/article/${Number(id.id)}`, {
         withCredentials: true,
       })
-      .then(response => {
+      .then((response) => {
         setArticleComments(response.data.data.comments);
         setArticle(response.data.data.article);
         setUsername(response.data.data.username);
@@ -151,11 +151,15 @@ const Article = ({ setEdit, isLogin, userInfo, setIsModify }) => {
       });
   }, []);
 
-  const clickDelete = e => {
-    const del = articleComments.filter(change => change.id !== e.id);
+  const clickDelete = (e) => {
+    const del = articleComments.filter((change) => change.id !== e.id);
     if (window.confirm("댓글을 삭제하시겠습니까?")) {
       setArticleComments(del);
     }
+  };
+
+  const DeleteArticle = () => {
+    axios.delete(`https://localhost:4000/article/${Number(id.id)}`);
   };
 
   return (
@@ -165,26 +169,32 @@ const Article = ({ setEdit, isLogin, userInfo, setIsModify }) => {
       <StyledContent>
         <StyledTitle>{article.title}</StyledTitle>
         <StyledName>{username.name}</StyledName>
-        <StyledPhoto>{/* <img src={article.image.data} /> */}</StyledPhoto>
+        <StyledPhoto>
+          <img src={article.image} />
+        </StyledPhoto>
         <StyledText>{article.message}</StyledText>
         <div>
-          해시태그
           {hashtags
             ? hashtags.map(hashtag => {
-                return <div>{hashtag.name}</div>;
+                return <span>#{hashtag.name}</span>;
               })
             : null}
         </div>
         {userInfo.id === article.user_id ? (
-          <Link to="/write" onClick={handleEdit}>
-            <button>수정</button>
-          </Link>
+          <div>
+            <Link to="/update" onClick={handleEdit}>
+              <button>수정</button>
+            </Link>
+            <Link to="/" onClick={DeleteArticle}>
+              <button>삭제</button>
+            </Link>
+          </div>
         ) : null}
       </StyledContent>
 
       <StyledTest4>
         {articleComments &&
-          articleComments.map(comment => {
+          articleComments.map((comment) => {
             return (
               <Comments
                 clickDelete={() => clickDelete(comment)}
@@ -197,7 +207,7 @@ const Article = ({ setEdit, isLogin, userInfo, setIsModify }) => {
       </StyledTest4>
 
       <StyledTest2>
-        {/* <StyledTest src={article.image.data}></StyledTest> */}
+        {/* <StyledTest src={article.image}></StyledTest> */}
         <textarea value={text} onChange={handletext} />
       </StyledTest2>
       <StyledTest3>
