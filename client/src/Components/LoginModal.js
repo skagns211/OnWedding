@@ -167,13 +167,13 @@ const LoginModal = ({ openModalHandler, userInfoHandler, setIsLogin }) => {
   const [emailMessage, setEmailMessage] = useState("");
   const [invalidMessage, setInvalidMessage] = useState("");
 
-  const handleInputValue = (key) => (e) => {
+  const handleInputValue = key => e => {
     setLoginUserInfo({ ...loginUserInfo, [key]: e.target.value });
   };
 
   const navigate = useNavigate();
 
-  const validEmail = (email) => {
+  const validEmail = email => {
     const regEmail =
       /^([0-9a-zA-Z_\.-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/;
     if (regEmail.test(email) === false) {
@@ -243,7 +243,7 @@ const LoginModal = ({ openModalHandler, userInfoHandler, setIsLogin }) => {
   };
 
   //! 엔터키 구현
-  const onCheckEnter = (e) => {
+  const onCheckEnter = e => {
     if (e.key === "Enter") {
       infoAll();
     }

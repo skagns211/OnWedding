@@ -5,117 +5,156 @@ import { useState } from "react";
 import axios from "axios";
 
 import ArticleList from "../Components/ArticleList";
+import Pagination from "../Components/Pagination";
 
-const StyledBody = styled.main`
+const MainBody = styled.main`
   max-width: 75%;
   margin: 0 auto;
 `;
 
-const StlyedArticle = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  flex-wrap: wrap;
-  max-width: 100%;
-  margin: 0 auto;
-`;
-
-const StyledImg = styled.section`
+const MainImage = styled.section`
   background-image: url("https://i.ibb.co/x5HNV5z/bride-g8bfa369fe-1920.jpg");
-  background-position: center;
+  background-position: 55% 30%;
   background-size: contain auto;
   background-repeat: no-repeat;
-
-  padding: 10rem;
+  padding: 15rem;
   opacity: 0.8;
   position: relative;
 `;
 
-const StyledMiddle = styled.div`
+const MainButton = styled.div`
   background-color: #f4eae0;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
+  margin: 0 auto;
+  font-size: 1.5rem;
+  max-width: 80rem;
 `;
 
-const Styledbutton1 = styled.ul`
-  margin: 2rem 0rem 0rem 2rem;
+const SortButton = styled.ul`
+  margin: 0rem;
   padding-left: 0;
   display: flex;
   border-radius: 5px;
   background-color: transparent;
-  font-size: 1.5rem;
-  & li {
+  > li {
     list-style: none;
     padding: 1rem 1.5rem;
-    border-radius: 10%;
+    border-radius: 5px;
   }
-  & li:hover {
+  > li:hover {
     background-color: white;
     cursor: pointer;
   }
 `;
 
-const Styledbutton2 = styled.button`
-  margin: 2rem 2rem 0rem 0rem;
+const WriteButton = styled.button`
+  margin: 1rem;
   padding: 1rem 1.5rem;
   border-radius: 5px;
+  font-size: 1.5rem;
   background-color: lightgray;
   border: 1px solid lightgray;
-  font-size: 1.5rem;
-  & a {
+  > a {
     text-decoration: none;
     color: black;
   }
 `;
 
-const Main = ({ isLogin }) => {
-  const [articles, setArticles] = useState("");
+const MainArticles = styled.ul`
+  padding: 0;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 80rem;
+`;
+
+const NoArticles = styled.div`
+  margin: 7rem auto;
+  font-size: 3rem;
+`;
+
+const Main = ({ isLogin, tagArticles, setTagArticles }) => {
+  const [articles, setArticles] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [post] = useState(12);
 
   useEffect(() => {
-    axios.get("https://localhost:4000/article").then(res => {
-      setArticles(res.data.data.articles);
-    });
+    axios
+      .get("https://localhost:4000/article", {
+        withCredentials: true,
+      })
+      .then(res => {
+        setArticles(res.data.data.articles);
+      });
   }, []);
 
+  const lastPost = currentPage * post;
+  const firstPost = lastPost - post;
+  const currentPost = articles.slice(firstPost, lastPost);
+
+  const paginate = page => {
+    setCurrentPage(page);
+  };
+
   const OrderCreated = () => {
-    const arrCopy = articles.slice();
-    const sorted = arrCopy.sort((a, b) => a.id - b.id);
-    setArticles(sorted);
+    if (tagArticles) {
+      const arrCopy = tagArticles.slice();
+      const sorted = arrCopy.sort((a, b) => a.id - b.id);
+      setTagArticles(sorted);
+    } else if (articles) {
+      const arrCopy = articles.slice();
+      const sorted = arrCopy.sort((a, b) => a.id - b.id);
+      setArticles(sorted);
+    } else {
+      return;
+    }
   };
 
   const OrderTotalComments = () => {
-    const arrCopy = articles.slice();
-    const sorted = arrCopy.sort((a, b) => b.total_comment - a.total_comment);
-    setArticles(sorted);
+    if (tagArticles) {
+      const arrCopy = tagArticles.slice();
+      const sorted = arrCopy.sort((a, b) => b.total_comment - a.total_comment);
+      setTagArticles(sorted);
+    } else if (articles) {
+      const arrCopy = articles.slice();
+      const sorted = arrCopy.sort((a, b) => b.total_comment - a.total_comment);
+      setArticles(sorted);
+    } else {
+      return;
+    }
   };
 
   return (
-    <StyledBody>
-      <StyledImg />
-      <StyledMiddle>
-        <Styledbutton1>
+    <MainBody>
+      <MainImage />
+      <MainButton>
+        <SortButton>
           <li onClick={OrderCreated}>최신순</li>
           <li onClick={OrderTotalComments}>댓글순</li>
-        </Styledbutton1>
-
+        </SortButton>
         {isLogin ? (
-          <Styledbutton2>
+          <WriteButton>
             <Link to="/write">글쓰기</Link>
-          </Styledbutton2>
+          </WriteButton>
         ) : null}
-      </StyledMiddle>
-      <StlyedArticle>
-        {articles ? (
-          articles.map(article => {
+      </MainButton>
+      <MainArticles>
+        {tagArticles.length === 0 && currentPost.length === 0 ? (
+          <NoArticles>게시글이 없습니다.</NoArticles>
+        ) : tagArticles ? (
+          tagArticles.map(article => {
             return <ArticleList article={article} key={article.id} />;
           })
-        ) : (
-          <div>없어요</div>
-        )}
-      </StlyedArticle>
-    </StyledBody>
+        ) : currentPost ? (
+          currentPost.map(article => {
+            return <ArticleList article={article} key={article.id} />;
+          })
+        ) : null}
+      </MainArticles>
+      <Pagination post={post} paginate={paginate} totalPost={articles.length} />
+    </MainBody>
   );
 };
 

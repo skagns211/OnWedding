@@ -10,9 +10,11 @@ const NavBody = styled.header`
   position: sticky;
   top: 0;
   background-color: #f4eae0;
-  width: 75%;
-  margin: 0 auto;
   overflow: visible;
+  width: 75%;
+  max-width: 120rem;
+  margin: 0 auto;
+  padding-left: 0.5rem;
 `;
 
 const StyledLink2 = styled.div`
@@ -32,7 +34,6 @@ const StyledLink2 = styled.div`
 `;
 
 const UserInfo = styled.div`
-  margin-right: 1rem;
   :hover ul {
     opacity: 1;
     visibility: visible;
@@ -65,7 +66,7 @@ const UserInfo = styled.div`
   }
 `;
 
-const Nav = ({ isLogin, userInfoHandler, setIsLogin }) => {
+const Nav = ({ isLogin, userInfoHandler, setIsLogin, setTagArticles }) => {
   const [isOpen, setIsOpen] = useState(false);
   const openModalHandler = () => {
     setIsOpen(!isOpen);
@@ -95,6 +96,10 @@ const Nav = ({ isLogin, userInfoHandler, setIsLogin }) => {
       });
   };
 
+  const handlehome = () => {
+    setTagArticles("");
+  };
+
   return (
     <NavBody>
       {isOpen ? (
@@ -106,7 +111,7 @@ const Nav = ({ isLogin, userInfoHandler, setIsLogin }) => {
       ) : null}
 
       <StyledLink2>
-        <div>
+        <div onClick={handlehome}>
           <Link to="/">Onwedding</Link>
         </div>
         <div>
