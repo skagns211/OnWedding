@@ -1,12 +1,13 @@
 const { User } = require("../../models");
 const jwt = require("jsonwebtoken");
-const { access } = require("fs");
+
 require("dotenv").config();
 
 module.exports = {
   password: {
     patch: async (req, res) => {
       const { accessToken, tokenExpirse } = req.cookies;
+      console.log(accessToken)
 
       if (tokenExpirse <= Date.now() / 1000) {
         res
@@ -95,13 +96,15 @@ module.exports = {
   profile: {
     patch: async (req, res) => {
       const { accessToken, tokenExpirse } = req.cookies;
+      console.log(req.cookies)
 
       if (tokenExpirse <= Date.now() / 1000) {
         res
           .clearCookie("accessToken")
           .status(401)
           .send({ message: "accessToken Expiration. plz Loing" });
-      } else if (accessToken) {
+      } 
+      if (accessToken) {
         const newImage = req.body.image;
         const userInfo = jwt.verify(accessToken, process.env.ACCESS_SECRET);
         const loginInfo = await User.findOne({
@@ -118,7 +121,7 @@ module.exports = {
           );
 
           try {
-            res.send({ message: "success change image" });
+            res.send({ data: {img: loginInfo.image}, message: "success change image" });
           } catch (err) {
             console.log(err);
           }

@@ -1,104 +1,142 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useParams, useNavigate } from "react-router";
-import { Link } from "react-router-dom";
 
 import Comments from "../Components/Comments";
 import axios from "axios";
 
-const StyledBody = styled.div`
+const ArticleBody = styled.div`
   width: 75%;
   margin: 0 auto;
 `;
 
-const StyledImg = styled.div`
+const MainImage = styled.section`
   background-image: url("https://i.ibb.co/x5HNV5z/bride-g8bfa369fe-1920.jpg");
-  background-position: center;
+  background-position: 55% 30%;
   background-size: contain auto;
-  padding: 20rem;
+  background-repeat: no-repeat;
+  padding: 15rem;
   opacity: 0.8;
+  position: relative;
 `;
 
-const StyledMiddle = styled.div`
+const MainButton = styled.div`
   background-color: #f4eae0;
-  padding: 2rem;
+  max-width: 80rem;
+  height: 95.234px;
 `;
 
-const StyledContent = styled.div`
+const ArticleMiddle = styled.div`
+  width: 75%;
+  margin: 0 auto;
+`;
+
+const ArticleContents = styled.div`
+  border-radius: 5px;
   background-color: white;
   padding: 2rem 5rem;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
   & button {
     border: 0px;
     padding: 10px;
     border-radius: 5px;
     font-size: 1rem;
   }
-  & div {
+`;
+
+const ArticleTitle = styled.div`
+  font-size: 2rem;
+  font-weight: bolder;
+  margin: 1rem 0;
+`;
+
+const ArticleUser = styled.div`
+  margin: 1rem 0;
+  font-size: 1.5rem;
+  span {
     display: flex;
-    flex-direction: column;
-    margin-top: 4rem;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+  img {
+    margin-right: 0.5rem;
+    width: 3rem;
+    height: 3rem;
   }
 `;
 
-const StyledTitle = styled.div`
-  font-size: 2rem;
-`;
-
-const StyledName = styled.div`
+const ArticleText = styled.div`
+  margin: 1rem 0;
   font-size: 1.5rem;
 `;
 
-const StyledText = styled.div`
-  font-size: 1.5rem;
+const EditButton = styled.div`
+  margin-top: 1rem;
+  button {
+    margin-right: 1rem;
+    font-size: 1rem;
+  }
 `;
 
-const StyledPhoto = styled.div`
-  max-width: 50%;
-  max-height: 50%;
-`;
-
-const StyledTest = styled.img`
-  width: 8rem;
-  height: 8rem;
-  border-radius: 50%;
-`;
-
-const StyledTest2 = styled.div`
+const HashTags = styled.ul`
   display: flex;
   flex-direction: row;
+  list-style: none;
+  padding: 0;
+  li {
+    padding: 0.5rem 0.1rem;
+  }
+  li:hover {
+    background-color: #f4ece0;
+    border-radius: 5px;
+  }
+`;
+
+const WriteComments = styled.div`
+  display: flex;
   border-top: 1px solid lightgray;
-  padding: 1rem;
+  padding: 1.5rem;
   background-color: white;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
-  > textarea {
+  img {
+    margin-left: 2.3rem;
+    width: 8rem;
+    height: 8rem;
+  }
+  textarea {
     width: 80%;
     height: 8rem;
     resize: none;
     margin-left: 1rem;
+    font-size: 1.5rem;
   }
 `;
 
-const StyledTest3 = styled.div`
+const CommentsButton = styled.div`
   display: flex;
   justify-content: flex-end;
-  width: 100%;
   background-color: white;
   > button {
-    margin: 1rem;
-    padding: 1rem;
+    margin: 0 1.5rem 1.5rem 1rem;
+    padding: 1.5rem;
+    font-size: 1rem;
   }
 `;
 
-// 수정asdasdas
+const ArticleComments = styled.div``;
 
-const StyledTest4 = styled.div``;
-
-const Article = ({ setEdit, isLogin, userInfo, setArticleId }) => {
-  const id = useParams();
+const Article = ({
+  setEdit,
+  isLogin,
+  userInfo,
+  setArticleId,
+  setTagArticles,
+}) => {
+  const articleId = useParams();
+  const navigate = useNavigate();
 
   const [articleComments, setArticleComments] = useState([]);
   const [article, setArticle] = useState("");
@@ -108,114 +146,160 @@ const Article = ({ setEdit, isLogin, userInfo, setArticleId }) => {
 
   useEffect(() => {
     axios
-      .get(`https://localhost:4000/article/${Number(id.id)}`, {
+      .get(`https://localhost:4000/article/${Number(articleId.id)}`, {
         withCredentials: true,
       })
-      .then((response) => {
-        setArticleComments(response.data.data.comments);
-        setArticle(response.data.data.article);
-        setUsername(response.data.data.username);
-        setHashtags(response.data.data.hashtag);
+      .then(res => {
+        console.log(res.data.data);
+        setArticleComments(res.data.data.comments);
+        setArticle(res.data.data.article);
+        setUsername(res.data.data.username);
+        setHashtags(res.data.data.hashtag);
       });
-  }, []);
+  }, [articleId]);
 
-  const handleClick = () => {
-    axios
-      .post(`https://localhost:4000/comment/${userInfo.id}/${article.id}`, {
-        message: text,
-      })
-      .then((res) => {
-        const arr = articleComments.slice();
-        setArticleComments([...arr, res.data.data.comment]);
-      });
-    setText("");
-  };
-
-  const handletext = (e) => {
-    setText(e.target.value);
-  };
-
-  const handleEdit = () => {
-    setEdit({ article, hashtags });
-    setArticleId(Number(id.id));
-  };
-
-  useEffect(() => {
-    axios
-      .get(`https://localhost:4000/article/${Number(id.id)}`, {
-        withCredentials: true,
-      })
-      .then((response) => {
-        setArticleComments(response.data.data.comments);
-        setArticle(response.data.data.article);
-        setUsername(response.data.data.username);
-        setHashtags(response.data.data.hashtag);
-      });
-  }, []);
-
-  const clickDelete = (e) => {
-    const del = articleComments.filter((change) => change.id !== e.id);
-    if (window.confirm("댓글을 삭제하시겠습니까?")) {
-      setArticleComments(del);
+  const writeClick = e => {
+    if (text.length > 0) {
+      axios
+        .post(
+          `https://localhost:4000/comment/${userInfo.id}/${article.id}`,
+          {
+            message: text,
+          },
+          {
+            withCredentials: true,
+          }
+        )
+        .then(res => {
+          const arr = articleComments.slice();
+          setArticleComments([...arr, res.data.data.comment]);
+        });
+      setText("");
+    } else {
+      return;
     }
   };
 
-  const DeleteArticle = () => {
-    axios.delete(`https://localhost:4000/article/${Number(id.id)}`);
+  const writeText = e => {
+    setText(e.target.value);
+  };
+
+  const editArticle = () => {
+    setEdit({ article, hashtags });
+    setArticleId(Number(articleId.id));
+    navigate("/update");
+  };
+
+  const deleteArticle = () => {
+    if (window.confirm("게시글을 삭제하시겠습니까?")) {
+      axios
+        .delete(`https://localhost:4000/article/${Number(articleId.id)}`, {
+          withCredentials: true,
+        })
+        .then(() => {
+          navigate("/");
+        });
+    } else {
+      return;
+    }
+  };
+
+  const clickDelete = e => {
+    const del = articleComments.filter(comment => comment.id !== e.id);
+    setArticleComments(del);
+  };
+
+  const ClickHash = e => {
+    const tagId = hashtags.filter(
+      hashtag => hashtag.name === e.target.textContent.slice(1)
+    );
+
+    axios
+      .get(`https://localhost:4000/article/tag/${tagId[0].id}`, {
+        withCredentials: true,
+      })
+      .then(res => {
+        setTagArticles(res.data.data.articles);
+      })
+      .then(() => navigate("/"));
   };
 
   return (
-    <StyledBody>
-      <StyledImg />
-      <StyledMiddle></StyledMiddle>
-      <StyledContent>
-        <StyledTitle>{article.title}</StyledTitle>
-        <StyledName>{username.name}</StyledName>
-        <StyledPhoto>
-          <img src={article.image} />
-        </StyledPhoto>
-        <StyledText>{article.message}</StyledText>
-        <div>
-          {hashtags
-            ? hashtags.map(hashtag => {
-                return <span>#{hashtag.name}</span>;
-              })
-            : null}
-        </div>
-        {userInfo.id === article.user_id ? (
-          <div>
-            <Link to="/update" onClick={handleEdit}>
-              <button>수정</button>
-            </Link>
-            <Link to="/" onClick={DeleteArticle}>
-              <button>삭제</button>
-            </Link>
-          </div>
-        ) : null}
-      </StyledContent>
-
-      <StyledTest4>
-        {articleComments &&
-          articleComments.map((comment) => {
-            return (
-              <Comments
-                clickDelete={() => clickDelete(comment)}
-                comment={comment}
-                key={comment.id}
-                userInfo={userInfo}
-              />
-            );
-          })}
-      </StyledTest4>
-
-      <StyledTest2>
-        {/* <StyledTest src={article.image}></StyledTest> */}
-        <textarea value={text} onChange={handletext} />
-      </StyledTest2>
-      <StyledTest3>
-        {isLogin ? <button onClick={handleClick}>댓글쓰기</button> : null}
-      </StyledTest3>
-    </StyledBody>
+    <ArticleBody>
+      <MainImage />
+      <ArticleMiddle>
+        <MainButton></MainButton>
+        <ArticleContents>
+          <ArticleTitle>{article.title}</ArticleTitle>
+          <ArticleUser>
+            {article.image ? (
+              <span>
+                <span>
+                  <img src={article.image} alt="사진" /> {username.name}
+                </span>
+                <span>{(article.createdAt || "").slice(0, 10)}</span>
+              </span>
+            ) : (
+              <span>
+                <span>
+                  <img
+                    src={
+                      "https://onwedding-img.s3.ap-northeast-2.amazonaws.com/default.jpeg"
+                    }
+                    alt="사진"
+                  />
+                  {username.name}
+                </span>
+                <span>{(article.createdAt || "").slice(0, 10)}</span>
+              </span>
+            )}
+          </ArticleUser>
+          <ArticleText>{article.message}</ArticleText>
+          <HashTags>
+            {hashtags
+              ? hashtags.map(hashtag => {
+                  return <li onClick={ClickHash}>#{hashtag.name}</li>;
+                })
+              : null}
+          </HashTags>
+          {userInfo.id === article.user_id ? (
+            <EditButton>
+              <button onClick={editArticle}>수정</button>
+              <button onClick={deleteArticle}>삭제</button>
+            </EditButton>
+          ) : null}
+        </ArticleContents>
+        <ArticleComments>
+          {articleComments &&
+            articleComments.map(comment => {
+              return (
+                <Comments
+                  clickDelete={() => clickDelete(comment)}
+                  comment={comment}
+                  key={comment.id}
+                  userInfo={userInfo}
+                />
+              );
+            })}
+        </ArticleComments>
+        <WriteComments>
+          {article.image ? (
+            <img src={article.image} alt="사진" />
+          ) : (
+            <img
+              src={
+                "https://onwedding-img.s3.ap-northeast-2.amazonaws.com/default.jpeg"
+              }
+              alt="사진"
+            />
+          )}
+          <textarea value={text} onChange={writeText} />
+        </WriteComments>
+        <CommentsButton>
+          {isLogin ? <button onClick={writeClick}>댓글쓰기</button> : null}
+        </CommentsButton>
+      </ArticleMiddle>
+    </ArticleBody>
   );
 };
 

@@ -1,28 +1,38 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
-const StyledBody = styled.div`
-  max-width: 75%;
+const WriteBody = styled.div`
+  width: 75%;
   margin: 0 auto;
 `;
 
-const StyledImg = styled.div`
+const WriteImage = styled.section`
   background-image: url("https://i.ibb.co/x5HNV5z/bride-g8bfa369fe-1920.jpg");
-  background-position: center;
+  background-position: 55% 30%;
   background-size: contain auto;
   background-repeat: no-repeat;
-  padding: 20rem;
+  padding: 15rem;
   opacity: 0.8;
+  position: relative;
 `;
 
-const StyledMiddle = styled.div`
+const MainButton = styled.div`
   background-color: #f4eae0;
-  padding: 2rem;
+  max-width: 80rem;
+  height: 95.234px;
 `;
 
-const StyledContent = styled.div`
+const WriteOut = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+`;
+
+const WriteContents = styled.div`
+  width: 70%;
+  border-radius: 5px;
   background-color: white;
   padding: 2rem 5rem;
   display: flex;
@@ -37,65 +47,82 @@ const StyledContent = styled.div`
   }
 `;
 
-const StyledArea1 = styled.input`
-  margin: 2rem;
-  font-size: 20px;
-  width: 95%;
+const WriteTitle = styled.div`
+  font-size: 2rem;
+  font-weight: bolder;
+  margin: 1rem 0;
 `;
 
-const StyledArea2 = styled.textarea`
+const InputTitle = styled.div`
+  margin: 1rem 0;
   font-size: 1.5rem;
-  margin: 2rem;
-  width: 95%;
-  height: 50rem;
-  resize: none;
-`;
-
-const StyledArea3 = styled.input`
-  border: none;
-  flex: 1;
-  height: 2rem;
-  font-size: 20px;
-  :focus {
-    outline: transparent;
+  width: 100%;
+  display: flex;
+  input {
+    margin-left: 3.7rem;
+    font-size: 20px;
+    width: 80%;
   }
 `;
 
-const StyledTitle = styled.div`
-  font-size: 2rem;
-  margin: 2rem 0rem;
+const InputImage = styled.div`
+  width: 80%;
+  margin: 1rem 0;
+  font-size: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  img {
+    max-width: 40rem;
+    max-height: 40rem;
+  }
+  input {
+    font-size: 1rem;
+  }
 `;
 
-const StyledSize = styled.div`
+const InputContent = styled.div`
+  margin: 1rem 0;
+  display: flex;
+  flex-direction: row;
+  font-size: 1.5rem;
+  > textarea {
+    font-size: 1.5rem;
+    margin-left: 3.7rem;
+    width: 80%;
+    height: 50rem;
+    resize: none;
+  }
+`;
+
+const InputTags = styled.div`
+  display: flex;
+  flex-direction: row;
+  margin: 1rem 0;
+  font-size: 1.5rem;
   width: 100%;
 `;
 
-const StyleTest = styled.div`
-  display: flex;
-  justify-content: space-between;
-  > img {
-    max-width: 20rem;
-  }
-`;
-
 const TagsInput = styled.div`
-  margin: 2rem;
-  width: 95%;
+  margin: 0rem 1rem;
+  width: 80.2%;
   height: 2rem;
-  flex-wrap: wrap;
   border: 1px solid rgb(118, 118, 118);
-  text-align: left;
-  padding: 2rem 0rem;
+  padding: 1.5rem 0rem;
   display: flex;
-  align-items: flex-start;
 
-  > ul {
-    display: flex;
-    flex-wrap: wrap;
+  textarea {
+    font-size: 1.5rem;
+    resize: none;
+    border: none;
+    flex: 1;
+    :focus {
+      outline: transparent;
+    }
+  }
+  ul {
     padding: 0;
     margin: 0;
-
-    > li {
+    li {
       display: flex;
       align-items: center;
       justify-content: center;
@@ -124,141 +151,144 @@ const StyledClose = styled.span`
 `;
 
 const Write = ({ userInfo }) => {
-  //! s3 구현
   const AWS = require("aws-sdk");
+  const navigate = useNavigate();
+
+  const [image, setImage] = useState(null);
+  const [hashtag, setHashtag] = useState([]);
+  const [title, setTitle] = useState("");
+  const [message, setMessage] = useState("");
+  const [, setClick] = useState("");
 
   AWS.config.update({
-    region: "ap-northeast-2", // 버킷이 존재하는 리전을 문자열로 입력하기. (Ex. "ap-northeast-2")
+    region: "ap-northeast-2",
     credentials: new AWS.CognitoIdentityCredentials({
-      IdentityPoolId: "ap-northeast-2:553da489-28ff-4eb6-b0ba-1187a7a08c29", // cognito 인증 풀에서 받아온 키를 문자열로 입력하기. (Ex. "ap-northeast-2...")
+      IdentityPoolId: "ap-northeast-2:553da489-28ff-4eb6-b0ba-1187a7a08c29",
     }),
   });
 
-  const [image, setImage] = useState(null);
-
-  const handleImg = (event) => {
+  const handleImg = event => {
     const imgFile = event.target.files[0];
     if (!imgFile) {
       return setImage(null);
     }
     const upload = new AWS.S3.ManagedUpload({
       params: {
-        Bucket: "onwedding-img", // 업로드할 대상 버킷명 문자열로 작성.
-        Key: imgFile.name, //업로드할 파일명
-        Body: imgFile, // 업로드할 파일 객체
+        Bucket: "onwedding-img",
+        Key: imgFile.name,
+        Body: imgFile,
       },
     });
 
     const promise = upload.promise();
 
     promise.then(
-      (data) => {
+      data => {
         setImage(data.Location);
       },
-      (err) => {
+      err => {
         console.log(err);
       }
     );
   };
 
-  //! s3 구현
-
-  const [hashtag, setHashtag] = useState([]);
-  const [title, setTitle] = useState("");
-  const [message, setMessage] = useState("");
-  const [click, setClick] = useState("");
-  const navigate = useNavigate();
-
-  const removeTags = (e) => {
+  const removeTags = e => {
     setHashtag(hashtag.filter((_, index) => index !== e));
   };
 
-  const addTags = (e) => {
-    const filtered = hashtag.filter((el) => el === e.target.value);
+  const addTags = e => {
+    const filtered = hashtag.filter(el => el === e.target.value);
     if (e.target.value !== "" && filtered.length === 0) {
       setHashtag([...hashtag, e.target.value]);
       e.target.value = "";
     }
   };
 
-
-  const handletitle = e => {
+  const writeTitle = e => {
     setTitle(e.target.value);
   };
 
-  const handleMessage = (e) => {
+  const writeMessage = e => {
     setMessage(e.target.value);
   };
 
   const handleClick = () => {
     axios
-      .post(`https://localhost:4000/article/${userInfo.id}`, {
-        title,
-        message,
-        image,
-        hashtag,
-      })
-      .then(() => {
+      .post(
+        `https://localhost:4000/article/${userInfo.id}`,
+        {
+          title,
+          message,
+          image,
+          hashtag,
+        },
+        {
+          withCredentials: true,
+        }
+      )
+      .then(res => {
         navigate("/");
       });
   };
 
-  console.log(image);
-
   return (
-    <StyledBody>
-      <StyledImg />
-      <StyledMiddle></StyledMiddle>
-      <StyledContent>
-        <StyledTitle>글쓰기</StyledTitle>
-        <StyledSize>
-          <div>제목</div>
-          <StyledArea1
-            type="text"
-            placeholder="제목을 입력해주세요"
-            onChange={handletitle}
-          />
-          <StyleTest>
-            내용
-            {image ? <img src={image} /> : null}
-            <label>사진추가</label>
-            <input type="file" onChange={handleImg} />
-          </StyleTest>
-          <StyledArea2
-            placeholder="내용을 입력해주세요"
-            onChange={handleMessage}
-          />
-          <div>해시태그</div>
-          <TagsInput>
-            <ul>
-              {hashtag
-                ? hashtag.map((tag, index) => (
-                    <li key={index}>
-                      <span>#{tag}</span>
-                      <StyledClose onClick={() => removeTags(index)}>
-                        x
-                      </StyledClose>
-                    </li>
-                  ))
-                : null}
-            </ul>
-            <StyledArea3
+    <WriteBody>
+      <WriteImage />
+      <MainButton />
+      <WriteOut>
+        <WriteContents>
+          <WriteTitle>글쓰기</WriteTitle>
+          <InputTitle>
+            제목
+            <input
               type="text"
-              onKeyUp={e =>
-                window.event.keyCode === 13 || window.event.keyCode === 32
-                  ? addTags(e)
-                  : null
-              }
-              onChange={e => setClick(e.target.value)}
-              placeholder="해시태그를 입력해주세요"
+              placeholder="제목을 입력해주세요"
+              onChange={writeTitle}
             />
-          </TagsInput>
-        </StyledSize>
-        <StyleTest>
+          </InputTitle>
+          <InputImage>
+            사진추가
+            {image ? <img src={image} alt="사진" /> : null}
+            <input type="file" onChange={handleImg} />
+          </InputImage>
+          <InputContent>
+            내용
+            <textarea
+              placeholder="내용을 입력해주세요"
+              onChange={writeMessage}
+            />
+          </InputContent>
+          <InputTags>
+            해시태그
+            <TagsInput>
+              <ul>
+                {hashtag
+                  ? hashtag.map((tag, index) => (
+                      <li key={index}>
+                        <span>#{tag}</span>
+                        <StyledClose onClick={() => removeTags(index)}>
+                          x
+                        </StyledClose>
+                      </li>
+                    ))
+                  : null}
+              </ul>
+              <textarea
+                type="text"
+                onKeyUp={e =>
+                  window.event.keyCode === 13 || window.event.keyCode === 32
+                    ? addTags(e)
+                    : null
+                }
+                onChange={e => setClick(e.target.value)}
+                placeholder="해시태그를 입력해주세요"
+              />
+            </TagsInput>
+          </InputTags>
           <button onClick={handleClick}>글올리기</button>
-        </StyleTest>
-      </StyledContent>
-    </StyledBody>
+        </WriteContents>
+      </WriteOut>
+    </WriteBody>
   );
 };
 

@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-const StyledFoot = styled.footer`
+const FooterBody = styled.footer`
   margin: 0;
   padding: 1.5rem;
   display: flex;
@@ -22,7 +22,7 @@ const Styledicon = styled.ul`
 
 const Footer = () => {
   return (
-    <StyledFoot>
+    <FooterBody>
       <li>2021 Onwedding, Inc</li>
       <li>개인정보 처리방침</li>
       <li>이용약관</li>
@@ -39,7 +39,7 @@ const Footer = () => {
           <i className="fab fa-facebook-square"></i>
         </li>
       </Styledicon>
-    </StyledFoot>
+    </FooterBody>
   );
 };
 

@@ -1,47 +1,52 @@
+import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
-const StyledList = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  padding: 1rem;
-  & a {
+const Article = styled.li`
+  list-style: none;
+  width: 25%;
+  transition: 0.4s;
+  :hover {
+    background-color: white;
+  }
+  > a {
     text-decoration: none;
     color: black;
   }
-  &:hover {
-    background-color: white;
-    border-radius: 4%;
-  }
 `;
 
-const StyledImg = styled.img`
-  width: 20rem;
-  height: 20rem;
+const ArticleImage = styled.img`
+  border-radius: 5%;
+  width: 18rem;
+  height: 18rem;
 `;
 
-const StyledName = styled.div`
+const ArticleTitle = styled.div`
   font-size: 1.5rem;
+`;
+
+const ArticleIcon = styled.i`
+  font-size: 1.2rem;
 `;
 
 const ArticleList = ({ article }) => {
   return (
-    <StyledList>
+    <Article>
       <Link to={`/article/${article.id}`}>
         {article.image ? (
-          <StyledImg src={article.image} />
+          <ArticleImage src={article.image} />
         ) : (
-          <StyledImg
+          <ArticleImage
             src={
               "https://onwedding-img.s3.ap-northeast-2.amazonaws.com/default-placeholder-1024x1024.png"
             }
           />
         )}
-        <StyledName>{article.title}</StyledName>
-        <i className="far fa-comment"></i>
+        <ArticleTitle>{article.title}</ArticleTitle>
+        <ArticleIcon className="far fa-comment"></ArticleIcon>
         {article.total_comment}
       </Link>
-    </StyledList>
+    </Article>
   );
 };
 
