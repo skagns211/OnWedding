@@ -17,7 +17,7 @@ import Footer from "./Components/Footer";
 
 const GlobalStyle = createGlobalStyle`
   body {
-    font-family: "NanumGimYuICe";
+    font-family: "paybooc-Medium";
   }
 `;
 
@@ -100,7 +100,15 @@ function App() {
           />
           <Route path="change" element={<ChangePassword />} />
           <Route path="/mypage" element={<MyPage userInfo={userInfo} />} />
-          <Route path="/delete" element={<Delete />} />
+          <Route
+            path="/delete"
+            element={
+              <Delete
+                userInfoHandler={userInfoHandler}
+                setIsLogin={setIsLogin}
+              />
+            }
+          />
         </Routes>
         <Footer />
       </StyledBody>

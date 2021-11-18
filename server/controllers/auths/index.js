@@ -7,7 +7,7 @@ module.exports = {
     post: async (req, res) => {
       const { email, password } = req.body;
       if (!email || !password) {
-        res.send({ message: 'require All info' })
+        res.send({ message: "require All info" });
       }
       const userInfo = await User.findOne({
         where: { email, password },
