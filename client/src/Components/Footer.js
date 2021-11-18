@@ -1,45 +1,72 @@
 import React from "react";
 import styled from "styled-components";
 
-const FooterBody = styled.footer`
-  margin: 0;
-  padding: 1.5rem;
+const StyledFoot = styled.footer`
+  width: 60%;
+  height: 5rem;
+  margin: auto;
+  padding: 0rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
   background-color: #f4eae0;
   border-top: 1px solid lightgray;
+  /* border: 1px solid lightgray; */
 `;
 
 const Styledicon = styled.ul`
   display: flex;
   justify-content: space-between;
   list-style: none;
+  /* border: 1px solid lightgray; */
   & li {
     padding: 0px 10px;
   }
 `;
 
+const Element = styled.div`
+  font-size: 0.9rem;
+  /* border: 1px solid lightgray; */
+  @media only screen and (max-width: 600px) {
+    font-size: 0.9rem;
+  }
+`;
+const Icon = styled.a`
+  color: black;
+  font-size: 1.2rem;
+`;
+
 const Footer = () => {
   return (
-    <FooterBody>
-      <li>2021 Onwedding, Inc</li>
-      <li>개인정보 처리방침</li>
-      <li>이용약관</li>
-      <li>사이트맵</li>
-      <li>회사 세부정보</li>
-      <Styledicon>
-        <li>
-          <i className="fab fa-google"></i>
-        </li>
-        <li>
-          <i className="fab fa-youtube"></i>
-        </li>
-        <li>
-          <i className="fab fa-facebook-square"></i>
-        </li>
-      </Styledicon>
-    </FooterBody>
+    <StyledFoot>
+      <div>
+        <Element>Copyright ⓒ 2021 Onwedding, Inc</Element>
+      </div>
+      <div>
+        <Styledicon>
+          <li>
+            <Icon target="_blank" href="https://github.com/skagns211">
+              <i class="fa fa-github"></i>
+            </Icon>
+          </li>
+          <li>
+            <Icon target="_blank" href="https://youtube.com">
+              <i className="fab fa-youtube"></i>
+            </Icon>
+          </li>
+          <li>
+            <Icon target="_blank" href="https://facebook.com">
+              <i className="fab fa-facebook-square"></i>
+            </Icon>
+          </li>
+          <li>
+            <Icon target="_blank" href="https://instagram.com">
+              <i className="fab fa-instagram"></i>
+            </Icon>
+          </li>
+        </Styledicon>
+      </div>
+    </StyledFoot>
   );
 };
 

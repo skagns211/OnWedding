@@ -1,9 +1,255 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import styled from "styled-components";
 import axios from "axios";
-import users from "../dummy/Users";
 
 axios.default.withCredentials = true;
+
+const SignUpContainer = styled.div`
+  background-color: #f4eae0;
+  padding: 2rem;
+  /* z-index: 1011; */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  @media only screen and (max-width: 534px) {
+    background-color: #f4eae0;
+    padding: 0.5rem;
+    /* z-index: 1011; */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  &.CompleteSignUp {
+    width: 100vw;
+    height: 72vh;
+  }
+`;
+
+const WelcomeHeader = styled.div`
+  font-size: 2.7rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  @media only screen and (max-width: 540px) {
+    font-size: 2.2rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    text-align: center;
+  }
+  &.DeleteComplete {
+    font-size: 2.7rem;
+    margin: auto;
+  }
+`;
+const WelcomeMessage = styled.div`
+  font-size: 1.1rem;
+  margin-bottom: 1.2rem;
+  @media only screen and (max-width: 534px) {
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    text-align: center;
+  }
+`;
+
+const Line = styled.div`
+  width: 33rem;
+  height: 1px;
+  padding: 0;
+  margin-bottom: 0.5rem;
+  align-items: center;
+  background: #cecece;
+  @media only screen and (max-width: 534px) {
+    width: 22rem;
+    height: 1px;
+    padding: 0;
+    margin-bottom: 0.5rem;
+    align-items: center;
+    background: #cecece;
+  }
+`;
+
+const ElemetContainer = styled.div`
+  background-color: #f4eae0;
+  padding: 0.5rem;
+  /* z-index: 1011; */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+`;
+
+const ElementBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  @media only screen and (max-width: 534px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* border: 1px solid black; */
+  }
+`;
+
+const Element = styled.div`
+  font-size: 1rem;
+  padding-top: 0.6rem;
+  margin-top: 0.2rem;
+  margin-bottom: 0.2rem;
+
+  /* font-family: "MaplestoryOTFLight"; */
+  /* font-family: "NanumGimYuICe"; */
+  @media only screen and (max-width: 534px) {
+    width: 20rem;
+    margin: auto;
+    font-size: 0.9rem;
+    padding-top: 0.3rem;
+    margin-top: 0.4rem;
+    /* border: 1px solid black; */
+  }
+`;
+
+const InputBox = styled.input`
+  width: 24rem;
+  height: 2.5rem;
+  margin-top: 0.2rem;
+  border-radius: 0.4rem;
+  border: none;
+  background-color: white;
+  font-size: 1rem;
+  text-align: center;
+  ::-webkit-input-placeholder {
+    text-align: center;
+  }
+  &.Email {
+    width: 17rem;
+    border-radius: 0.4rem;
+    @media only screen and (max-width: 534px) {
+      width: 14rem;
+      height: 2rem;
+      margin-top: 0.1rem;
+      border-radius: 0.4rem;
+      border: none;
+      background-color: white;
+      font-size: 0.9rem;
+    }
+  }
+  &.Nickname {
+    width: 17rem;
+    border-radius: 0.4rem;
+    @media only screen and (max-width: 534px) {
+      width: 14rem;
+      height: 2rem;
+      margin-top: 0.1rem;
+      border-radius: 0.4rem;
+      border: none;
+      background-color: white;
+      font-size: 0.9rem;
+    }
+  }
+  /* font-family: "NanumGimYuICe"; */
+  @media only screen and (max-width: 534px) {
+    width: 20rem;
+    height: 2rem;
+    margin-top: 0.1rem;
+    border-radius: 0.4rem;
+    border: none;
+    background-color: white;
+    font-size: 0.9rem;
+  }
+`;
+
+const Elementmessage = styled.div`
+  color: red;
+  font-size: 0.7rem;
+  margin-top: 0.4rem;
+  @media only screen and (max-width: 534px) {
+    font-size: 0.4rem;
+    margin-top: 0.2rem;
+  }
+  &.good {
+    color: #3d76e9;
+  }
+`;
+
+const Button = styled.button`
+  top: 1rem;
+  position: relative;
+  width: 7rem;
+  height: 2.62rem;
+  border: none;
+  border-radius: 0.4rem;
+  margin-left: 0.2rem;
+  background-color: #817c8d;
+  font-family: "paybooc-Medium";
+  font-size: 0.7rem;
+  color: #ffffff;
+  :hover {
+    color: rgba(255, 255, 255, 0.85);
+    box-shadow: rgba(30, 22, 54, 0.7) 0 5rem 0rem 2rem inset;
+  }
+
+  &.signup {
+    @media only screen and (max-width: 534px) {
+      width: 6rem;
+      height: 3rem;
+      margin-top: 2rem;
+      font-size: 0.9rem;
+      display: block;
+      position: relative;
+      margin: auto;
+    }
+    width: 10rem;
+    height: 4rem;
+    margin-top: 2rem;
+    font-size: 1.1rem;
+    display: block;
+    position: relative;
+    margin: auto;
+  }
+
+  &.Emailbtn {
+    top: -0.1rem;
+    @media only screen and (max-width: 534px) {
+      top: -0.15rem;
+      position: relative;
+      width: 5.5rem;
+      height: 2.1rem;
+      border: none;
+      border-radius: 0.4rem;
+      margin-left: 0.2rem;
+      background-color: #817c8d;
+      font-family: "paybooc-Medium";
+      font-size: 0.6rem;
+      color: #ffffff;
+    }
+  }
+  &.NicknameBtn {
+    top: -0.1rem;
+    @media only screen and (max-width: 534px) {
+      top: -0.15rem;
+      position: relative;
+      width: 5.5rem;
+      height: 2.1rem;
+      border: none;
+      border-radius: 0.4rem;
+      margin-left: 0.2rem;
+      background-color: #817c8d;
+      font-family: "paybooc-Medium";
+      font-size: 0.6rem;
+      color: #ffffff;
+    }
+  }
+`;
+
+//!--------------------------------------------------------------------
 
 const SignUp = () => {
   const [userinfo, setUserinfo] = useState({
@@ -33,11 +279,10 @@ const SignUp = () => {
   const [isPwdCheck, setIsPwdCheck] = useState(false);
   const [isBirth, setIsBirth] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  // const [isBtn, setIsBtn] = useState(false);
 
   //! 회원가입 상태 state
   const [isComplete, setIsComplete] = useState(false);
-  const history = useNavigate();
+  const navigate = useNavigate();
 
   const handleComplete = () => {
     axios
@@ -58,7 +303,7 @@ const SignUp = () => {
         if (successMsg) {
           setIsComplete(true);
           setTimeout(() => {
-            history("/");
+            navigate("/");
           }, 2000);
         }
       })
@@ -86,7 +331,7 @@ const SignUp = () => {
       setEmailMessage("올바른 이메일 형식이 아닙니다.");
     } else {
       setIsEmail(true);
-      setEmailMessage("올바른 이메일 형식입니다:)");
+      setEmailMessage("올바른 이메일 형식입니다. 중복 확인 해주세요 :)");
     }
   };
   //! password 유효성검사
@@ -165,7 +410,7 @@ const SignUp = () => {
           setEmailMessage("이미 회원가입된 이메일입니다.");
         } else if (resMsg === "ok") {
           setIsDupEmail(true);
-          setEmailMessage("사용가능한 이메일입니다:)");
+          setEmailMessage("사용가능한 이메일입니다.");
         }
       })
       .catch(err => {
@@ -201,41 +446,6 @@ const SignUp = () => {
       setIsUsername(false);
     }
   };
-
-  // //! Button hide function
-  // const hideBtn = () => {
-  //   const {
-  //     email,
-  //     username,
-  //     nickname,
-  //     password,
-  //     passwordCheck,
-  //     birth,
-  //     mobile,
-  //   } = userinfo;
-
-  //   if (
-  //     (email, username, nickname, password, passwordCheck, birth, mobile !== "")
-  //     // (isEmail, isPassword, isPwdCheck, isMobile === true)
-  //   ) {
-  //     if (
-  //       (isEmail,
-  //       isPassword,
-  //       isPwdCheck,
-  //       isMobile,
-  //       isDupEmail,
-  //       isDupNickname === true)
-  //     ) {
-  //       setIsBtn(true);
-  //     } else {
-  //       setIsBtn(false);
-  //     }
-  //     // setIsBtn(true);
-  //   } else {
-  //     setIsBtn(false);
-  //   }
-  //   console.log(email);
-  // };
 
   const infoAll = () => {
     const {
@@ -279,81 +489,110 @@ const SignUp = () => {
   };
 
   return isComplete ? (
-    <div>
-      <center>
-        <div>회원가입이 완료되었습니다.</div>
-      </center>
-    </div>
+    <SignUpContainer className="CompleteSignUp">
+      <WelcomeHeader className="DeleteComplete">
+        회원가입이 완료되었습니다.
+      </WelcomeHeader>
+    </SignUpContainer>
   ) : (
-    <div>
-      <center>
-        <div></div>
-        <div>Welcome to OnWedding!</div>
-        <form onSubmit={e => e.preventDefault()}>
+
+    <SignUpContainer>
+      {/* <center> */}
+      <WelcomeHeader>Welcome to OnWedding!</WelcomeHeader>
+      <WelcomeMessage>
+        회원가입 하시면 더 많은 서비스를 이용할 수 있습니다.
+      </WelcomeMessage>
+      <Line />
+      <ElemetContainer>
+        <form onSubmit={(e) => e.preventDefault()}>
+          <ElementBox>
+            <div>
+              <Element>이메일</Element>
+              <InputBox
+                className="Email"
+                type="email"
+                placeholder="Email"
+                onChange={handleInputValue("email")}
+                onBlur={() => {
+                  validEmail(userinfo.email);
+                  // hideBtn();
+                }}
+              />
+              <Button
+                className="Emailbtn"
+                type="submit"
+                disabled={isEmail ? false : "disabled"}
+                onClick={() => {
+                  dupEmail(userinfo.email);
+                }}
+              >
+                이메일 중복 확인
+              </Button>
+              {isEmail ? (
+                <Elementmessage className="good">{emailMessage}</Elementmessage>
+              ) : userinfo.email.length === 0 ? null : (
+                <Elementmessage>{emailMessage}</Elementmessage>
+              )}
+            </div>
+          </ElementBox>
+          <ElementBox>
+            <div>
+              <Element>이름</Element>
+              <InputBox
+                type="username"
+                placeholder="Name"
+                onChange={handleInputValue("username")}
+                onBlur={
+                  () => nameState()
+                  // () => hideBtn()
+                }
+              />
+            </div>
+          </ElementBox>
+          <ElementBox>
+            <div>
+              <Element>닉네임</Element>
+              <InputBox
+                className="Nickname"
+                type="nickname"
+                placeholder="Nickname"
+                onChange={handleInputValue("nickname")}
+                onBlur={() => {
+                  // hideBtn();
+                }}
+              />
+              <Button
+                className="NicknameBtn"
+                type="submit"
+                disabled={userinfo.nickname.length !== 0 ? false : "disabled"}
+                onClick={() => {
+                  dupNickname(userinfo.nickname);
+                }}
+              >
+                닉네임 중복 확인
+              </Button>
+              {isDupNickname ? (
+                <Elementmessage className="good">
+                  {nicknameMessage}
+                </Elementmessage>
+              ) : userinfo.nickname.length === 0 ? null : (
+                <Elementmessage>{nicknameMessage}</Elementmessage>
+              )}
+            </div>
+          </ElementBox>
+          {/* <button
+          className="btnNicknameCheck"
+          type="submit"
+          disabled={userinfo.nickname.length !== 0 ? false : "disabled"}
+          onClick={() => {
+            dupNickname(userinfo.nickname);
+          }}
+        >
+          닉네임 중복 확인
+        </button> */}
           <div>
-            <input
-              type="email"
-              placeholder="Email"
-              onChange={handleInputValue("email")}
-              onBlur={() => {
-                validEmail(userinfo.email);
-                // hideBtn();
-              }}
-            />
-            {isEmail ? (
-              <div>{emailMessage}</div>
-            ) : userinfo.email.length === 0 ? null : (
-              <div>{emailMessage}</div>
-            )}
-          </div>
-          <button
-            className="btnEmailCheck"
-            type="submit"
-            disabled={isEmail ? false : "disabled"}
-            onClick={() => {
-              dupEmail(userinfo.email);
-            }}
-          >
-            이메일 중복 확인
-          </button>
-          <div>
-            <input
-              type="username"
-              placeholder="Name"
-              onChange={handleInputValue("username")}
-              onBlur={
-                () => nameState()
-                // () => hideBtn()
-              }
-            />
-          </div>
-          <div>
-            <input
-              type="nickname"
-              placeholder="Nickname"
-              onChange={handleInputValue("nickname")}
-              onBlur={() => {
-                // hideBtn();
-              }}
-            />
-            {isDupNickname ? (
-              <div>{nicknameMessage}</div>
-            ) : userinfo.nickname.length === 0 ? null : (
-              <div>{nicknameMessage}</div>
-            )}
-          </div>
-          <button
-            className="btnNicknameCheck"
-            type="submit"
-            disabled={userinfo.nickname.length !== 0 ? false : "disabled"}
-            onClick={() => {
-              dupNickname(userinfo.nickname);
-            }}
-          >
-            닉네임 중복 확인
-          </button>
-          <div>
-            <input
+            <Element>비밀번호</Element>
+            <InputBox
               type="password"
               placeholder="Password"
               onChange={handleInputValue("password")}
@@ -363,13 +602,16 @@ const SignUp = () => {
               }}
             />
             {isPassword ? (
-              <div>{passwordMessage}</div>
+              <Elementmessage className="good">
+                {passwordMessage}
+              </Elementmessage>
             ) : userinfo.password.length === 0 ? null : (
-              <div>{passwordMessage}</div>
+              <Elementmessage>{passwordMessage}</Elementmessage>
             )}
           </div>
           <div>
-            <input
+            <Element>비밀번호 확인</Element>
+            <InputBox
               type="password"
               placeholder="PasswordCheck"
               onChange={handleInputValue("passwordCheck")}
@@ -380,14 +622,17 @@ const SignUp = () => {
             />
             {isPwdCheck ? (
               userinfo.passwordCheck.length === 0 ? null : (
-                <div>{passwordCheckMessage}</div>
+                <Elementmessage className="good">
+                  {passwordCheckMessage}
+                </Elementmessage>
               )
             ) : userinfo.passwordCheck.length === 0 ? null : (
-              <div>{passwordCheckMessage}</div>
+              <Elementmessage>{passwordCheckMessage}</Elementmessage>
             )}
           </div>
           <div>
-            <input
+            <Element>생일</Element>
+            <InputBox
               type="birth"
               placeholder="Birth ex) 19880624"
               onChange={handleInputValue("birth")}
@@ -397,13 +642,14 @@ const SignUp = () => {
               }
             />
             {isBirth ? (
-              <div>{birthMessage}</div>
+              <Elementmessage className="good">{birthMessage}</Elementmessage>
             ) : userinfo.birth.length === 0 ? null : (
-              <div>{birthMessage}</div>
+              <Elementmessage>{birthMessage}</Elementmessage>
             )}
           </div>
           <div>
-            <input
+            <Element>전화번호</Element>
+            <InputBox
               type="mobile"
               placeholder="Mobile ex) 01012345678"
               onChange={handleInputValue("mobile")}
@@ -413,14 +659,14 @@ const SignUp = () => {
               }}
             />
             {isMobile ? (
-              <div>{mobileMessage}</div>
+              <Elementmessage className="good">{mobileMessage}</Elementmessage>
             ) : userinfo.mobile.length === 0 ? null : (
-              <div>{mobileMessage}</div>
+              <Elementmessage>{mobileMessage}</Elementmessage>
             )}
           </div>
           <div>
-            <button
-              className="btn btn-signup"
+            <Button
+              className="signup"
               type="submit"
               // disabled={isBtn ? false : "disabled"}
               onClick={
@@ -429,11 +675,12 @@ const SignUp = () => {
               }
             >
               회원가입
-            </button>
+            </Button>
           </div>
         </form>
-      </center>
-    </div>
+      </ElemetContainer>
+      {/* </center> */}
+    </SignUpContainer>
   );
 };
 
