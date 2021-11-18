@@ -1,6 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
 import { createGlobalStyle } from "styled-components";
 
 import Article from "./Pages/Article";
@@ -17,15 +16,12 @@ import Footer from "./Components/Footer";
 
 const GlobalStyle = createGlobalStyle`
   body {
-    font-family: "NanumGimYuICe";
-  }
-`;
-
-const StyledBody = styled.div`
+  font-family: "paybooc-Medium";
   margin: 0;
   padding: 0;
   background-color: #f4eae0;
   box-sizing: border-box;
+  }
 `;
 
 function App() {
@@ -47,6 +43,7 @@ function App() {
         image: "",
       }
   );
+
   useEffect(() => {
     window.localStorage.setItem("userInfo", JSON.stringify(userInfo));
   }, [userInfo]);
@@ -59,51 +56,68 @@ function App() {
     window.localStorage.setItem("isLogin", JSON.stringify(isLogin));
   }, [isLogin]);
 
-  // useEffect(() => {
-  //   setIsModify(false);
-  // }, []);
+  const [tagArticles, setTagArticles] = useState(
+    () => JSON.parse(window.localStorage.getItem("tagArticles")) || ""
+  );
+
+  useEffect(() => {
+    window.localStorage.setItem("tagArticles", JSON.stringify(tagArticles));
+  }, [tagArticles]);
 
   //! 유저인포 변경 핸들러 함수
-  const userInfoHandler = (userData) => {
+  const userInfoHandler = userData => {
     setUserInfo(userData);
   };
 
   return (
     <BrowserRouter>
       <GlobalStyle />
-      <StyledBody>
-        <Nav
-          isLogin={isLogin}
-          userInfoHandler={userInfoHandler}
-          setIsLogin={setIsLogin}
+      <Nav
+        isLogin={isLogin}
+        userInfoHandler={userInfoHandler}
+        setIsLogin={setIsLogin}
+        setTagArticles={setTagArticles}
+      />
+      <Routes>
+        <Route
+          exact
+          path="/"
+          element={
+            <Main
+              setTagArticles={setTagArticles}
+              tagArticles={tagArticles}
+              isLogin={isLogin}
+            />
+          }
         />
-        <Routes>
-          <Route exact path="/" element={<Main isLogin={isLogin} />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/write" element={<Write userInfo={userInfo} />} />
-          <Route
-            path="/update"
-            element={
-              <Update articleId={articleId} userInfo={userInfo} edit={edit} />
-            }
-          />
-          <Route
-            path="/article/:id"
-            element={
-              <Article
-                userInfo={userInfo}
-                isLogin={isLogin}
-                setEdit={setEdit}
-                setArticleId={setArticleId}
-              />
-            }
-          />
-          <Route path="change" element={<ChangePassword />} />
-          <Route path="/mypage" element={<MyPage userInfo={userInfo} />} />
-          <Route path="/delete" element={<Delete />} />
-        </Routes>
-        <Footer />
-      </StyledBody>
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/write" element={<Write userInfo={userInfo} />} />
+        <Route
+          path="/update"
+          element={
+            <Update articleId={articleId} userInfo={userInfo} edit={edit} />
+          }
+        />
+        <Route
+          path="/article/:id"
+          element={
+            <Article
+              userInfo={userInfo}
+              isLogin={isLogin}
+              setEdit={setEdit}
+              setArticleId={setArticleId}
+              setTagArticles={setTagArticles}
+            />
+          }
+        />
+        <Route path="change" element={<ChangePassword />} />
+        <Route
+          path="/mypage"
+          element={<MyPage setUserInfo={setUserInfo} userInfo={userInfo} />}
+        />
+        <Route path="/delete" element={<Delete />} />
+      </Routes>
+      <Footer />
     </BrowserRouter>
   );
 }

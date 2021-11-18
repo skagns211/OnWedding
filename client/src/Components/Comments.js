@@ -2,19 +2,21 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 
-const StyledTest = styled.img`
-  width: 8rem;
-  height: 8rem;
-  border-radius: 50%;
-`;
-
-const StyledTest2 = styled.div`
+const CommentsBody = styled.div`
   display: flex;
   flex-direction: row;
-  border-top: 1px solid lightgray;
-  padding: 1rem;
-  background-color: white;
   align-items: center;
+  border-top: 1px solid lightgray;
+  padding: 1.5rem 4.1rem;
+  background-color: white;
+`;
+
+const CommentImage = styled.div`
+  img {
+    width: 8rem;
+    height: 8rem;
+    border-radius: 50%;
+  }
 `;
 
 const StyledEdit = styled.div`
@@ -26,15 +28,15 @@ const StyledEdit = styled.div`
   }
 `;
 
-const Comments = ({ comment, clickDelete, userInfo }) => {
+const Comments = ({ comment, clickDelete, userInfo, setArticleComments }) => {
   const [edit, setEdit] = useState(false);
   const [comments, setComments] = useState(comment.message);
 
-  const handleChange = (e) => {
+  const editText = e => {
     setComments(e.target.value);
   };
 
-  const handleEdit = (e) => {
+  const editComment = e => {
     setEdit(!edit);
     if (e.target.textContent === "확인") {
       axios.patch(`https://localhost:4000/comment/${comment.id}`, {
@@ -43,30 +45,42 @@ const Comments = ({ comment, clickDelete, userInfo }) => {
     }
   };
 
-  const handleDelete = () => {
-    axios.delete(`https://localhost:4000/comment/${comment.id}`);
-    clickDelete(comment);
+  const deleteComment = () => {
+    if (window.confirm("게시글을 삭제하시겠습니까?")) {
+      axios.delete(`https://localhost:4000/comment/${comment.id}`, {
+        withCredentials: true,
+      });
+      clickDelete(comment);
+    }
   };
-
   return (
-    <StyledTest2>
-      <StyledTest src={comment.img}></StyledTest>
-      {/* <div>{comment}</div> */}
+    <CommentsBody>
+      {comment.image ? (
+        <CommentImage>
+          <img src={comment.image} alt="사진" />
+        </CommentImage>
+      ) : (
+        <CommentImage>
+          <img
+            src={
+              "https://onwedding-img.s3.ap-northeast-2.amazonaws.com/default.jpeg"
+            }
+            alt="사진"
+          />
+        </CommentImage>
+      )}
+      {comment.username}
       <StyledEdit>
-        {edit ? (
-          <textarea onChange={handleChange}>{comments}</textarea>
-        ) : (
-          comments
-        )}
+        {edit ? <textarea onChange={editText}>{comments}</textarea> : comments}
       </StyledEdit>
-      <div>{comment.createdAt}</div>
+      <div>{(comment.createdAt || "").slice(0, 10)}</div>
       {userInfo.id === comment.user_id ? (
         <div>
-          <button onClick={handleEdit}>{edit ? "확인" : "수정"}</button>
-          <button onClick={handleDelete}>삭제</button>
+          <button onClick={editComment}>{edit ? "확인" : "수정"}</button>
+          <button onClick={deleteComment}>삭제</button>
         </div>
       ) : null}
-    </StyledTest2>
+    </CommentsBody>
   );
 };
 

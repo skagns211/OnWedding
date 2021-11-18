@@ -87,13 +87,13 @@ const LoginModal = ({ openModalHandler, userInfoHandler, setIsLogin }) => {
   const [emailMessage, setEmailMessage] = useState("");
   const [invalidMessage, setInvalidMessage] = useState("");
 
-  const handleInputValue = (key) => (e) => {
+  const handleInputValue = key => e => {
     setLoginUserInfo({ ...loginUserInfo, [key]: e.target.value });
   };
 
   const navigate = useNavigate();
 
-  const validEmail = (email) => {
+  const validEmail = email => {
     const regEmail =
       /^([0-9a-zA-Z_\.-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/;
     if (regEmail.test(email) === false) {
@@ -130,7 +130,7 @@ const LoginModal = ({ openModalHandler, userInfoHandler, setIsLogin }) => {
           withCredentials: true,
         }
       )
-      .then((res) => {
+      .then(res => {
         console.log(res);
         if (res.data.message === "invalid data") {
           console.log("로그인 요청이 실패하였습니다.");
@@ -138,26 +138,25 @@ const LoginModal = ({ openModalHandler, userInfoHandler, setIsLogin }) => {
         } else {
           //! isLogin 상태를 변경해줘야함
           //! axios get 요청을 보내고 받은 응답 유저인포를 전역에서 프롭스로 받아온 핸들러로 스테이트 변경
-          
-              console.log("로그인 요청이 성공적으로 전달되었습니다.");
-              // console.log(res.data.data.userInfo);
-              
-              const loginInfo = res.data.data.loginInfo;
-              userInfoHandler(loginInfo);
-              setIsLogin(true);
-              openModalHandler();
-              // console.log(userInfo);
-            
+
+          console.log("로그인 요청이 성공적으로 전달되었습니다.");
+          // console.log(res.data.data.userInfo);
+
+          const loginInfo = res.data.data.loginInfo;
+          userInfoHandler(loginInfo);
+          setIsLogin(true);
+          openModalHandler();
+          // console.log(userInfo);
         }
         // console.log(stateInfo);
       })
-      .catch((err) => {
+      .catch(err => {
         throw err;
       });
   };
 
   //! 엔터키 구현
-  const onCheckEnter = (e) => {
+  const onCheckEnter = e => {
     if (e.key === "Enter") {
       infoAll();
     }

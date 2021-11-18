@@ -8,6 +8,6 @@ router.post("/:id", controllers.article.post);
 router.get("/:id", controllers.article.get);
 router.patch("/:id", controllers.article.patch);
 router.delete("/:id", controllers.article.delete);
-router.get("/tag/:name", controllers.hashtag.get);
+router.get("/tag/:id", controllers.hashtag.get);
 
 module.exports = router;

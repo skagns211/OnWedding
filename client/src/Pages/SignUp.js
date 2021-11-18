@@ -53,7 +53,7 @@ const SignUp = () => {
         },
         { httpOnly: true, withCredentials: true }
       )
-      .then((res) => {
+      .then(res => {
         const successMsg = res.data.message;
         if (successMsg) {
           setIsComplete(true);
@@ -62,7 +62,7 @@ const SignUp = () => {
           }, 2000);
         }
       })
-      .catch((err) => {
+      .catch(err => {
         throw err;
       });
 
@@ -73,12 +73,12 @@ const SignUp = () => {
     // }, 2000);
   };
 
-  const handleInputValue = (key) => (e) => {
+  const handleInputValue = key => e => {
     setUserinfo({ ...userinfo, [key]: e.target.value });
   };
 
   //! email 형식 유효성검사
-  const validEmail = (email) => {
+  const validEmail = email => {
     const regEmail =
       /^([0-9a-zA-Z_\.-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/;
     if (regEmail.test(email) === false) {
@@ -90,7 +90,7 @@ const SignUp = () => {
     }
   };
   //! password 유효성검사
-  const validPassword = (password) => {
+  const validPassword = password => {
     const regPassword = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
     if (!regPassword.test(password)) {
       setIsPassword(false);
@@ -114,7 +114,7 @@ const SignUp = () => {
   };
 
   //! 생년월일 유효성검사
-  const checkBirth = (birth) => {
+  const checkBirth = birth => {
     const regBirth =
       /^([0-9][0-9][0-9][0-9]|20\d{2})(0[0-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])$/;
     const nowDate = new Date();
@@ -138,7 +138,7 @@ const SignUp = () => {
   };
 
   //! mobile형식 유효성검사
-  const validMobile = (mobile) => {
+  const validMobile = mobile => {
     mobile = mobile.split("-").join("");
     const regPhone = /^((01[1|6|7|8|9])[1-9]+[0-9]{6,7})|(010[1-9][0-9]{7})$/;
     if (!regPhone.test(mobile)) {
@@ -151,15 +151,14 @@ const SignUp = () => {
   };
 
   //! email 중복 체크
-  const dupEmail = (email) => {
+  const dupEmail = email => {
     axios
       .post(
         "https://localhost:4000/auth/email",
         { email: userinfo.email },
         { httpOnly: true, withCredentials: true }
       )
-      .then((res) => {
-        console.log(res.data.message);
+      .then(res => {
         const resMsg = res.data.message;
         if (resMsg === "email overlap") {
           setIsDupEmail(false);
@@ -169,21 +168,20 @@ const SignUp = () => {
           setEmailMessage("사용가능한 이메일입니다:)");
         }
       })
-      .catch((err) => {
+      .catch(err => {
         throw err;
       });
   };
 
   //! nickName 중복 체크
-  const dupNickname = (nickname) => {
+  const dupNickname = nickname => {
     axios
       .post(
         "https://localhost:4000/auth/nickname",
         { nickname: userinfo.nickname },
         { httpOnly: true, withCredentials: true }
       )
-      .then((res) => {
-        console.log(res.data.message);
+      .then(res => {
         const resMsg = res.data.message;
         if (resMsg === "nickname overlap") {
           setIsDupNickname(false);
@@ -291,7 +289,7 @@ const SignUp = () => {
       <center>
         <div></div>
         <div>Welcome to OnWedding!</div>
-        <form onSubmit={(e) => e.preventDefault()}>
+        <form onSubmit={e => e.preventDefault()}>
           <div>
             <input
               type="email"

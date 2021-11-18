@@ -19,15 +19,16 @@ module.exports = {
   },
   article: {
     post: async (req, res) => {
-      // const { accessToken, tokenExpirse } = req.cookies;
-      // if (tokenExpirse <= Date.now() / 1000) {
-      //   res
-      //     .clearCookie("accessToken")
-      //     .status(401)
-      //     .send({ message: "accessToken Expiration. plz Loing" });
-      // } else if (!accessToken) {
-      //   res.status(403).send({ message: "not logged in" });
-      // } else {
+      const { accessToken, tokenExpirse } = req.cookies;
+      console.log(accessToken)
+
+      if (tokenExpirse <= Date.now() / 1000) {
+        res
+          .clearCookie("accessToken")
+          .send({ message: "accessToken Expiration. plz Loing" });
+      } else if (!accessToken) {
+        res.send({ message: "not logged in" });
+      } else {
         const { title, message, image, hashtag } = req.body;
         const user_id = req.params.id;
 
@@ -57,20 +58,23 @@ module.exports = {
         } catch (err) {
           res.status(500).send();
         }
-      //}
+      }
     },
     get: async (req, res) => {
       const id = req.params.id;
       const article = await Article.findOne({
         where: { id },
       });
+
+      const articleId = article.user_id
       const username = await User.findOne({
         attributes: ["name"],
-        where: { id: article.user_id },
+        where: { id: articleId },
       });
       const comments = await Comment.findAll({
         where: { article_id: id },
       });
+
       const commentUser = await User.findAll({
         attributes: ["nickname"],
         include: [{
@@ -81,8 +85,8 @@ module.exports = {
           }
         }]
       })
+
       const hashtag = await Hashtag.findAll({
-        attributes: ["name"],
         include: [
           {
             model: Article_Hashtag,
@@ -97,18 +101,17 @@ module.exports = {
       if (!article) {
         res.status(500).send();
       }
-      res.json({ data: { article, comments, username, hashtag, commentUser } });
+      res.json({ data: { article, comments, username, hashtag, commentUser}, comment: { nickname, commentId }});
     },
     patch: async (req, res) => {
-      // const { accessToken, tokenExpirse } = req.cookies;
-      // if (tokenExpirse <= Date.now() / 1000) {
-      //   res
-      //     .clearCookie("accessToken")
-      //     .status(401)
-      //     .send({ message: "accessToken Expiration. plz Loing" });
-      // } else if (!accessToken) {
-      //   res.status(403).send({ message: "not logged in" });
-      // } else {
+      const { accessToken, tokenExpirse } = req.cookies;
+      if (tokenExpirse <= Date.now() / 1000) {
+        res
+          .clearCookie("accessToken")
+          .send({ message: "accessToken Expiration. plz Loing" });
+      } else if (!accessToken) {
+        res.send({ message: "not logged in" });
+      } else {
         const id = req.params.id;
         const { title, message, image, hashtag } = req.body;
 
@@ -144,19 +147,17 @@ module.exports = {
         } catch (err) {
           res.status(500);
         }
-      
-    //}
+    }
   },
   delete: async (req, res) => {
-    // const { accessToken, tokenExpirse } = req.cookies;
-    // if (tokenExpirse <= Date.now() / 1000) {
-    //   res
-    //     .clearCookie("accessToken")
-    //     .status(401)
-    //     .send({ message: "accessToken Expiration. plz Loing" });
-    // } else if (!accessToken) {
-    //   res.status(403).send({ message: "not logged in" });
-    // } else {
+    const { accessToken, tokenExpirse } = req.cookies;
+    if (tokenExpirse <= Date.now() / 1000) {
+      res
+        .clearCookie("accessToken")
+        .send({ message: "accessToken Expiration. plz Loing" });
+    } else if (!accessToken) {
+      res.send({ message: "not logged in" });
+    } else {
       const id = req.params.id;
 
       await Comment.destroy({
@@ -173,23 +174,19 @@ module.exports = {
       } catch (err) {
         res.status(500).send();
       }  
-      // }
+    }
     },
   },
   hashtag: {
     get: async (req, res) => {
-      const name = req.params.name;
+      const id = req.params.id;
+
       const articles = await Article.findAll({
         include: [
           {
             model: Article_Hashtag,
             attributes: [],
-            include: [
-              {
-                model: Hashtag,
-                where: { name },
-              },
-            ],
+            where: { hashtag_id: id }
           },
         ],
       });
