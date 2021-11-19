@@ -115,7 +115,7 @@ function App() {
           path="/mypage"
           element={<MyPage setUserInfo={setUserInfo} userInfo={userInfo} />}
         />
-        <Route path="/delete" element={<Delete />} />
+        <Route path="/delete" element={<Delete userInfoHandler={userInfoHandler} setIsLogin={setIsLogin}/>} />
       </Routes>
       <Footer />
     </BrowserRouter>
