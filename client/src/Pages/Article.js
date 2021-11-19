@@ -150,7 +150,6 @@ const Article = ({
         withCredentials: true,
       })
       .then(res => {
-        console.log(res.data.data);
         setArticleComments(res.data.data.comments);
         setArticle(res.data.data.article);
         setUsername(res.data.data.username);
@@ -258,7 +257,11 @@ const Article = ({
           <HashTags>
             {hashtags
               ? hashtags.map(hashtag => {
-                  return <li onClick={ClickHash}>#{hashtag.name}</li>;
+                  return (
+                    <li key={hashtag.id} onClick={ClickHash}>
+                      #{hashtag.name}
+                    </li>
+                  );
                 })
               : null}
           </HashTags>

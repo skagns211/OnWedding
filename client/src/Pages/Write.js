@@ -66,14 +66,13 @@ const InputTitle = styled.div`
 `;
 
 const InputImage = styled.div`
-  width: 80%;
   margin: 1rem 0;
   font-size: 1.5rem;
   display: flex;
   justify-content: space-between;
   img {
-    max-width: 40rem;
-    max-height: 40rem;
+    max-width: 26.5rem;
+    max-height: 26.5rem;
   }
   input {
     font-size: 1rem;

@@ -27,6 +27,7 @@ const GlobalStyle = createGlobalStyle`
 function App() {
   const [edit, setEdit] = useState("");
   const [articleId, setArticleId] = useState(false);
+  const [img, setImg] = useState(null);
 
   useEffect(() => {
     setEdit("");
@@ -113,7 +114,14 @@ function App() {
         <Route path="change" element={<ChangePassword />} />
         <Route
           path="/mypage"
-          element={<MyPage setUserInfo={setUserInfo} userInfo={userInfo} />}
+          element={
+            <MyPage
+              img={img}
+              setImg={setImg}
+              userInfo={userInfo}
+              setUserInfo={setUserInfo}
+            />
+          }
         />
         <Route path="/delete" element={<Delete />} />
       </Routes>
