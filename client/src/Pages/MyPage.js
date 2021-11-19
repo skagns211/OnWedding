@@ -1,5 +1,4 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useState } from "react";
 import axios from "axios";
@@ -100,7 +99,7 @@ const Button = styled.button`
   }
 `;
 
-const MyPage = ({ userInfo, setUserInfo }) => {
+const MyPage = ({ userInfo, setImg, img, setUserInfo }) => {
   //! s3 구현
   const AWS = require("aws-sdk");
 
@@ -137,49 +136,39 @@ const MyPage = ({ userInfo, setUserInfo }) => {
       }
     );
   };
+
   //! s3 구현\
 
-  if (profile) {
-    axios
-      .patch(
-        "https://localhost:4000/user/profile",
-        {
-          image: profile,
-        },
-        {
-          withCredentials: true,
-        }
-      )
-      .then(res => {
-        setUserInfo({
-          id: userInfo.id,
-          email: userInfo.email,
-          name: userInfo.name,
-          nickname: userInfo.nickname,
-          mobile: userInfo.mobile,
-          image: res.data.data.img,
-        });
-      });
-  }
-  console.log(userInfo.image);
+  // axios.patch(
+  //   "https://localhost:4000/user/profile",
+  //   {
+  //     image: profile,
+  //   },
+  //   {
+  //     withCredentials: true,
+  //   }
+  // );
+
+  // setUserInfo({...userInfo, image: res.data.data.img});
 
   return (
     <StyledBody>
       <MypageHeader>{`${userInfo.name}'s Page`}</MypageHeader>
       <ElementContainer>
         <SpanLeft>
-           {userInfo.image && userInfo.image === /^A/ ? (
-        <img src={userInfo.image} />
-      ) : (
-        <img
-          src={
-            "https://onwedding-img.s3.ap-northeast-2.amazonaws.com/default-placeholder-1024x1024.png"
-          }
-        />
-      )}
-          <div>
-            <input type="file" onChange={handleImg} />
-          </div>
+          {img ? (
+            <img src={img} alt="사진" />
+          ) : (
+            <img
+              src={
+                "https://onwedding-img.s3.ap-northeast-2.amazonaws.com/default-placeholder-1024x1024.png"
+              }
+              alt="사진"
+            />
+          )}
+          {/* <div>
+            <input type="file" onChange={handleImg} alt="사진" />
+          </div> */}
         </SpanLeft>
         <SpanRight>
           <ElementBox>

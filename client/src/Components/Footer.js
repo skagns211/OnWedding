@@ -46,7 +46,7 @@ const Footer = () => {
         <Styledicon>
           <li>
             <Icon target="_blank" href="https://github.com/skagns211">
-              <i class="fa fa-github"></i>
+              <i className="fa fa-github"></i>
             </Icon>
           </li>
           <li>

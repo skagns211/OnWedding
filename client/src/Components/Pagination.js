@@ -30,7 +30,11 @@ const Pagination = ({ post, totalPost, paginate }) => {
   return (
     <PaginationBody>
       {pageNum.map(page => {
-        return <PageList onClick={() => paginate(page)}>{page}</PageList>;
+        return (
+          <PageList key={page.id} onClick={() => paginate(page)}>
+            {page}
+          </PageList>
+        );
       })}
     </PaginationBody>
   );

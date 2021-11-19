@@ -101,7 +101,7 @@ module.exports = {
       if (!article) {
         res.status(500).send();
       }
-      res.json({ data: { article, comments, username, hashtag, commentUser}, comment: { nickname, commentId }});
+      res.json({ data: { article, comments, username, hashtag, commentUser}});
     },
     patch: async (req, res) => {
       const { accessToken, tokenExpirse } = req.cookies;
