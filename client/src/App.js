@@ -123,7 +123,7 @@ function App() {
             />
           }
         />
-        <Route path="/delete" element={<Delete />} />
+        <Route path="/delete" element={<Delete userInfoHandler={userInfoHandler} setIsLogin={setIsLogin}/>} />
       </Routes>
       <Footer />
     </BrowserRouter>
