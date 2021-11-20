@@ -121,7 +121,7 @@ module.exports = {
           );
 
           try {
-            res.send({ data: {img: loginInfo.image}, message: "success change image" });
+            return res.send({ data: {img: loginInfo.image}, message: "success change image" });
           } catch (err) {
             console.log(err);
           }

@@ -108,10 +108,10 @@ const Button = styled.button`
   }
 `;
 
-const CompleteContainer = styled.div`
-  width: 100vw;
-  height: 20vh;
-`;
+// const CompleteContainer = styled.div`
+//   width: 100vw;
+//   height: 20vh;
+// `;
 
 const ChangePassword = () => {
   const [passwordInfo, setPasswordInfo] = useState({
@@ -140,7 +140,7 @@ const ChangePassword = () => {
   const [passwordMessage, setPasswordMessage] = useState(""); //! 새로운 패스워드 유효성검사 메세지 state
   const [passwordCheckMessage, setPasswordCheckMessage] = useState(""); //! 새로운 패스워드 확인 메세지 state
 
-  const handleInputValue = (key) => (e) => {
+  const handleInputValue = key => e => {
     setPasswordInfo({ ...passwordInfo, [key]: e.target.value });
   };
 
@@ -156,7 +156,7 @@ const ChangePassword = () => {
   // };
 
   //! newPassword 유효성검사
-  const validPassword = (newPassword) => {
+  const validPassword = newPassword => {
     const regPassword = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
     if (!regPassword.test(newPassword)) {
       setIsNewPassword(false);
@@ -181,11 +181,11 @@ const ChangePassword = () => {
   };
 
   const infoAll = () => {
-    const stateInfo = {
-      // password: [passwordInfo.currentPassword, isPassword],
-      newPassword: [passwordInfo.newPassword, isNewPassword],
-      checkState: isCheckNewpassword,
-    };
+    // const stateInfo = {
+    //   // password: [passwordInfo.currentPassword, isPassword],
+    //   newPassword: [passwordInfo.newPassword, isNewPassword],
+    //   checkState: isCheckNewpassword,
+    // };
 
     axios
       .patch(
@@ -195,7 +195,7 @@ const ChangePassword = () => {
         },
         { withCredentials: true }
       )
-      .then((res) => {
+      .then(res => {
         console.log(res.data.message);
         const resMsg = res.data.message;
         if (resMsg === "success change password") {
@@ -205,13 +205,13 @@ const ChangePassword = () => {
           console.log("비밀번호 변경이 실패하였습니다.");
         }
       })
-      .catch((err) => {
+      .catch(err => {
         throw err;
       });
     // console.log(stateInfo);
   };
 
-  const onCheckEnter = (e) => {
+  const onCheckEnter = e => {
     if (e.key === "Enter") {
       infoAll();
     }

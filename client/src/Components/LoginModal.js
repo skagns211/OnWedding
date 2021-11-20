@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const ModalContainer = styled.div`
@@ -57,7 +57,6 @@ const ModalBackdrop = styled.div`
 const LoginHeader = styled.h1`
   font-size: 3rem;
   margin-top: 1.5em;
-  /* font-family: "MaplestoryOTFLight"; */
   @media only screen and (max-width: 600px) {
     font-size: 2rem;
     margin-top: 1em;
@@ -69,7 +68,6 @@ const Welcome = styled.div`
     font-size: 1rem;
     margin-top: 0.3em;
   }
-  /* font-family: "MaplestoryOTFLight"; */
 `;
 const Element = styled.div`
   min-width: 10rem;
@@ -78,8 +76,6 @@ const Element = styled.div`
   padding-top: 0.6rem;
   margin-top: 0.6rem;
   margin-bottom: 0.2rem;
-  /* font-family: "MaplestoryOTFLight"; */
-  /* font-family: "NanumGimYuICe"; */
   @media only screen and (max-width: 600px) {
     font-size: 0.9rem;
     padding-top: 0.3rem;
@@ -99,7 +95,6 @@ const Inputbox = styled.input`
   }
   &.PasswordMessage {
   }
-  /* font-family: "NanumGimYuICe"; */
   @media only screen and (max-width: 600px) {
     width: 14rem;
     height: 2rem;
@@ -163,7 +158,7 @@ const LoginModal = ({ openModalHandler, userInfoHandler, setIsLogin }) => {
   }); //! 유저 로그인 info state
 
   const [isLogEmail, setIsLogEmail] = useState(false); //! 이메일 입력 state
-  const [isLogPassword, setIsLogPassword] = useState(false); //! 패스워드 입력 state
+  const [, setIsLogPassword] = useState(false); //! 패스워드 입력 state
   const [emailMessage, setEmailMessage] = useState("");
   const [invalidMessage, setInvalidMessage] = useState("");
 
@@ -175,7 +170,7 @@ const LoginModal = ({ openModalHandler, userInfoHandler, setIsLogin }) => {
 
   const validEmail = email => {
     const regEmail =
-      /^([0-9a-zA-Z_\.-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/;
+      /^([0-9a-zA-Z_.-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/;
     if (regEmail.test(email) === false) {
       setIsLogEmail(false);
       setEmailMessage("올바른 이메일 형식이 아닙니다.");
@@ -194,10 +189,10 @@ const LoginModal = ({ openModalHandler, userInfoHandler, setIsLogin }) => {
   };
 
   const infoAll = () => {
-    const stateInfo = {
-      email: [loginUserInfo.email, isLogEmail],
-      password: [loginUserInfo.password, isLogPassword],
-    };
+    // const stateInfo = {
+    //   email: [loginUserInfo.email, isLogEmail],
+    //   password: [loginUserInfo.password, isLogPassword],
+    // };
 
     if ((loginUserInfo.email === "", loginUserInfo.password === "")) {
       setInvalidMessage("아이디와 비밀번호를 정확히 입력해 주세요");
@@ -213,19 +208,19 @@ const LoginModal = ({ openModalHandler, userInfoHandler, setIsLogin }) => {
             withCredentials: true,
           }
         )
-        .then((res) => {
-          console.log(res);
+        .then(res => {
+          //console.log(res);
           if (res.data.message === "invalid data") {
-            console.log("로그인 요청이 실패하였습니다.");
+            //console.log("로그인 요청이 실패하였습니다.");
             setInvalidMessage("아이디와 비밀번호를 정확히 입력해 주세요");
           } else if (res.data.message === "require All info") {
-            console.log(res.data.message);
+            //console.log(res.data.message);
             setInvalidMessage("아이디와 비밀번호를 정확히 입력해 주세요");
           } else {
             //! isLogin 상태를 변경해줘야함
             //! axios get 요청을 보내고 받은 응답 유저인포를 전역에서 프롭스로 받아온 핸들러로 스테이트 변경
 
-            console.log("로그인 요청이 성공적으로 전달되었습니다.");
+            //console.log("로그인 요청이 성공적으로 전달되었습니다.");
             // console.log(res.data.data.userInfo);
 
             const loginInfo = res.data.data.loginInfo;
@@ -236,7 +231,7 @@ const LoginModal = ({ openModalHandler, userInfoHandler, setIsLogin }) => {
           }
           // console.log(stateInfo);
         })
-        .catch((err) => {
+        .catch(err => {
           throw err;
         });
     }

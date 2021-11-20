@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
 
@@ -299,6 +299,7 @@ const SignUp = () => {
         { httpOnly: true, withCredentials: true }
       )
       .then(res => {
+        console.log(res.data);
         const successMsg = res.data.message;
         if (successMsg) {
           setIsComplete(true);
@@ -325,7 +326,7 @@ const SignUp = () => {
   //! email 형식 유효성검사
   const validEmail = email => {
     const regEmail =
-      /^([0-9a-zA-Z_\.-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/;
+      /^([0-9a-zA-Z_.-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/;
     if (regEmail.test(email) === false) {
       setIsEmail(false);
       setEmailMessage("올바른 이메일 형식이 아닙니다.");
@@ -495,7 +496,6 @@ const SignUp = () => {
       </WelcomeHeader>
     </SignUpContainer>
   ) : (
-
     <SignUpContainer>
       {/* <center> */}
       <WelcomeHeader>Welcome to OnWedding!</WelcomeHeader>
@@ -504,7 +504,7 @@ const SignUp = () => {
       </WelcomeMessage>
       <Line />
       <ElemetContainer>
-        <form onSubmit={(e) => e.preventDefault()}>
+        <form onSubmit={e => e.preventDefault()}>
           <ElementBox>
             <div>
               <Element>이메일</Element>

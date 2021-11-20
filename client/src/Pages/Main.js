@@ -44,8 +44,9 @@ const SortButton = styled.ul`
     border-radius: 5px;
   }
   > li:hover {
-    background-color: white;
+    background-color: #817c8d;
     cursor: pointer;
+    color: white;
   }
 `;
 
@@ -56,9 +57,10 @@ const WriteButton = styled.button`
   font-size: 1.5rem;
   background-color: lightgray;
   border: 1px solid lightgray;
+  background-color: #817c8d;
   > a {
     text-decoration: none;
-    color: black;
+    color: white;
   }
 `;
 

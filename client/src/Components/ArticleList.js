@@ -6,8 +6,11 @@ const Article = styled.li`
   list-style: none;
   width: 25%;
   transition: 0.4s;
+  display: flex;
+  justify-content: center;
   :hover {
     background-color: white;
+    border-radius: 5px;
   }
   > a {
     text-decoration: none;
@@ -17,8 +20,8 @@ const Article = styled.li`
 
 const ArticleImage = styled.img`
   border-radius: 5%;
-  width: 18rem;
-  height: 18rem;
+  width: 15rem;
+  height: 15rem;
 `;
 
 const ArticleTitle = styled.div`

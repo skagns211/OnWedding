@@ -71,7 +71,6 @@ module.exports = {
         const comment = await Comment.findOne({
           where: { id: comment_id },
         });
-
         try {
           res.send({ data: { comment } });
         } catch (err) {
