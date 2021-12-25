@@ -216,13 +216,15 @@ const LoginModal = ({ openModalHandler, userInfoHandler, setIsLogin }) => {
           } else {
             //! isLogin 상태를 변경해줘야함
             //! axios get 요청을 보내고 받은 응답 유저인포를 전역에서 프롭스로 받아온 핸들러로 스테이트 변경
+            //console.log("로그인 요청이 성공적으로 전달되었습니다.");
+            // console.log(res.data.data.userInfo);
             const loginInfo = res.data.data.loginInfo;
             userInfoHandler(loginInfo);
             setIsLogin(true);
             openModalHandler();
           }
         })
-        .catch((err) => {
+        .catch(err => {
           throw err;
         });
     }

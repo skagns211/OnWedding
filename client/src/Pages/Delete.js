@@ -109,7 +109,7 @@ const Delete = ({ userInfoHandler, setIsLogin }) => {
           }, 2000);
         }
       })
-      .catch((err) => {
+      .catch(err => {
         console.log(err);
       });
   };

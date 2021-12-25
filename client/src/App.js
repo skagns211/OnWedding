@@ -128,6 +128,7 @@ function App() {
           element={
             <Delete userInfoHandler={userInfoHandler} setIsLogin={setIsLogin} />
           }
+
         />
       </Routes>
       <Footer />

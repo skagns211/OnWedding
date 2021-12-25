@@ -502,7 +502,7 @@ const SignUp = () => {
       </WelcomeMessage>
       <Line />
       <ElemetContainer>
-        <form onSubmit={(e) => e.preventDefault()}>
+        <form onSubmit={e => e.preventDefault()}>
           <ElementBox>
             <div>
               <Element>이메일</Element>
