@@ -108,10 +108,10 @@ const Button = styled.button`
   }
 `;
 
-const CompleteContainer = styled.div`
-  width: 100vw;
-  height: 20vh;
-`;
+// const CompleteContainer = styled.div`
+//   width: 100vw;
+//   height: 20vh;
+// `;
 
 const ChangePassword = () => {
   const [passwordInfo, setPasswordInfo] = useState({
@@ -181,15 +181,15 @@ const ChangePassword = () => {
   };
 
   const infoAll = () => {
-    const stateInfo = {
-      // password: [passwordInfo.currentPassword, isPassword],
-      newPassword: [passwordInfo.newPassword, isNewPassword],
-      checkState: isCheckNewpassword,
-    };
+    // const stateInfo = {
+    //   // password: [passwordInfo.currentPassword, isPassword],
+    //   newPassword: [passwordInfo.newPassword, isNewPassword],
+    //   checkState: isCheckNewpassword,
+    // };
 
     axios
       .patch(
-        "https://localhost:4000/user/pwd",
+        "/user/pwd",
         {
           password: passwordInfo.newPassword,
         },

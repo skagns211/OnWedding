@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import LoginModal from "./LoginModal";
-import dummy from "../dummy/dummy";
+// import dummy from "../dummy/dummy";
 import axios from "axios";
+import logo from "./OnWedding_logo.png";
 
 const NavBody = styled.header`
   z-index: 1;
@@ -17,7 +18,7 @@ const NavBody = styled.header`
   padding-left: 0.5rem;
 `;
 
-const StyledLink2 = styled.div`
+const NavButton = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -28,8 +29,18 @@ const StyledLink2 = styled.div`
     text-decoration: none;
     color: black;
   }
+  img {
+    width: 10rem;
+    height: 5rem;
+  }
+`;
+const ButtonLogin = styled.div`
   span {
-    margin: 0.5rem;
+    margin: 1rem;
+    font-size: 1rem;
+  }
+  span:hover {
+    cursor: pointer;
   }
 `;
 
@@ -39,9 +50,9 @@ const UserInfo = styled.div`
     visibility: visible;
   }
   img {
-    width: 3rem;
-    height: 3rem;
-    border-radius: 50%;
+    width: 4rem;
+    height: 4rem;
+    border-radius: 70%;
   }
   li {
     padding: 0.5rem 0;
@@ -74,10 +85,10 @@ const Nav = ({ isLogin, userInfoHandler, setIsLogin, setTagArticles }) => {
 
   const logoutHandler = () => {
     axios
-      .post("https://localhost:4000/auth/logout", null, {
+      .post("/auth/logout", null, {
         withCredentials: true,
       })
-      .then(res => {
+      .then((res) => {
         const resMsg = res.data.message;
         if (resMsg === "logout success!") {
           const userInfo = {
@@ -91,12 +102,12 @@ const Nav = ({ isLogin, userInfoHandler, setIsLogin, setTagArticles }) => {
           setIsLogin(false);
         }
       })
-      .catch(err => {
+      .catch((err) => {
         throw err;
       });
   };
 
-  const handlehome = () => {
+  const handhome = () => {
     setTagArticles("");
   };
 
@@ -109,24 +120,24 @@ const Nav = ({ isLogin, userInfoHandler, setIsLogin, setTagArticles }) => {
           setIsLogin={setIsLogin}
         />
       ) : null}
-
-      <StyledLink2>
-        <div onClick={handlehome}>
-          <Link to="/">Onwedding</Link>
+      <NavButton>
+        <div onClick={handhome}>
+          <Link to="/">
+            <img alt="logo" src={logo}></img>
+          </Link>
         </div>
-        <div>
+        <ButtonLogin>
           {!isLogin ? (
-            <>
-              <span>
-                <a onClick={openModalHandler}>login</a>
-              </span>
-              <span>
-                <Link to="/signup">SignUp</Link>
-              </span>
-            </>
+            <span>
+              <span onClick={openModalHandler}>login</span>
+              <Link to="/signup">SignUp</Link>
+            </span>
           ) : (
             <UserInfo>
-              <img src={dummy[0].img} />
+              <img
+                src={"https://onweddingimg.s3.amazonaws.com/default.png"}
+                alt="사진"
+              />
               <ul>
                 <li>
                   <Link to="/mypage">마이페이지</Link>
@@ -144,8 +155,8 @@ const Nav = ({ isLogin, userInfoHandler, setIsLogin, setTagArticles }) => {
               </ul>
             </UserInfo>
           )}
-        </div>
-      </StyledLink2>
+        </ButtonLogin>
+      </NavButton>
     </NavBody>
   );
 };

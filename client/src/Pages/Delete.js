@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
 
@@ -43,21 +43,21 @@ const DeleteHeader = styled.div`
   }
 `;
 
-const Element = styled.div`
-  min-width: 10rem;
-  max-width: 12.5rem;
-  font-size: 1.05rem;
-  padding-top: 0.6rem;
-  margin-top: 0.6rem;
-  margin-bottom: 0.2rem;
-  /* font-family: "MaplestoryOTFLight"; */
-  /* font-family: "NanumGimYuICe"; */
-  @media only screen and (max-width: 600px) {
-    font-size: 0.9rem;
-    padding-top: 0.3rem;
-    margin-top: 0.4rem;
-  }
-`;
+// const Element = styled.div`
+//   min-width: 10rem;
+//   max-width: 12.5rem;
+//   font-size: 1.05rem;
+//   padding-top: 0.6rem;
+//   margin-top: 0.6rem;
+//   margin-bottom: 0.2rem;
+//   /* font-family: "MaplestoryOTFLight"; */
+//   /* font-family: "NanumGimYuICe"; */
+//   @media only screen and (max-width: 600px) {
+//     font-size: 0.9rem;
+//     padding-top: 0.3rem;
+//     margin-top: 0.4rem;
+//   }
+// `;
 
 const Button = styled.button`
   top: 1rem;
@@ -87,7 +87,7 @@ const Delete = ({ userInfoHandler, setIsLogin }) => {
     // setIsComplete(true);
 
     axios
-      .delete("https://localhost:4000/user", { withCredentials: true })
+      .delete("/user", { withCredentials: true })
       .then((res) => {
         console.log(res.data.message);
         const resMsg = res.data.message;

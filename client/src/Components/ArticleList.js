@@ -3,11 +3,15 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 const Article = styled.li`
+  margin-top: 2rem;
   list-style: none;
   width: 25%;
   transition: 0.4s;
+  display: flex;
+  justify-content: center;
   :hover {
     background-color: white;
+    border-radius: 5px;
   }
   > a {
     text-decoration: none;
@@ -17,8 +21,8 @@ const Article = styled.li`
 
 const ArticleImage = styled.img`
   border-radius: 5%;
-  width: 18rem;
-  height: 18rem;
+  width: 15rem;
+  height: 15rem;
 `;
 
 const ArticleTitle = styled.div`
@@ -37,9 +41,7 @@ const ArticleList = ({ article }) => {
           <ArticleImage src={article.image} />
         ) : (
           <ArticleImage
-            src={
-              "https://onwedding-img.s3.ap-northeast-2.amazonaws.com/default-placeholder-1024x1024.png"
-            }
+            src={"https://onweddingimg.s3.amazonaws.com/article.png"}
           />
         )}
         <ArticleTitle>{article.title}</ArticleTitle>

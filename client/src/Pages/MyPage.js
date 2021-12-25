@@ -1,5 +1,4 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useState } from "react";
 import axios from "axios";
@@ -47,7 +46,7 @@ const SpanLeft = styled.div`
   > img {
     margin-top: 3rem;
     margin-bottom: 1rem;
-    border-radius: 50%;
+    border-radius: 70%;
     width: 20rem;
     height: 20rem;
     border: 1px solid #b2b2b2;
@@ -100,7 +99,7 @@ const Button = styled.button`
   }
 `;
 
-const MyPage = ({ userInfo, setUserInfo }) => {
+const MyPage = ({ userInfo, setImg, img, setUserInfo }) => {
   //! s3 구현
   const AWS = require("aws-sdk");
 
@@ -113,7 +112,7 @@ const MyPage = ({ userInfo, setUserInfo }) => {
 
   const [profile, setProfile] = useState(null);
 
-  const handleImg = event => {
+  const handleImg = (event) => {
     const imgFile = event.target.files[0];
     if (!imgFile) {
       return setProfile(null);
@@ -129,57 +128,45 @@ const MyPage = ({ userInfo, setUserInfo }) => {
     const promise = upload.promise();
 
     promise.then(
-      data => {
+      (data) => {
         setProfile(data.Location);
       },
-      err => {
+      (err) => {
         console.log(err);
       }
     );
   };
+
   //! s3 구현\
 
-  if (profile) {
-    axios
-      .patch(
-        "https://localhost:4000/user/profile",
-        {
-          image: profile,
-        },
-        {
-          withCredentials: true,
-        }
-      )
-      .then(res => {
-        setUserInfo({
-          id: userInfo.id,
-          email: userInfo.email,
-          name: userInfo.name,
-          nickname: userInfo.nickname,
-          mobile: userInfo.mobile,
-          image: res.data.data.img,
-        });
-      });
-  }
-  console.log(userInfo.image);
+  // axios.patch(
+  //   "https://localhost:4000/user/profile",
+  //   {
+  //     image: profile,
+  //   },
+  //   {
+  //     withCredentials: true,
+  //   }
+  // );
+
+  // setUserInfo({...userInfo, image: res.data.data.img});
 
   return (
     <StyledBody>
       <MypageHeader>{`${userInfo.name}'s Page`}</MypageHeader>
       <ElementContainer>
         <SpanLeft>
-           {userInfo.image && userInfo.image === /^A/ ? (
-        <img src={userInfo.image} />
-      ) : (
-        <img
-          src={
-            "https://onwedding-img.s3.ap-northeast-2.amazonaws.com/default-placeholder-1024x1024.png"
-          }
-        />
-      )}
-          <div>
-            <input type="file" onChange={handleImg} />
-          </div>
+          {img ? (
+            <img src={img} alt="사진" />
+          ) : (
+            <img
+              src={"https://onweddingimg.s3.amazonaws.com/default.png"}
+              alt="사진"
+            />
+          )}
+          {/* <div>
+            <input type="file" onChange={handleImg} alt="사진" />
+          </div> */}
         </SpanLeft>
         <SpanRight>
           <ElementBox>
