@@ -2,7 +2,7 @@
 
 ## LOGO
 
-<img src="https://i.esdrop.com/d/z3v0lj8ztjvc/mArzHwbscO.png">
+<a href="https://www.onwedding.shop"><img src="https://i.esdrop.com/d/z3v0lj8ztjvc/mArzHwbscO.png"></a>
 
 ## What service is it?
 
