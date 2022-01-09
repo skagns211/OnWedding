@@ -285,7 +285,7 @@ const SignUp = () => {
   const handleComplete = () => {
     axios
       .post(
-        "https://localhost:4000/auth/signup",
+        "/auth/signup",
         {
           email: userinfo.email,
           password: userinfo.password,
@@ -398,7 +398,7 @@ const SignUp = () => {
   const dupEmail = (email) => {
     axios
       .post(
-        "https://localhost:4000/auth/email",
+        "/auth/email",
         { email: userinfo.email },
         { httpOnly: true, withCredentials: true }
       )
@@ -421,7 +421,7 @@ const SignUp = () => {
   const dupNickname = (nickname) => {
     axios
       .post(
-        "https://localhost:4000/auth/nickname",
+        "/auth/nickname",
         { nickname: userinfo.nickname },
         { httpOnly: true, withCredentials: true }
       )
@@ -502,7 +502,7 @@ const SignUp = () => {
       </WelcomeMessage>
       <Line />
       <ElemetContainer>
-        <form onSubmit={e => e.preventDefault()}>
+        <form onSubmit={(e) => e.preventDefault()}>
           <ElementBox>
             <div>
               <Element>이메일</Element>
